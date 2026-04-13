@@ -5,7 +5,6 @@ monitoring, quality checks, deduplication, and spider middlewares.
 """
 
 import json
-import math
 import os
 from unittest.mock import MagicMock, patch
 
@@ -322,7 +321,7 @@ class TestMonitoring:
         mock_client.return_value.table.return_value = mock_table
 
         with pytest.raises(ValueError):
-            with track_pipeline("enrich") as run:
+            with track_pipeline("enrich") as _:
                 raise ValueError("embedding failed")
 
         call_args = mock_table.update.call_args[0][0]

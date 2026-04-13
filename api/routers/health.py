@@ -35,7 +35,7 @@ async def readiness(db=Depends(get_db)) -> dict:
 
     # Check database
     try:
-        result = db.table("sources").select("id").limit(1).execute()
+        db.table("sources").select("id").limit(1).execute()
         checks["database"] = True
     except Exception as exc:
         logger.warning("Readiness: DB check failed: %s", exc)

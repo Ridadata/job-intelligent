@@ -7,7 +7,6 @@ network. Targets data science, data engineering, ML, and IT positions.
 import logging
 import re
 from typing import Any, Generator
-from urllib.parse import urlencode
 
 import scrapy
 from scrapy.http import Response

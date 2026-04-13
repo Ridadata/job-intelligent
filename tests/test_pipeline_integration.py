@@ -7,9 +7,6 @@ Verifies data coherence across all three layers.
 
 from unittest.mock import MagicMock, patch
 
-import numpy as np
-import pytest
-
 from ingestion.api_clients.adzuna_client import AdzunaClient
 from ingestion.api_clients.jsearch_client import JSearchClient
 from ingestion.api_clients.france_travail_client import FranceTravailClient

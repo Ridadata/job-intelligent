@@ -95,7 +95,6 @@ def _scrape_sources(**context: dict) -> dict[str, int]:
     Returns:
         Dict mapping source names to item counts scraped.
     """
-    import json
     import os
     import subprocess
     import sys
@@ -178,7 +177,6 @@ def _fetch_api_sources(**context: dict) -> dict[str, int]:
     Returns:
         Dict mapping source names to item counts fetched.
     """
-    import os
     import sys
 
     sys.path.insert(0, "/opt/airflow")
@@ -342,8 +340,6 @@ def _ingest_raw(**context: dict) -> dict[str, int]:
     Returns:
         Dict mapping source names to rows ingested.
     """
-    import os
-
     _ensure_env()
 
     from etl.ingest import ingest_raw
@@ -442,8 +438,6 @@ def _refresh_views(**context: dict) -> None:
 
     Calls the refresh_all_analytics_views() PostgreSQL function.
     """
-    import os
-
     _ensure_env()
 
     from etl.db import get_supabase_client

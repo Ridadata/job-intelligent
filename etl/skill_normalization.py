@@ -7,7 +7,6 @@ to their canonical form before storage.
 import json
 import logging
 import os
-import re
 from typing import Optional
 
 logger = logging.getLogger(__name__)

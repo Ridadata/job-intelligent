@@ -7,14 +7,12 @@ against canonical dictionary, and writes to the job_offers Silver table.
 
 import logging
 import re
-import time
 from typing import Any
 
 from etl.db import get_supabase_client
 from etl.monitoring import track_pipeline
 from etl.nlp import extract_skills, normalize_contract_type
 from etl.skill_normalization import normalize_skills
-from etl.taxonomy import classify_job
 from etl.validation import validate_silver_row
 
 logger = logging.getLogger(__name__)

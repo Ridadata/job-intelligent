@@ -13,8 +13,6 @@ Verifies:
 
 from unittest.mock import MagicMock, patch
 
-import pytest
-
 from etl.ingest import ingest_raw
 from etl.transform import _extract_silver_fields, _is_data_job, _parse_salary, transform_to_silver
 from etl.nlp import extract_skills, normalize_contract_type, classify_seniority, normalize_title
@@ -335,10 +333,6 @@ class TestProcessedFlagLifecycle:
                 "contract_type": "CDI",
             },
         }]
-        select_mock = MagicMock()
-        eq_mock = MagicMock()
-        limit_mock = MagicMock()
-
         first_result = MagicMock()
         first_result.data = raw_rows
         second_result = MagicMock()

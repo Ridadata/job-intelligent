@@ -4,7 +4,6 @@ Contains all candidate-related business logic. Never imports FastAPI types.
 """
 
 import logging
-import math
 import os
 from typing import Any
 

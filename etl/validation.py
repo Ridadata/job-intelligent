@@ -5,7 +5,6 @@ rows with clear error messages before they reach the database.
 """
 
 import logging
-from datetime import datetime
 from typing import Any, Optional
 
 from pydantic import BaseModel, Field, field_validator

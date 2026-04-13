@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, Query, status
 
 from api.dependencies import get_current_user, get_job_service
 from api.schemas.common import PaginatedResponse
-from api.schemas.job import JobResponse, JobSearchParams
+from api.schemas.job import JobResponse
 from api.services.job_service import JobService
 
 logger = logging.getLogger(__name__)

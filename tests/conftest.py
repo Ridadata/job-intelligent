@@ -1,7 +1,7 @@
 """Shared test fixtures and configuration."""
 
 import os
-from unittest.mock import MagicMock, AsyncMock, patch
+from unittest.mock import MagicMock, AsyncMock
 
 import pytest
 

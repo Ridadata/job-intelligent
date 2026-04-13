@@ -7,13 +7,12 @@ for the Gold layer (dw_job_offers).
 """
 
 import logging
-import time
 from typing import Any
 
 from etl.db import get_supabase_client
 from etl.embeddings import generate_embeddings_batch
 from etl.monitoring import track_pipeline
-from etl.nlp import classify_seniority, extract_skills
+from etl.nlp import extract_skills
 from etl.skill_normalization import normalize_skills
 from etl.taxonomy import classify_job
 from etl.validation import validate_gold_row

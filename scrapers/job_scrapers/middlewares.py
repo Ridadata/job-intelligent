@@ -6,9 +6,9 @@ scraping reliability and reduce blocking.
 
 import logging
 import random
-from typing import Any, Optional
+from typing import Any
 
-from scrapy import Request, signals
+from scrapy import Request
 from scrapy.crawler import Crawler
 from scrapy.http import Response
 

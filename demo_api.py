@@ -9,7 +9,6 @@ No need to set env vars manually.
 """
 
 import os
-import textwrap
 
 # Load .env automatically
 try:
@@ -38,7 +37,6 @@ def _print_job(i: int, job: dict, *, show_cleaned: bool = True) -> None:
     from pipeline.cleaning.job_cleaner import (
         normalize_title,
         standardize_contract,
-        is_valid_job,
         validate_job,
     )
 
@@ -143,7 +141,7 @@ def cleaning_summary(all_jobs: list[dict]) -> None:
     contracts = Counter(
         standardize_contract(j.get("contract_type", "")) for j in all_jobs
     )
-    print(f"\n  Contract distribution:")
+    print("\n  Contract distribution:")
     for ctype, count in sorted(contracts.items(), key=lambda x: -x[1]):
         print(f"    {ctype:15s} {count}")
 
@@ -158,7 +156,7 @@ if __name__ == "__main__":
     print("  JOB INTELLIGENT — API Demo")
     print("═" * 70)
 
-    print(f"\n  Credentials detected:")
+    print("\n  Credentials detected:")
     print(f"    Adzuna  : {'✓' if os.environ.get('ADZUNA_APP_ID') else '✗ not set (ADZUNA_APP_ID)'}")
     print(f"    JSearch : {'✓' if os.environ.get('JSEARCH_API_KEY') else '✗ not set (JSEARCH_API_KEY)'}")
 
