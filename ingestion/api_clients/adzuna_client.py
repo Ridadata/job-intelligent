@@ -119,7 +119,7 @@ class AdzunaClient:
                 exc.response.status_code if exc.response is not None else 0,
                 query, exc,
             )
-            return []
+            raise
         except requests.exceptions.RequestException as exc:
             logger.error("ADZUNA REQUEST FAILED — query=%r: %s", query, exc)
             return []

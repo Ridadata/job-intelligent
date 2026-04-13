@@ -87,7 +87,7 @@ class TestAdzunaClient:
         except AttributeError:
             pytest.fail("_normalize crashed on non-dict company field")
 
-    @patch("ingestion.api_clients.adzuna_client.requests.get")
+    @patch("requests.Session.get")
     def test_fetch_jobs_success(self, mock_get: MagicMock) -> None:
         """fetch_jobs should call API and return normalized results."""
         mock_response = MagicMock()
@@ -105,7 +105,7 @@ class TestAdzunaClient:
         call_kwargs = mock_get.call_args
         assert "params" in call_kwargs.kwargs or len(call_kwargs.args) > 1
 
-    @patch("ingestion.api_clients.adzuna_client.requests.get")
+    @patch("requests.Session.get")
     def test_fetch_jobs_empty(self, mock_get: MagicMock) -> None:
         """fetch_jobs should return empty list when API returns no results."""
         mock_response = MagicMock()
@@ -117,7 +117,7 @@ class TestAdzunaClient:
         jobs = client.fetch_jobs("nonexistent")
         assert jobs == []
 
-    @patch("ingestion.api_clients.adzuna_client.requests.get")
+    @patch("requests.Session.get")
     def test_fetch_jobs_http_error(self, mock_get: MagicMock) -> None:
         """fetch_jobs should propagate HTTP errors."""
         import requests
@@ -187,7 +187,7 @@ class TestJSearchClient:
         assert REQUIRED_KEYS.issubset(result.keys())
         assert result["source"] == "jsearch"
 
-    @patch("ingestion.api_clients.jsearch_client.requests.get")
+    @patch("requests.Session.get")
     def test_fetch_jobs_success(self, mock_get: MagicMock) -> None:
         """fetch_jobs should call API and return normalized results."""
         mock_response = MagicMock()
@@ -204,7 +204,7 @@ class TestJSearchClient:
         headers = mock_get.call_args.kwargs.get("headers", {})
         assert headers.get("X-RapidAPI-Key") == "test-key"
 
-    @patch("ingestion.api_clients.jsearch_client.requests.get")
+    @patch("requests.Session.get")
     def test_fetch_jobs_no_data_key(self, mock_get: MagicMock) -> None:
         """fetch_jobs should handle response without 'data' key."""
         mock_response = MagicMock()
@@ -271,8 +271,8 @@ class TestFranceTravailClient:
         assert REQUIRED_KEYS.issubset(result.keys())
         assert result["source"] == "france_travail"
 
-    @patch("ingestion.api_clients.france_travail_client.requests.get")
-    @patch("ingestion.api_clients.france_travail_client.requests.post")
+    @patch("requests.Session.get")
+    @patch("requests.Session.post")
     def test_fetch_jobs_authenticates_and_fetches(
         self, mock_post: MagicMock, mock_get: MagicMock
     ) -> None:
@@ -300,8 +300,8 @@ class TestFranceTravailClient:
         call_kwargs = mock_get.call_args.kwargs
         assert "Bearer tok-123" in call_kwargs.get("headers", {}).get("Authorization", "")
 
-    @patch("ingestion.api_clients.france_travail_client.requests.get")
-    @patch("ingestion.api_clients.france_travail_client.requests.post")
+    @patch("requests.Session.get")
+    @patch("requests.Session.post")
     def test_fetch_jobs_empty_results(
         self, mock_post: MagicMock, mock_get: MagicMock
     ) -> None:

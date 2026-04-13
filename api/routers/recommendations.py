@@ -54,6 +54,11 @@ async def recommendations(
             min_score=request.min_score,
             filters=request.filters,
         )
+    except ValueError as exc:
+        detail = str(exc)
+        if "not found" in detail.lower():
+            raise HTTPException(status_code=404, detail=detail) from exc
+        raise HTTPException(status_code=400, detail=detail) from exc
     except Exception as exc:
         logger.error("Recommendation endpoint error: %s", exc, exc_info=True)
         raise HTTPException(
