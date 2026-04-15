@@ -26,16 +26,11 @@ export function AuthLayout() {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="relative z-10 max-w-md text-center"
         >
-          <div className="mx-auto mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-500 shadow-glow-lg drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]">
+          <div className="mx-auto mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-white dark:bg-white/10 shadow-lg">
             <img
-              src="/images/web_site_logo.png"
-              alt="J"
-              className="h-8 w-8 object-contain"
-              onError={(e) => {
-                (e.target as HTMLImageElement).style.display = "none";
-                (e.target as HTMLImageElement).parentElement!.innerHTML =
-                  '<span class="text-2xl font-extrabold text-white">J</span>';
-              }}
+              src="/images/logo.png"
+              alt="RADIAN"
+              className="h-10 w-10 object-contain"
             />
           </div>
           <h1 className="text-4xl font-semibold tracking-tight leading-tight mb-4">
@@ -79,19 +74,14 @@ export function AuthLayout() {
         >
           {/* Mobile-only brand */}
           <div className="text-center lg:hidden">
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-500 shadow-glow">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white dark:bg-white/10 shadow-md">
               <img
-                src="/images/web_site_logo.png"
-                alt="J"
-                className="h-6 w-6 object-contain"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = "none";
-                  (e.target as HTMLImageElement).parentElement!.innerHTML =
-                    '<span class="text-lg font-extrabold text-white">J</span>';
-                }}
+                src="/images/logo.png"
+                alt="RADIAN"
+                className="h-7 w-7 object-contain"
               />
             </div>
-            <h1 className="text-2xl font-bold text-gradient">Job Intelligent</h1>
+            <h1 className="text-2xl font-bold tracking-wide uppercase text-gray-900 dark:text-white">RADIAN</h1>
             <p className="mt-1 text-sm text-[hsl(var(--muted-foreground))]">
               AI-powered job matching
             </p>
