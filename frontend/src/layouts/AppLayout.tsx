@@ -62,15 +62,12 @@ export function AppLayout() {
       >
         <div className="mx-auto flex h-full max-w-container items-center px-4 lg:px-8">
           {/* Logo — LEFT */}
-          <Link to={ROUTES.DASHBOARD} className="flex shrink-0 items-center gap-2.5 group mr-8">
+          <Link to={ROUTES.DASHBOARD} className="flex shrink-0 items-center mr-8">
             <img
               src="/images/logo.png"
-              alt="RADIAN"
-              className="h-8 w-8 object-contain"
+              alt="radian"
+              className="h-8 object-contain dark:brightness-0 dark:invert"
             />
-            <span className="hidden text-base font-bold tracking-wide uppercase text-gray-900 dark:text-white sm:block">
-              RADIAN
-            </span>
           </Link>
 
           {/* Desktop Nav Links — CENTER */}
