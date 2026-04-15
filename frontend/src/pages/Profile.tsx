@@ -134,24 +134,19 @@ export default function Profile() {
       className="space-y-6 max-w-4xl"
     >
       {/* Header */}
-      <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ background: "rgba(6,182,212,0.1)" }}>
-          <User className="h-5 w-5" style={{ color: "var(--accent-blue)" }} />
-        </div>
-        <div>
-          <h1 className="text-2xl font-display font-bold" style={{ color: "var(--text-primary)" }}>Profile</h1>
-          <p className="text-sm" style={{ color: "var(--text-muted)" }}>
-            {isNew ? "Create your profile for personalized recommendations" : `Completeness: ${profile?.profile_completeness ?? 0}%`}
-          </p>
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Profile</h1>
+        <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
+          {isNew ? "Create your profile for personalized recommendations" : `Completeness: ${profile?.profile_completeness ?? 0}%`}
+        </p>
       </div>
 
       {/* CV Upload — 2-column drag & drop zone */}
       <div className="grid gap-4 lg:grid-cols-2 items-stretch">
         {/* Left — Upload zone */}
-        <div className="glass-card p-5 space-y-3" style={{ boxShadow: "var(--shadow-card)" }}>
-          <h2 className="font-display font-bold" style={{ fontSize: "1.1rem", color: "var(--text-primary)" }}>Upload Your CV</h2>
-          <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", lineHeight: 1.6 }}>
+        <div className="rounded-2xl bg-white dark:bg-[hsl(var(--surface-1))] border border-gray-100 dark:border-white/[0.06] shadow-sm p-5 space-y-3">
+          <h2 className="text-base font-bold text-gray-900 dark:text-white">Upload Your CV</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
             Our AI parses your resume instantly — extracting skills and matching you to live data roles automatically.
           </p>
           <input
@@ -166,37 +161,23 @@ export default function Profile() {
             onDrop={handleDrop}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
-            className="cursor-pointer text-center transition-all duration-250"
-            style={{
-              border: `1.5px dashed ${isDragging ? "var(--accent-cyan)" : "var(--border-glow)"}`,
-              borderRadius: 24,
-              padding: "2.5rem",
-              background: isDragging ? "rgba(6,182,212,0.04)" : "var(--drop-zone-bg)",
-            }}
+            className={`cursor-pointer text-center rounded-2xl border-2 border-dashed p-10 transition-all duration-200 ${isDragging ? "border-brand-500 bg-brand-50/50 dark:bg-brand-500/5" : "border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/[0.02]"}`}
           >
-            <div
-              className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl"
-              style={{ background: "rgba(6,182,212,0.1)", border: "1px solid rgba(6,182,212,0.2)" }}
-            >
-              <Upload className="h-5 w-5" style={{ color: "var(--accent-cyan)" }} />
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 dark:bg-brand-500/10 border border-brand-100 dark:border-brand-500/20">
+              <Upload className="h-5 w-5 text-brand-500" />
             </div>
             {uploadMutation.isPending ? (
               <div className="flex items-center justify-center gap-2">
-                <Loader2 className="h-4 w-4 animate-spin" style={{ color: "var(--accent-blue)" }} />
-                <span className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>Uploading…</span>
+                <Loader2 className="h-4 w-4 animate-spin text-brand-500" />
+                <span className="text-sm font-medium text-gray-900 dark:text-white">Uploading…</span>
               </div>
             ) : (
               <>
-                <p className="font-semibold" style={{ fontSize: "0.9rem", color: "var(--text-primary)" }}>Drag &amp; drop your resume</p>
-                <p style={{ fontSize: "0.78rem", color: "var(--text-muted)", marginTop: 4 }}>PDF, DOCX up to 10MB</p>
+                <p className="text-sm font-semibold text-gray-900 dark:text-white">Drag &amp; drop your resume</p>
+                <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">PDF, DOCX up to 10MB</p>
                 <button
                   type="button"
-                  className="mt-3 inline-flex items-center gap-1.5 rounded-lg px-4 py-1.5 text-sm font-medium transition-all duration-200"
-                  style={{
-                    background: "var(--btn-subtle-bg)",
-                    border: "1px solid var(--border-glow)",
-                    color: "var(--text-primary)",
-                  }}
+                  className="mt-3 inline-flex items-center gap-1.5 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-white/[0.04] px-4 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.06]"
                 >
                   Browse Files
                 </button>
@@ -206,24 +187,23 @@ export default function Profile() {
         </div>
 
         {/* Right — Parse status card */}
-        <div className="glass-card p-5 space-y-3 flex flex-col" style={{ boxShadow: "var(--shadow-card)" }}>
-          <h3 className="font-display font-bold" style={{ fontSize: "0.9rem", color: "var(--text-primary)" }}>
+        <div className="rounded-2xl bg-white dark:bg-[hsl(var(--surface-1))] border border-gray-100 dark:border-white/[0.06] shadow-sm p-5 space-y-3 flex flex-col">
+          <h3 className="text-sm font-bold text-gray-900 dark:text-white">
             Last Parsed: {profile?.name ? "resume.pdf" : "No CV yet"}
           </h3>
           {[
-            { icon: <CheckCircle className="h-3.5 w-3.5" />, label: "Skills extracted", value: `${profile?.skills?.length ?? 0} skills`, bg: "rgba(16,185,129,0.07)", border: "rgba(16,185,129,0.15)", color: "var(--accent-emerald)" },
-            { icon: <CheckCircle className="h-3.5 w-3.5" />, label: "Experience parsed", value: `${profile?.experience_years ?? 0} years`, bg: "rgba(16,185,129,0.07)", border: "rgba(16,185,129,0.15)", color: "var(--accent-emerald)" },
-            { icon: <Clock className="h-3.5 w-3.5" />, label: "AI matching running…", value: `${profile?.profile_completeness ?? 0}%`, bg: "rgba(6,182,212,0.07)", border: "rgba(6,182,212,0.15)", color: "var(--accent-cyan)" },
+            { icon: <CheckCircle className="h-3.5 w-3.5" />, label: "Skills extracted", value: `${profile?.skills?.length ?? 0} skills`, accent: "text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-500/10 border-brand-100 dark:border-brand-500/20" },
+            { icon: <CheckCircle className="h-3.5 w-3.5" />, label: "Experience parsed", value: `${profile?.experience_years ?? 0} years`, accent: "text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-500/10 border-brand-100 dark:border-brand-500/20" },
+            { icon: <Clock className="h-3.5 w-3.5" />, label: "AI matching running…", value: `${profile?.profile_completeness ?? 0}%`, accent: "text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-500/10 border-brand-100 dark:border-brand-500/20" },
           ].map((row) => (
             <div
               key={row.label}
-              className="flex items-center justify-between rounded-lg px-3 py-2.5"
-              style={{ background: row.bg, border: `1px solid ${row.border}`, fontSize: "0.82rem" }}
+              className={`flex items-center justify-between rounded-lg border px-3 py-2.5 text-xs ${row.accent}`}
             >
-              <span className="flex items-center gap-2" style={{ color: row.color }}>
+              <span className="flex items-center gap-2">
                 {row.icon} {row.label}
               </span>
-              <span className="font-medium" style={{ color: row.color }}>{row.value}</span>
+              <span className="font-medium">{row.value}</span>
             </div>
           ))}
         </div>
@@ -231,15 +211,15 @@ export default function Profile() {
 
       {/* Completeness bar */}
       {!isNew && profile?.profile_completeness != null && (
-        <div className="glass-card p-4">
+        <div className="rounded-2xl bg-white dark:bg-[hsl(var(--surface-1))] border border-gray-100 dark:border-white/[0.06] shadow-sm p-4">
           <div className="flex items-center justify-between text-sm mb-2">
-            <span className="font-medium" style={{ color: "var(--text-primary)" }}>Profile completeness</span>
-            <span className="font-bold" style={{ color: "var(--accent-blue)" }}>{profile.profile_completeness}%</span>
+            <span className="font-medium text-gray-900 dark:text-white">Profile completeness</span>
+            <span className="font-bold text-brand-500">{profile.profile_completeness}%</span>
           </div>
-          <div className="h-2 rounded-full overflow-hidden" style={{ background: "rgba(99,130,199,0.12)" }}>
+          <div className="h-2 rounded-full overflow-hidden bg-gray-100 dark:bg-white/[0.06]">
             <div
-              className="h-full rounded-full transition-all duration-700"
-              style={{ width: `${profile.profile_completeness}%`, background: "linear-gradient(135deg, #06B6D4, #0EA5E9)" }}
+              className="h-full rounded-full bg-brand-400 transition-all duration-700"
+              style={{ width: `${profile.profile_completeness}%` }}
             />
           </div>
         </div>

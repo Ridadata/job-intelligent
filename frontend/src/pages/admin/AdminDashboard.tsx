@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Activity, Users, Database, Shield } from "lucide-react";
+import { Activity, Users, Database } from "lucide-react";
 import { ROUTES } from "@/config/routes";
 
 const items = [
@@ -17,22 +17,17 @@ export default function AdminDashboard() {
       transition={{ duration: 0.4 }}
       className="space-y-6"
     >
-      <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10 text-red-400">
-          <Shield className="h-5 w-5" />
-        </div>
-        <div>
-          <h1 className="text-2xl font-bold">Admin Panel</h1>
-          <p className="text-sm text-[hsl(var(--muted-foreground))]">
-            Platform administration and monitoring
-          </p>
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Admin Panel</h1>
+        <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
+          Platform administration and monitoring
+        </p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item) => (
           <Link key={item.to} to={item.to}>
-            <div className="group rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 transition-all duration-300 hover:border-brand-500/30 hover:shadow-card-hover cursor-pointer h-full">
+            <div className="group rounded-2xl bg-white dark:bg-[hsl(var(--surface-1))] border border-gray-100 dark:border-white/[0.06] shadow-sm p-6 transition-all duration-300 hover:shadow-md cursor-pointer h-full">
               <div className="flex items-center gap-4">
                 <div className={`rounded-xl p-3 ${item.color}`}>
                   {item.icon}

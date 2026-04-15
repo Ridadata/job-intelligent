@@ -5,7 +5,7 @@ import { ENDPOINTS } from "@/config/api";
 import { Badge } from "@/components/ui/Badge";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/EmptyState";
-import { Activity, CheckCircle, XCircle, Clock } from "lucide-react";
+import { CheckCircle, XCircle, Clock } from "lucide-react";
 import type { PipelineRun } from "@/types";
 
 export default function PipelineStatus() {
@@ -33,16 +33,11 @@ export default function PipelineStatus() {
       transition={{ duration: 0.4 }}
       className="space-y-6"
     >
-      <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500/10 text-brand-500">
-          <Activity className="h-5 w-5" />
-        </div>
-        <div>
-          <h1 className="text-2xl font-bold">Pipeline Status</h1>
-          <p className="text-sm text-[hsl(var(--muted-foreground))]">
-            Real-time ETL monitoring · auto-refreshes every 15 s
-          </p>
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Pipeline Status</h1>
+        <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
+          Real-time ETL monitoring · auto-refreshes every 15 s
+        </p>
       </div>
 
       {isLoading ? (
@@ -56,7 +51,7 @@ export default function PipelineStatus() {
       ) : data && data.length > 0 ? (
         <div className="space-y-3">
           {data.map((run) => (
-            <div key={run.id} className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] overflow-hidden">
+            <div key={run.id} className="rounded-2xl bg-white dark:bg-[hsl(var(--surface-1))] border border-gray-100 dark:border-white/[0.06] shadow-sm overflow-hidden">
               <div className="flex items-center justify-between p-4">
                 <div className="flex items-center gap-3">
                   {statusIcon(run.status)}

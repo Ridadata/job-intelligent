@@ -89,7 +89,7 @@ export function AppLayout() {
                 }}
               />
             </div>
-            <span className="hidden text-base font-display font-extrabold sm:block" style={{ color: "var(--text-primary)" }}>
+            <span className="hidden text-base font-bold sm:block" style={{ color: "var(--text-primary)" }}>
               Job Intelligent
             </span>
           </Link>

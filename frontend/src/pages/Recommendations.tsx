@@ -34,16 +34,11 @@ export default function Recommendations() {
       className="space-y-6"
     >
       {/* Header */}
-      <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500/10 text-brand-500">
-          <Sparkles className="h-5 w-5" />
-        </div>
-        <div>
-          <h1 className="text-2xl font-bold">Recommendations</h1>
-          <p className="text-sm text-[hsl(var(--muted-foreground))]">
-            AI-powered job matches based on your profile
-          </p>
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Recommendations</h1>
+        <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
+          AI-powered job matches based on your profile
+        </p>
       </div>
 
       {isLoading ? (
@@ -88,7 +83,7 @@ function RecommendationCard({ rec }: { rec: Recommendation }) {
     <motion.div
       whileHover={{ y: -2 }}
       transition={{ duration: 0.2 }}
-      className="group relative rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5 transition-all duration-300 hover:border-brand-500/30 hover:shadow-card-hover"
+      className="group relative rounded-2xl bg-white dark:bg-[hsl(var(--surface-1))] border border-gray-100 dark:border-white/[0.06] shadow-sm p-5 transition-all duration-200 hover:shadow-md"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
@@ -129,7 +124,7 @@ function RecommendationCard({ rec }: { rec: Recommendation }) {
               className="inline-flex items-center gap-1 rounded-full bg-[hsl(var(--muted))]/10 px-2 py-0.5 text-[10px] font-medium text-[hsl(var(--muted-foreground))]"
             >
               {key.replace(/_/g, " ")}:
-              <span className={value >= 0.7 ? "text-emerald-500" : value >= 0.4 ? "text-amber-500" : "text-red-400"}>
+              <span className={value >= 0.7 ? "text-brand-500" : value >= 0.4 ? "text-amber-500" : "text-red-400"}>
                 {Math.round(value * 100)}%
               </span>
             </span>
@@ -141,7 +136,7 @@ function RecommendationCard({ rec }: { rec: Recommendation }) {
       <div className="mt-3 space-y-2">
         {rec.matched_skills.length > 0 && (
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">Matched:</span>
+            <span className="text-xs font-medium text-brand-600 dark:text-brand-400">Matched:</span>
             {rec.matched_skills.map((s) => (
               <SkillBadge key={s} skill={s} matched />
             ))}

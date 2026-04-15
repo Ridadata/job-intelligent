@@ -29,16 +29,11 @@ export default function SkillGap() {
       className="space-y-6"
     >
       {/* Header */}
-      <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 text-amber-500">
-          <Target className="h-5 w-5" />
-        </div>
-        <div>
-          <h1 className="text-2xl font-bold">Skill Gap Analysis</h1>
-          <p className="text-sm text-[hsl(var(--muted-foreground))]">
-            Discover the most in-demand skills you should learn next
-          </p>
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Skill Gap Analysis</h1>
+        <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
+          Discover the most in-demand skills you should learn next
+        </p>
       </div>
 
       {isLoading ? (
@@ -52,8 +47,8 @@ export default function SkillGap() {
       ) : data && data.top_missing_skills.length > 0 ? (
         <div className="space-y-6">
           {/* Your skills */}
-          <div className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
-            <h2 className="mb-3 text-sm font-semibold text-[hsl(var(--muted-foreground))]">
+          <div className="rounded-2xl bg-white dark:bg-[hsl(var(--surface-1))] border border-gray-100 dark:border-white/[0.06] shadow-sm p-5">
+            <h2 className="mb-3 text-sm font-semibold text-gray-500 dark:text-gray-400">
               Your Current Skills
             </h2>
             <div className="flex flex-wrap gap-1.5">
@@ -64,9 +59,9 @@ export default function SkillGap() {
           </div>
 
           {/* Missing skills ranked */}
-          <div className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
+          <div className="rounded-2xl bg-white dark:bg-[hsl(var(--surface-1))] border border-gray-100 dark:border-white/[0.06] shadow-sm p-5">
             <div className="mb-4 flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-amber-500" />
+              <TrendingUp className="h-4 w-4 text-brand-500" />
               <h2 className="text-sm font-semibold">Top Skills to Learn</h2>
             </div>
             <div className="space-y-3">
@@ -86,7 +81,7 @@ export default function SkillGap() {
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-500/10 text-xs font-bold text-amber-500">
+                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-50 dark:bg-brand-500/10 text-xs font-bold text-brand-500">
                           {idx + 1}
                         </span>
                         <span className="text-sm font-medium capitalize">{skill}</span>
@@ -100,7 +95,7 @@ export default function SkillGap() {
                         initial={{ width: 0 }}
                         animate={{ width: `${barWidth}%` }}
                         transition={{ duration: 0.6, delay: idx * 0.05 }}
-                        className="h-full rounded-full bg-gradient-to-r from-amber-500 to-orange-500"
+                        className="h-full rounded-full bg-brand-400"
                       />
                     </div>
                   </motion.div>
