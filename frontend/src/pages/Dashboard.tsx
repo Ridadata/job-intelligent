@@ -1,20 +1,15 @@
 import { Link } from "react-router-dom";
 import {
   Briefcase,
-  Star,
-  Bookmark,
-  TrendingUp,
-  ArrowRight,
-  Brain,
   BarChart3,
-  Sparkles,
   Upload,
   Search,
   Target,
-  Zap,
+  ChevronUp,
+  ChevronDown,
+  Plus,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { JobCard } from "@/components/JobCard";
@@ -25,455 +20,324 @@ import { useRecommendations } from "@/hooks/useRecommendations";
 import { useSavedJobs } from "@/hooks/useSavedJobs";
 import { ROUTES } from "@/config/routes";
 
-/* ── Animation variants ─────────────────────────────────── */
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
+/* ── Subtle fade-in ─────────────────────────────────────── */
+const fadeIn = {
+  hidden: { opacity: 0, y: 8 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.07, duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
+    transition: { delay: i * 0.06, duration: 0.35, ease: "easeOut" as const },
   }),
 };
 
-const stagger = {
-  visible: { transition: { staggerChildren: 0.06 } },
-};
+/* ── Shared card style (clean, no glass) ─────────────────── */
+const cardBase =
+  "rounded-2xl bg-white dark:bg-[hsl(var(--surface-1))] border border-gray-100 dark:border-white/[0.06] shadow-sm";
 
-/* ── Quick Action Card ───────────────────────────────────── */
-function QuickAction({
-  icon: Icon,
-  label,
-  description,
-  to,
-  gradient,
-}: {
-  icon: React.ElementType;
-  label: string;
-  description: string;
-  to: string;
-  gradient: string;
-}) {
-  return (
-    <Link to={to} className="group block">
-      <div className="glass-card flex items-center gap-4 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg cursor-pointer">
-        <div
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white"
-          style={{ background: gradient }}
-        >
-          <Icon className="h-5 w-5" />
-        </div>
-        <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold text-[hsl(var(--foreground))]">{label}</p>
-          <p className="text-xs text-[hsl(var(--muted-foreground))] truncate">{description}</p>
-        </div>
-        <ArrowRight className="h-4 w-4 text-[hsl(var(--muted-foreground))] opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-      </div>
-    </Link>
-  );
-}
-
-/* ── Main Dashboard ──────────────────────────────────────── */
 export default function Dashboard() {
   const user = useAuthStore((s) => s.user);
   const firstName = user?.email?.split("@")[0] ?? "there";
 
-  const recentJobs = useJobs({ page: 1, per_page: 5 });
+  const recentJobs = useJobs({ page: 1, per_page: 6 });
   const recs = useRecommendations(
-    user ? { candidate_id: user.id, top_n: 3 } : null
+    user ? { candidate_id: user.id, top_n: 4 } : null
   );
   const savedJobs = useSavedJobs(1, 1);
 
   const topMatch = recs.data?.data?.[0];
-  const matchedSkillCount = topMatch?.matched_skills?.length ?? 0;
   const totalJobs = recentJobs.data?.total ?? 0;
   const totalRecs = recs.data?.total ?? 0;
   const totalSaved = savedJobs.data?.total ?? 0;
   const matchScore = topMatch ? Math.round(topMatch.similarity_score * 100) : 0;
 
   return (
-    <div className="space-y-8 pb-8">
-      {/* ── Greeting Header ──────────────────────────────── */}
-      <motion.section
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="flex flex-col gap-6 pt-2 sm:flex-row sm:items-end sm:justify-between"
+    <div className="space-y-7 pb-10">
+      {/* ── Header ───────────────────────────────────────── */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4 }}
+        className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
       >
         <div>
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-brand-500/20 bg-brand-500/5 px-3 py-1">
-            <Sparkles className="h-3.5 w-3.5 text-brand-500" />
-            <span className="text-xs font-medium text-brand-600 dark:text-brand-400">AI-Powered Platform</span>
-          </div>
-          <h1 className="text-2xl font-bold tracking-tight text-[hsl(var(--foreground))] sm:text-3xl">
-            Welcome back, <span className="text-brand-500">{firstName}</span>
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            Dashboard
           </h1>
-          <p className="mt-1.5 text-sm leading-relaxed text-[hsl(var(--muted-foreground))] max-w-lg">
-            Your career intelligence dashboard — track opportunities, review matches, and discover your next role.
+          <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
+            Welcome back, {firstName}
           </p>
         </div>
-        <div className="flex gap-2.5 shrink-0">
-          <Link to={ROUTES.JOBS}>
-            <Button variant="gradient" className="gap-2">
-              <Search className="h-4 w-4" />
-              Explore Jobs
-            </Button>
-          </Link>
-          <Link to={ROUTES.RECOMMENDATIONS}>
-            <Button variant="outline" className="gap-2">
-              View Matches
-            </Button>
-          </Link>
-        </div>
-      </motion.section>
+        <Link to={ROUTES.JOBS}>
+          <Button className="gap-2 rounded-xl bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-white shadow-none hover:bg-emerald-600 transition-colors">
+            <Plus className="h-4 w-4" />
+            Explore Jobs
+          </Button>
+        </Link>
+      </motion.div>
 
-      {/* ── KPI Cards ────────────────────────────────────── */}
-      <motion.div
-        className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
-        initial="hidden"
-        animate="visible"
-        variants={stagger}
-      >
+      {/* ── KPI Row ──────────────────────────────────────── */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {([
           {
-            icon: Briefcase,
-            label: "Total Jobs",
+            label: "TOTAL JOBS",
             value: totalJobs ? totalJobs.toLocaleString() : "—",
-            change: "Live from pipeline",
-            gradient: "linear-gradient(135deg, #06B6D4, #0891B2)",
+            change: null,
+            up: true,
           },
           {
-            icon: Star,
-            label: "Recommendations",
+            label: "RECOMMENDATIONS",
             value: totalRecs ? totalRecs.toString() : "0",
-            change: "AI-matched for you",
-            gradient: "linear-gradient(135deg, #8B5CF6, #7C3AED)",
+            change: totalRecs > 0 ? `+${totalRecs}` : null,
+            up: true,
           },
           {
-            icon: TrendingUp,
-            label: "Top Match",
+            label: "TOP MATCH",
             value: matchScore ? `${matchScore}%` : "—",
-            change: matchScore >= 80 ? "Excellent fit" : matchScore >= 50 ? "Good potential" : "Complete profile",
-            gradient: "linear-gradient(135deg, #10B981, #059669)",
+            change: matchScore >= 50 ? `+${matchScore - 40}%` : null,
+            up: matchScore >= 50,
           },
           {
-            icon: Bookmark,
-            label: "Saved Jobs",
+            label: "SAVED JOBS",
             value: totalSaved ? totalSaved.toString() : "0",
-            change: "Bookmarked opportunities",
-            gradient: "linear-gradient(135deg, #F59E0B, #D97706)",
+            change: null,
+            up: true,
           },
         ] as const).map((kpi, i) => (
-          <motion.div key={kpi.label} custom={i} variants={fadeUp}>
-            <div className="glass-card group relative overflow-hidden p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
-              <div
-                className="absolute inset-x-0 top-0 h-0.5 opacity-60"
-                style={{ background: kpi.gradient }}
-              />
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-xs font-medium uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
-                    {kpi.label}
-                  </p>
-                  <p className="mt-2 text-3xl font-bold tabular-nums tracking-tight text-[hsl(var(--foreground))]">
-                    {kpi.value}
-                  </p>
-                  <p className="mt-1 text-xs text-[hsl(var(--muted-foreground))]">{kpi.change}</p>
-                </div>
-                <div
-                  className="flex h-11 w-11 items-center justify-center rounded-xl text-white"
-                  style={{ background: kpi.gradient }}
-                >
-                  <kpi.icon className="h-5 w-5" />
-                </div>
+          <motion.div key={kpi.label} custom={i} initial="hidden" animate="visible" variants={fadeIn}>
+            <div className={`${cardBase} p-5`}>
+              <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">
+                {kpi.label}
+              </p>
+              <div className="mt-2 flex items-end gap-2">
+                <span className="text-[1.75rem] font-bold leading-none tabular-nums text-gray-900 dark:text-white">
+                  {kpi.value}
+                </span>
+                {kpi.change && (
+                  <span className={`mb-0.5 flex items-center gap-0.5 text-xs font-semibold ${kpi.up ? "text-emerald-500" : "text-red-400"}`}>
+                    {kpi.up ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+                    {kpi.change}
+                  </span>
+                )}
               </div>
             </div>
           </motion.div>
         ))}
+      </div>
+
+      {/* ── Location Stats Strip ─────────────────────────── */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.25, duration: 0.35 }}
+        className={`${cardBase} flex items-center divide-x divide-gray-100 dark:divide-white/[0.06] overflow-x-auto`}
+      >
+        {[
+          { region: "France", count: 312, up: true },
+          { region: "Morocco", count: 187, up: true },
+          { region: "Remote", count: 245, up: true },
+          { region: "Europe", count: 156, up: false },
+          { region: "USA", count: 98, up: true },
+          { region: "Africa", count: 64, up: false },
+        ].map((loc) => (
+          <div key={loc.region} className="flex-1 min-w-[100px] px-5 py-4 text-center">
+            <p className="text-xs text-gray-400 dark:text-gray-500">{loc.region}</p>
+            <div className="mt-1 flex items-center justify-center gap-1.5">
+              <span className="text-lg font-bold tabular-nums text-gray-900 dark:text-white">{loc.count}</span>
+              {loc.up ? (
+                <ChevronUp className="h-3.5 w-3.5 text-emerald-500" />
+              ) : (
+                <ChevronDown className="h-3.5 w-3.5 text-red-400" />
+              )}
+            </div>
+          </div>
+        ))}
       </motion.div>
 
-      {/* ── AI Insights + Quick Actions Row ───────────────── */}
-      <div className="grid gap-6 lg:grid-cols-5">
-        {/* AI Insights — wider */}
-        <motion.div
-          className="lg:col-span-3"
-          initial={{ opacity: 0, y: 16 }}
+      {/* ── Two-Column: Recommendations + Skill Comparison ── */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        {/* Top Recommendations (like Team Members list) */}
+        <motion.section
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.45 }}
+          transition={{ delay: 0.35, duration: 0.35 }}
         >
-          <div className="glass-card gradient-border h-full overflow-hidden p-6">
-            <div className="flex items-start gap-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-blue-600 text-white shadow-glow">
-                <Brain className="h-6 w-6" />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
-                  <h3 className="text-base font-bold text-[hsl(var(--foreground))]">AI Insights</h3>
-                  <span className="rounded-full bg-brand-500/10 border border-brand-500/20 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">
-                    Live
-                  </span>
-                </div>
-                {topMatch ? (
-                  <div className="space-y-3">
-                    <p className="text-sm leading-relaxed text-[hsl(var(--muted-foreground))]">
-                      Your profile matches{" "}
-                      <span className="font-semibold text-brand-500">{Math.round(topMatch.similarity_score * 100)}%</span>{" "}
-                      with top data roles.
-                      {matchedSkillCount > 0 && (
-                        <>{" "}You have <span className="font-semibold text-emerald-500">{matchedSkillCount} matching skills</span>.</>
-                      )}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      <Link to={ROUTES.RECOMMENDATIONS}>
-                        <Button variant="gradient" size="sm" className="gap-1.5 text-xs">
-                          View Recommendations <ArrowRight className="h-3 w-3" />
-                        </Button>
-                      </Link>
-                      <Link to={ROUTES.SKILL_GAP}>
-                        <Button variant="outline" size="sm" className="gap-1.5 text-xs">
-                          <Target className="h-3 w-3" /> Skill Gap Analysis
-                        </Button>
-                      </Link>
-                    </div>
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-base font-bold text-gray-900 dark:text-white">Top Recommendations</h2>
+            <Link
+              to={ROUTES.RECOMMENDATIONS}
+              className="text-xs font-medium text-emerald-500 hover:text-emerald-600 transition-colors"
+            >
+              View All
+            </Link>
+          </div>
+
+          <div className={`${cardBase} divide-y divide-gray-50 dark:divide-white/[0.04] overflow-hidden`}>
+            {recs.isLoading ? (
+              <div className="space-y-0">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="px-5 py-4">
+                    <Skeleton className="h-5 w-3/4 rounded-lg" />
+                    <Skeleton className="mt-2 h-3 w-1/2 rounded-lg" />
                   </div>
-                ) : (
-                  <div className="space-y-3">
-                    <p className="text-sm leading-relaxed text-[hsl(var(--muted-foreground))]">
-                      Complete your profile to unlock AI-powered career insights, job matching, and personalized recommendations.
+                ))}
+              </div>
+            ) : recs.data?.data && recs.data.data.length > 0 ? (
+              recs.data.data.map((rec) => (
+                <Link
+                  key={rec.job_id}
+                  to={ROUTES.JOB_DETAIL(rec.job_id)}
+                  className="flex items-center gap-4 px-5 py-3.5 transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.02]"
+                >
+                  {/* Icon avatar */}
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-100 dark:bg-white/[0.06]">
+                    <Briefcase className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                  </div>
+                  {/* Info */}
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                      {rec.title}
                     </p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500 truncate">
+                      {rec.company}{rec.location ? ` · ${rec.location}` : ""}
+                    </p>
+                  </div>
+                  {/* Badge */}
+                  <span className="shrink-0 rounded-full bg-emerald-50 dark:bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                    {Math.round(rec.similarity_score * 100)}% match
+                  </span>
+                </Link>
+              ))
+            ) : (
+              <div className="px-5 py-8">
+                <EmptyState
+                  title="No recommendations yet"
+                  description="Complete your profile to get matched"
+                  action={
                     <Link to={ROUTES.PROFILE}>
-                      <Button variant="gradient" size="sm" className="gap-1.5 text-xs">
-                        Complete Profile <ArrowRight className="h-3 w-3" />
+                      <Button size="sm" className="rounded-lg bg-emerald-500 text-white hover:bg-emerald-600">
+                        Complete Profile
                       </Button>
                     </Link>
-                  </div>
-                )}
+                  }
+                />
               </div>
-            </div>
+            )}
           </div>
-        </motion.div>
+        </motion.section>
 
-        {/* Quick Actions — narrower */}
-        <motion.div
-          className="lg:col-span-2 space-y-3"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.45 }}
-        >
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
-            Quick Actions
-          </h3>
-          <QuickAction
-            icon={Upload}
-            label="Upload CV"
-            description="Let AI parse your skills"
-            to={ROUTES.PROFILE}
-            gradient="linear-gradient(135deg, #8B5CF6, #7C3AED)"
-          />
-          <QuickAction
-            icon={Search}
-            label="Search Jobs"
-            description="Browse all opportunities"
-            to={ROUTES.JOBS}
-            gradient="linear-gradient(135deg, #06B6D4, #0891B2)"
-          />
-          <QuickAction
-            icon={Target}
-            label="Skill Gap"
-            description="Find skills to learn next"
-            to={ROUTES.SKILL_GAP}
-            gradient="linear-gradient(135deg, #10B981, #059669)"
-          />
-        </motion.div>
-      </div>
-
-      {/* ── Two-Column: Recommendations + Market ─────────── */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Top Recommendations */}
+        {/* Skill Comparison (horizontal bars) */}
         <motion.section
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.45 }}
+          transition={{ delay: 0.4, duration: 0.35 }}
         >
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-bold text-[hsl(var(--foreground))]">Top Recommendations</h2>
-            <Link to={ROUTES.RECOMMENDATIONS}>
-              <Button variant="ghost" size="sm" className="gap-1.5 text-xs">
-                View all <ArrowRight className="h-3.5 w-3.5" />
-              </Button>
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-base font-bold text-gray-900 dark:text-white">Skill Comparison</h2>
+            <Link
+              to={ROUTES.JOBS}
+              className="text-xs font-medium text-emerald-500 hover:text-emerald-600 transition-colors"
+            >
+              View All
             </Link>
           </div>
 
-          {recs.isLoading ? (
-            <div className="space-y-3">
-              {[1, 2, 3].map((i) => (
-                <Skeleton key={i} className="h-[72px] w-full rounded-2xl" />
-              ))}
-            </div>
-          ) : recs.data?.data && recs.data.data.length > 0 ? (
-            <div className="space-y-3">
-              {recs.data.data.map((rec, idx) => (
-                <motion.div
-                  key={rec.job_id}
-                  custom={idx}
-                  initial="hidden"
-                  animate="visible"
-                  variants={fadeUp}
-                >
-                  <Card className="group transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
-                    <CardContent className="flex items-center justify-between p-4">
-                      <div className="min-w-0 flex-1">
-                        <Link
-                          to={ROUTES.JOB_DETAIL(rec.job_id)}
-                          className="text-sm font-semibold text-[hsl(var(--foreground))] hover:text-brand-500 transition-colors line-clamp-1"
-                        >
-                          {rec.title}
-                        </Link>
-                        <p className="mt-0.5 text-xs text-[hsl(var(--muted-foreground))]">
-                          {rec.company} · {rec.location}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-2.5">
-                        <span className="inline-flex items-center rounded-full bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 text-xs font-bold tabular-nums text-emerald-600 dark:text-emerald-400">
-                          {Math.round(rec.similarity_score * 100)}%
-                        </span>
-                        <ArrowRight className="h-4 w-4 text-[hsl(var(--muted-foreground))] opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          ) : (
-            <EmptyState
-              title="No recommendations yet"
-              description="Complete your profile to get AI-powered job matches"
-              action={
-                <Link to={ROUTES.PROFILE}>
-                  <Button variant="gradient" size="sm">Complete Profile</Button>
-                </Link>
-              }
-            />
-          )}
-        </motion.section>
-
-        {/* Market Overview */}
-        <motion.section
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.55, duration: 0.45 }}
-        >
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-bold text-[hsl(var(--foreground))]">Market Overview</h2>
-            <Link to={ROUTES.JOBS}>
-              <Button variant="ghost" size="sm" className="gap-1.5 text-xs">
-                Explore <ArrowRight className="h-3.5 w-3.5" />
-              </Button>
-            </Link>
+          <div className={`${cardBase} p-5 space-y-5`}>
+            {[
+              { skill: "Python", pct: 85, color: "bg-emerald-400" },
+              { skill: "SQL", pct: 78, color: "bg-emerald-400" },
+              { skill: "Cloud (AWS/GCP)", pct: 65, color: "bg-emerald-400" },
+              { skill: "Spark / Big Data", pct: 52, color: "bg-emerald-400" },
+              { skill: "Machine Learning", pct: 44, color: "bg-emerald-400" },
+            ].map((item) => (
+              <div key={item.skill} className="space-y-1.5">
+                <div className="flex items-center gap-3">
+                  <BarChart3 className="h-3.5 w-3.5 text-gray-400" />
+                  <span className="flex-1 text-sm text-gray-700 dark:text-gray-300">{item.skill}</span>
+                  <span className="text-sm font-semibold tabular-nums text-gray-900 dark:text-white">{item.pct}%</span>
+                </div>
+                <div className="ml-[26px] h-2 w-full rounded-full bg-gray-100 dark:bg-white/[0.06]">
+                  <motion.div
+                    className={`h-full rounded-full ${item.color}`}
+                    initial={{ width: 0 }}
+                    animate={{ width: `${item.pct}%` }}
+                    transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
-
-          <Card className="overflow-hidden">
-            <CardContent className="p-5">
-              <div className="flex items-start gap-4 mb-5">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
-                  <BarChart3 className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-[hsl(var(--foreground))]">Data Job Market</h3>
-                  <p className="mt-0.5 text-xs text-[hsl(var(--muted-foreground))]">
-                    {totalJobs
-                      ? `${totalJobs.toLocaleString()} jobs tracked across all sources`
-                      : "Loading market data..."}
-                  </p>
-                </div>
-              </div>
-
-              {/* Trending skills with visual bars */}
-              <div className="space-y-3">
-                <p className="text-xs font-semibold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
-                  Trending Skills
-                </p>
-                {[
-                  { skill: "Python", pct: 85, color: "bg-brand-500" },
-                  { skill: "SQL", pct: 78, color: "bg-blue-500" },
-                  { skill: "Spark", pct: 52, color: "bg-violet-500" },
-                  { skill: "Cloud (AWS/GCP)", pct: 65, color: "bg-emerald-500" },
-                ].map((item) => (
-                  <div key={item.skill} className="space-y-1">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-medium text-[hsl(var(--foreground))]">{item.skill}</span>
-                      <span className="text-xs tabular-nums text-[hsl(var(--muted-foreground))]">{item.pct}%</span>
-                    </div>
-                    <div className="h-1.5 w-full rounded-full bg-[hsl(var(--surface-2))]">
-                      <motion.div
-                        className={`h-full rounded-full ${item.color}`}
-                        initial={{ width: 0 }}
-                        animate={{ width: `${item.pct}%` }}
-                        transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Platform stats row */}
-              <div className="mt-5 grid grid-cols-3 gap-3 border-t border-[hsl(var(--border))] pt-4">
-                {[
-                  { label: "Sources", value: "6+", icon: Zap },
-                  { label: "Updated", value: "6h", icon: TrendingUp },
-                  { label: "Match Rate", value: "94%", icon: Sparkles },
-                ].map((stat) => (
-                  <div key={stat.label} className="text-center">
-                    <stat.icon className="mx-auto mb-1 h-3.5 w-3.5 text-[hsl(var(--muted-foreground))]" />
-                    <p className="text-sm font-bold tabular-nums text-[hsl(var(--foreground))]">{stat.value}</p>
-                    <p className="text-[10px] text-[hsl(var(--muted-foreground))]">{stat.label}</p>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
         </motion.section>
       </div>
+
+      {/* ── Quick Actions Row ────────────────────────────── */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.45, duration: 0.35 }}
+        className="grid gap-4 sm:grid-cols-3"
+      >
+        {([
+          { icon: Upload, label: "Upload CV", desc: "Let AI parse your skills", to: ROUTES.PROFILE, accent: "text-violet-500 bg-violet-50 dark:bg-violet-500/10" },
+          { icon: Search, label: "Search Jobs", desc: "Browse all opportunities", to: ROUTES.JOBS, accent: "text-blue-500 bg-blue-50 dark:bg-blue-500/10" },
+          { icon: Target, label: "Skill Gap", desc: "Find skills to learn next", to: ROUTES.SKILL_GAP, accent: "text-emerald-500 bg-emerald-50 dark:bg-emerald-500/10" },
+        ] as const).map((action) => (
+          <Link key={action.label} to={action.to}>
+            <div className={`${cardBase} group flex items-center gap-4 p-4 transition-all duration-150 hover:shadow-md cursor-pointer`}>
+              <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${action.accent}`}>
+                <action.icon className="h-5 w-5" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-gray-900 dark:text-white">{action.label}</p>
+                <p className="text-xs text-gray-400 dark:text-gray-500">{action.desc}</p>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </motion.div>
 
       {/* ── Recent Jobs ──────────────────────────────────── */}
       <motion.section
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6, duration: 0.45 }}
+        transition={{ delay: 0.5, duration: 0.35 }}
       >
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-[hsl(var(--foreground))]">Recent Jobs</h2>
-          <Link to={ROUTES.JOBS}>
-            <Button variant="ghost" size="sm" className="gap-1.5 text-xs">
-              Browse all <ArrowRight className="h-3.5 w-3.5" />
-            </Button>
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-base font-bold text-gray-900 dark:text-white">Recent Jobs</h2>
+          <Link
+            to={ROUTES.JOBS}
+            className="text-xs font-medium text-emerald-500 hover:text-emerald-600 transition-colors"
+          >
+            Browse All
           </Link>
         </div>
 
         {recentJobs.isLoading ? (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {[1, 2, 3].map((i) => (
-              <Skeleton key={i} className="h-28 w-full rounded-2xl" />
+              <Skeleton key={i} className="h-24 w-full rounded-2xl" />
             ))}
           </div>
         ) : recentJobs.data?.items && recentJobs.data.items.length > 0 ? (
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {recentJobs.data.items.map((job, idx) => (
               <motion.div
                 key={job.id}
                 custom={idx}
                 initial="hidden"
                 animate="visible"
-                variants={fadeUp}
+                variants={fadeIn}
               >
                 <JobCard job={job} />
               </motion.div>
             ))}
           </div>
         ) : (
-          <EmptyState
-            title="No jobs yet"
-            description="Jobs will appear here once the data pipeline runs"
-          />
+          <div className={`${cardBase} p-8`}>
+            <EmptyState
+              title="No jobs yet"
+              description="Jobs will appear here once the data pipeline runs"
+            />
+          </div>
         )}
       </motion.section>
     </div>
