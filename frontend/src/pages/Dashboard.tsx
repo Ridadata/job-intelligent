@@ -68,7 +68,7 @@ export default function Dashboard() {
           </p>
         </div>
         <Link to={ROUTES.JOBS}>
-          <Button className="gap-2 rounded-xl bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-white shadow-none hover:bg-emerald-600 transition-colors">
+          <Button className="gap-2 rounded-xl bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white shadow-none hover:bg-brand-600 transition-colors">
             <Plus className="h-4 w-4" />
             Explore Jobs
           </Button>
@@ -113,7 +113,7 @@ export default function Dashboard() {
                   {kpi.value}
                 </span>
                 {kpi.change && (
-                  <span className={`mb-0.5 flex items-center gap-0.5 text-xs font-semibold ${kpi.up ? "text-emerald-500" : "text-red-400"}`}>
+                  <span className={`mb-0.5 flex items-center gap-0.5 text-xs font-semibold ${kpi.up ? "text-brand-500" : "text-red-400"}`}>
                     {kpi.up ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
                     {kpi.change}
                   </span>
@@ -144,7 +144,7 @@ export default function Dashboard() {
             <div className="mt-1 flex items-center justify-center gap-1.5">
               <span className="text-lg font-bold tabular-nums text-gray-900 dark:text-white">{loc.count}</span>
               {loc.up ? (
-                <ChevronUp className="h-3.5 w-3.5 text-emerald-500" />
+                <ChevronUp className="h-3.5 w-3.5 text-brand-500" />
               ) : (
                 <ChevronDown className="h-3.5 w-3.5 text-red-400" />
               )}
@@ -165,7 +165,7 @@ export default function Dashboard() {
             <h2 className="text-base font-bold text-gray-900 dark:text-white">Top Recommendations</h2>
             <Link
               to={ROUTES.RECOMMENDATIONS}
-              className="text-xs font-medium text-emerald-500 hover:text-emerald-600 transition-colors"
+              className="text-xs font-medium text-brand-500 hover:text-brand-600 transition-colors"
             >
               View All
             </Link>
@@ -202,7 +202,7 @@ export default function Dashboard() {
                     </p>
                   </div>
                   {/* Badge */}
-                  <span className="shrink-0 rounded-full bg-emerald-50 dark:bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                  <span className="shrink-0 rounded-full bg-brand-50 dark:bg-brand-500/10 px-3 py-1 text-xs font-semibold text-brand-600 dark:text-brand-400">
                     {Math.round(rec.similarity_score * 100)}% match
                   </span>
                 </Link>
@@ -214,7 +214,7 @@ export default function Dashboard() {
                   description="Complete your profile to get matched"
                   action={
                     <Link to={ROUTES.PROFILE}>
-                      <Button size="sm" className="rounded-lg bg-emerald-500 text-white hover:bg-emerald-600">
+                      <Button size="sm" className="rounded-lg bg-brand-500 text-white hover:bg-brand-600">
                         Complete Profile
                       </Button>
                     </Link>
@@ -235,7 +235,7 @@ export default function Dashboard() {
             <h2 className="text-base font-bold text-gray-900 dark:text-white">Skill Comparison</h2>
             <Link
               to={ROUTES.JOBS}
-              className="text-xs font-medium text-emerald-500 hover:text-emerald-600 transition-colors"
+              className="text-xs font-medium text-brand-500 hover:text-brand-600 transition-colors"
             >
               View All
             </Link>
@@ -243,11 +243,11 @@ export default function Dashboard() {
 
           <div className={`${cardBase} p-5 space-y-5`}>
             {[
-              { skill: "Python", pct: 85, color: "bg-emerald-400" },
-              { skill: "SQL", pct: 78, color: "bg-emerald-400" },
-              { skill: "Cloud (AWS/GCP)", pct: 65, color: "bg-emerald-400" },
-              { skill: "Spark / Big Data", pct: 52, color: "bg-emerald-400" },
-              { skill: "Machine Learning", pct: 44, color: "bg-emerald-400" },
+              { skill: "Python", pct: 85, color: "bg-brand-400" },
+              { skill: "SQL", pct: 78, color: "bg-brand-400" },
+              { skill: "Cloud (AWS/GCP)", pct: 65, color: "bg-brand-400" },
+              { skill: "Spark / Big Data", pct: 52, color: "bg-brand-400" },
+              { skill: "Machine Learning", pct: 44, color: "bg-brand-400" },
             ].map((item) => (
               <div key={item.skill} className="space-y-1.5">
                 <div className="flex items-center gap-3">
@@ -277,9 +277,9 @@ export default function Dashboard() {
         className="grid gap-4 sm:grid-cols-3"
       >
         {([
-          { icon: Upload, label: "Upload CV", desc: "Let AI parse your skills", to: ROUTES.PROFILE, accent: "text-violet-500 bg-violet-50 dark:bg-violet-500/10" },
-          { icon: Search, label: "Search Jobs", desc: "Browse all opportunities", to: ROUTES.JOBS, accent: "text-blue-500 bg-blue-50 dark:bg-blue-500/10" },
-          { icon: Target, label: "Skill Gap", desc: "Find skills to learn next", to: ROUTES.SKILL_GAP, accent: "text-emerald-500 bg-emerald-50 dark:bg-emerald-500/10" },
+          { icon: Upload, label: "Upload CV", desc: "Let AI parse your skills", to: ROUTES.PROFILE, accent: "text-brand-600 bg-brand-50 dark:bg-brand-500/10" },
+          { icon: Search, label: "Search Jobs", desc: "Browse all opportunities", to: ROUTES.JOBS, accent: "text-brand-500 bg-brand-100 dark:bg-brand-500/10" },
+          { icon: Target, label: "Skill Gap", desc: "Find skills to learn next", to: ROUTES.SKILL_GAP, accent: "text-brand-700 bg-brand-50 dark:bg-brand-500/10" },
         ] as const).map((action) => (
           <Link key={action.label} to={action.to}>
             <div className={`${cardBase} group flex items-center gap-4 p-4 transition-all duration-150 hover:shadow-md cursor-pointer`}>
@@ -305,7 +305,7 @@ export default function Dashboard() {
           <h2 className="text-base font-bold text-gray-900 dark:text-white">Recent Jobs</h2>
           <Link
             to={ROUTES.JOBS}
-            className="text-xs font-medium text-emerald-500 hover:text-emerald-600 transition-colors"
+            className="text-xs font-medium text-brand-500 hover:text-brand-600 transition-colors"
           >
             Browse All
           </Link>
