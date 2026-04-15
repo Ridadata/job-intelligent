@@ -30,7 +30,7 @@ export function AuthLayout() {
             <img
               src="/images/logo.png"
               alt="radian"
-              className="h-14 object-contain dark:brightness-0 dark:invert"
+              className="h-14 mx-auto object-contain dark:brightness-0 dark:invert"
             />
           </div>
           <h1 className="text-4xl font-semibold tracking-tight leading-tight mb-4">
