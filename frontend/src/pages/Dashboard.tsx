@@ -9,6 +9,7 @@ import { EmptyState } from "@/components/EmptyState";
 import { useAuthStore } from "@/store/auth.store";
 import { useJobs } from "@/hooks/useJobs";
 import { useRecommendations } from "@/hooks/useRecommendations";
+import { useSavedJobs } from "@/hooks/useSavedJobs";
 import { useCountUp } from "@/hooks/useCountUp";
 import { ROUTES } from "@/config/routes";
 
@@ -41,6 +42,7 @@ export default function Dashboard() {
   const recs = useRecommendations(
     user ? { candidate_id: user.id, top_n: 3 } : null
   );
+  const savedJobs = useSavedJobs(1, 1); // fetch page 1 with 1 item just to get the total count
 
   const topMatch = recs.data?.data?.[0];
   const matchedSkillCount = topMatch?.explanation?.matched_skills?.length ?? 0;
@@ -134,7 +136,7 @@ export default function Dashboard() {
           { icon: <Briefcase className="h-5 w-5" />, label: "Total Jobs", value: recentJobs.data?.total ?? "—", color: "rgba(6,182,212,0.1)", textColor: "var(--accent-blue)" },
           { icon: <Star className="h-5 w-5" />, label: "Recommendations", value: recs.data?.total ?? "—", color: "rgba(14,165,233,0.1)", textColor: "var(--accent-violet)" },
           { icon: <TrendingUp className="h-5 w-5" />, label: "Top Match", value: topMatch ? `${Math.round(topMatch.similarity_score * 100)}%` : "—", color: "rgba(16,185,129,0.1)", textColor: "var(--accent-emerald)" },
-          { icon: <Bookmark className="h-5 w-5" />, label: "Saved Jobs", value: "—", color: "rgba(245,158,11,0.1)", textColor: "var(--accent-amber)" },
+          { icon: <Bookmark className="h-5 w-5" />, label: "Saved Jobs", value: savedJobs.data?.total ?? "—", color: "rgba(245,158,11,0.1)", textColor: "var(--accent-amber)" },
         ].map((kpi, i) => (
           <motion.div
             key={kpi.label}

@@ -1,6 +1,23 @@
-"""Pydantic schemas for recommendations and matching."""
+"""Pydantic schemas for recommendations and matching.
+
+Canonical recommendation schemas live in api.models.schemas.
+This module re-exports them and adds supplementary schemas
+(MatchExplanation, SkillGapResponse) used by the skill-gap endpoint.
+"""
+
+from typing import Optional
 
 from pydantic import BaseModel
+
+# Re-export canonical recommendation schemas so imports from either
+# location work without duplication.
+from api.models.schemas import (  # noqa: F401
+    JobOfferMatch,
+    RecommendationFilters,
+    RecommendationMeta,
+    RecommendationRequest,
+    RecommendationResponse,
+)
 
 
 class MatchExplanation(BaseModel):
@@ -17,26 +34,6 @@ class MatchExplanation(BaseModel):
     score_breakdown: dict[str, float] = {}
 
 
-class RecommendationResponse(BaseModel):
-    """A single job recommendation for a candidate.
-
-    Attributes:
-        job_id: The recommended job UUID.
-        title: Job title.
-        company: Company name.
-        location: Job location.
-        similarity_score: Overall match score (0-1).
-        explanation: Detailed match explanation.
-    """
-
-    job_id: str
-    title: str
-    company: str | None = None
-    location: str | None = None
-    similarity_score: float
-    explanation: MatchExplanation
-
-
 class SkillGapResponse(BaseModel):
     """Skill gap analysis for a candidate.
 
@@ -44,8 +41,12 @@ class SkillGapResponse(BaseModel):
         candidate_skills: Current candidate skills.
         top_missing_skills: Most in-demand skills the candidate lacks.
         skill_frequency: How often each missing skill appears in job offers.
+        improvement_potential: Percentage of jobs requiring each missing skill.
+        latency_ms: Processing time in milliseconds.
     """
 
     candidate_skills: list[str] = []
     top_missing_skills: list[str] = []
     skill_frequency: dict[str, int] = {}
+    improvement_potential: dict[str, float] = {}
+    latency_ms: Optional[int] = None
