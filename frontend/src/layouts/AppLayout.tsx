@@ -66,7 +66,7 @@ export function AppLayout() {
             <img
               src="/images/logo.png"
               alt="radian"
-              className="h-8 object-contain dark:brightness-0 dark:invert"
+              className="h-10 object-contain dark:brightness-0 dark:invert"
             />
           </Link>
 
