@@ -507,6 +507,245 @@ def _send_summary(**context: dict) -> None:
     logger.info("Pipeline run summary:\n%s", body)
 
 
+def _dedup_cross_source(**context: dict) -> dict[str, int]:
+    """Run cross-source deduplication on Silver layer.
+
+    Uses hash-based dedup (primary) then fuzzy matching (fallback)
+    to find and mark duplicate offers from different sources.
+
+    Returns:
+        Dict with dedup statistics.
+    """
+    _ensure_env()
+
+    from etl.dedup import find_hash_duplicates, find_duplicates
+
+    results: dict[str, int] = {"hash_groups": 0, "fuzzy_pairs": 0, "marked": 0}
+
+    try:
+        hash_dupes = find_hash_duplicates(batch_size=2000)
+        results["hash_groups"] = len(hash_dupes)
+
+        # Mark hash duplicates on the Gold layer dedup_key
+        if hash_dupes:
+            from etl.db import get_supabase_client
+            client = get_supabase_client()
+            marked = 0
+            for group in hash_dupes:
+                for dup_id in group.get("duplicate_ids", []):
+                    try:
+                        client.table("job_offers").update(
+                            {"is_duplicate": True}
+                        ).eq("id", dup_id).execute()
+                        marked += 1
+                    except Exception:
+                        pass  # Column may not exist yet — best-effort
+            results["marked"] = marked
+
+        # Fuzzy fallback for near-matches
+        fuzzy_dupes = find_duplicates(batch_size=500)
+        results["fuzzy_pairs"] = len(fuzzy_dupes)
+
+        logger.info(
+            "Dedup complete: %d hash groups, %d fuzzy pairs, %d marked",
+            results["hash_groups"], results["fuzzy_pairs"], results["marked"],
+        )
+    except Exception:
+        logger.error("Cross-source dedup failed — continuing", exc_info=True)
+
+    return results
+
+
+def _process_pending_cvs(**context: dict) -> dict[str, int]:
+    """Process pending CV documents — extract text, run NLP, enrich profiles.
+
+    Polls cv_documents for pending parsing, extracts text, runs
+    skill/experience/education extraction, updates the candidate profile.
+
+    Returns:
+        Dict with processing stats.
+    """
+    _ensure_env()
+
+    from etl.db import get_supabase_client
+
+    client = get_supabase_client()
+    results: dict[str, int] = {"pending": 0, "success": 0, "failed": 0}
+
+    # Find pending CVs
+    try:
+        pending = (
+            client.table("cv_documents")
+            .select("id, candidate_id, file_path, file_type")
+            .eq("parsing_status", "pending")
+            .limit(50)
+            .execute()
+        )
+        docs = pending.data or []
+        results["pending"] = len(docs)
+    except Exception:
+        logger.error("Failed to query pending CVs", exc_info=True)
+        return results
+
+    if not docs:
+        logger.info("No pending CVs to process")
+        return results
+
+    for doc in docs:
+        doc_id = doc["id"]
+        candidate_id = doc["candidate_id"]
+        file_path = doc.get("file_path", "")
+
+        try:
+            # Mark as processing
+            client.table("cv_documents").update(
+                {"parsing_status": "processing"}
+            ).eq("id", doc_id).execute()
+
+            # Extract text
+            from ai_services.cv_parser.extractor import extract_text
+            raw_text = extract_text(file_path)
+
+            if not raw_text:
+                raise ValueError("No text extracted from CV")
+
+            # NLP enrichment
+            from ai_services.cv_parser.enrichment import (
+                extract_skills,
+                extract_experience,
+                extract_education,
+            )
+
+            parsed_skills = extract_skills(raw_text)
+            parsed_experience = extract_experience(raw_text)
+            parsed_education = extract_education(raw_text)
+
+            # Update cv_documents with results
+            from datetime import datetime
+            client.table("cv_documents").update({
+                "raw_text": raw_text[:50000],  # Limit stored text
+                "parsed_skills": parsed_skills,
+                "parsed_experience": parsed_experience,
+                "parsed_education": parsed_education,
+                "parsing_status": "success",
+                "parsed_at": datetime.utcnow().isoformat(),
+            }).eq("id", doc_id).execute()
+
+            # Enrich candidate profile (merge, never overwrite)
+            _enrich_candidate_from_cv(
+                client, candidate_id, parsed_skills,
+                parsed_experience, parsed_education,
+            )
+
+            results["success"] += 1
+            logger.info("CV %s parsed successfully for candidate %s", doc_id, candidate_id)
+
+        except Exception as exc:
+            logger.error("CV parsing failed for %s: %s", doc_id, exc, exc_info=True)
+            try:
+                client.table("cv_documents").update({
+                    "parsing_status": "failed",
+                    "parsing_error": str(exc)[:500],
+                }).eq("id", doc_id).execute()
+            except Exception:
+                pass
+            results["failed"] += 1
+
+    logger.info(
+        "CV processing complete: %d pending, %d success, %d failed",
+        results["pending"], results["success"], results["failed"],
+    )
+    return results
+
+
+def _enrich_candidate_from_cv(
+    client, candidate_id: str,
+    parsed_skills: list[str],
+    parsed_experience: str | None,
+    parsed_education: str | None,
+) -> None:
+    """Merge CV-extracted data into the candidate profile.
+
+    Rules: union for skills, keep higher experience, append education.
+    Never overwrite manually entered data.
+
+    Args:
+        client: Supabase client.
+        candidate_id: UUID of the candidate profile.
+        parsed_skills: Skills extracted from CV.
+        parsed_experience: Experience string (e.g. "5 years of experience").
+        parsed_education: Education level (e.g. "Bac+5").
+    """
+    import re
+
+    try:
+        result = (
+            client.table("candidate_profiles")
+            .select("skills, experience_years, education_level")
+            .eq("id", candidate_id)
+            .limit(1)
+            .execute()
+        )
+        if not result.data:
+            logger.warning("Candidate %s not found for CV enrichment", candidate_id)
+            return
+
+        profile = result.data[0]
+        updates: dict = {}
+
+        # Union skills (never remove manual ones)
+        existing_skills = set(profile.get("skills") or [])
+        merged_skills = sorted(existing_skills | set(parsed_skills))
+        if merged_skills != sorted(existing_skills):
+            updates["skills"] = merged_skills
+
+        # Keep higher experience
+        if parsed_experience:
+            match = re.search(r"(\d+)", parsed_experience)
+            if match:
+                cv_years = int(match.group(1))
+                current_years = profile.get("experience_years") or 0
+                if cv_years > current_years:
+                    updates["experience_years"] = cv_years
+
+        # Set education only if not already set
+        if parsed_education and not profile.get("education_level"):
+            updates["education_level"] = parsed_education
+
+        if updates:
+            client.table("candidate_profiles").update(
+                updates
+            ).eq("id", candidate_id).execute()
+            logger.info("Enriched candidate %s from CV: %s", candidate_id, list(updates.keys()))
+
+            # Regenerate candidate embedding after enrichment
+            try:
+                from ai_services.embedding.generator import embed_candidate
+                updated = (
+                    client.table("candidate_profiles")
+                    .select("title, skills, experience_years")
+                    .eq("id", candidate_id)
+                    .limit(1)
+                    .execute()
+                )
+                if updated.data:
+                    p = updated.data[0]
+                    embedding = embed_candidate(
+                        title=p.get("title") or "",
+                        skills=p.get("skills") or [],
+                        experience_years=p.get("experience_years"),
+                    )
+                    client.table("candidate_profiles").update(
+                        {"embedding": embedding}
+                    ).eq("id", candidate_id).execute()
+                    logger.info("Regenerated embedding for candidate %s", candidate_id)
+            except Exception:
+                logger.warning("Could not regenerate embedding for %s", candidate_id, exc_info=True)
+
+    except Exception:
+        logger.error("Failed to enrich candidate %s from CV", candidate_id, exc_info=True)
+
+
 # ── DAG definition ───────────────────────────────────────────────────────────
 with DAG(
     dag_id="job_etl",
@@ -553,6 +792,18 @@ with DAG(
         trigger_rule=TriggerRule.ALL_DONE,
     )
 
+    dedup_cross_source = PythonOperator(
+        task_id="dedup_cross_source",
+        python_callable=_dedup_cross_source,
+        trigger_rule=TriggerRule.ALL_DONE,
+    )
+
+    process_cvs = PythonOperator(
+        task_id="process_pending_cvs",
+        python_callable=_process_pending_cvs,
+        trigger_rule=TriggerRule.ALL_DONE,
+    )
+
     send_summary = PythonOperator(
         task_id="send_summary",
         python_callable=_send_summary,
@@ -564,5 +815,8 @@ with DAG(
     )
 
     # Task dependencies
-    # Scraping and API fetch run in parallel, then ingest → transform → enrich → refresh → summary
-    [scrape_sources, fetch_api] >> ingest_raw >> transform_silver >> enrich_gold >> refresh_views >> build_summary >> send_summary
+    # Scraping and API fetch run in parallel, then ingest → transform → dedup → enrich → refresh → summary
+    # CV parsing runs independently after transform (doesn't block job pipeline)
+    [scrape_sources, fetch_api] >> ingest_raw >> transform_silver
+    transform_silver >> dedup_cross_source >> enrich_gold >> refresh_views >> build_summary >> send_summary
+    transform_silver >> process_cvs  # CV parsing in parallel with dedup/enrich

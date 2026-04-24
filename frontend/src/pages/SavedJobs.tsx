@@ -24,16 +24,11 @@ export default function SavedJobs() {
       transition={{ duration: 0.4 }}
       className="space-y-6"
     >
-      <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400">
-          <Bookmark className="h-5 w-5" />
-        </div>
-        <div>
-          <h1 className="text-2xl font-bold">Saved Jobs</h1>
-          <p className="text-sm text-[hsl(var(--muted-foreground))]">
-            {data?.total ?? 0} jobs saved for later
-          </p>
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Saved Jobs</h1>
+        <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
+          {data?.total ?? 0} jobs saved for later
+        </p>
       </div>
 
       {isLoading ? (

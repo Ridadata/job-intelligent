@@ -10,6 +10,16 @@ Job Intelligent is an AI-powered SaaS platform that centralizes data-related job
 
 ---
 
+## Git & Commit Workflow
+
+- **Commit after every completed change or task.** Do not batch unrelated work into a single commit.
+- Use [Conventional Commits](https://www.conventionalcommits.org/) format: `feat:`, `fix:`, `refactor:`, `docs:`, `test:`, `chore:`.
+- Commit message body must list every file changed and what was done.
+- Always commit on the current working branch — never commit directly to `main`.
+- Stage all related files with `git add -A` before committing — do not leave unstaged work behind.
+
+---
+
 ## Data Ingestion Strategy
 
 Hybrid job ingestion with two tiers:

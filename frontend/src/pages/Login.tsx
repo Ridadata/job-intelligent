@@ -74,7 +74,7 @@ export default function Login() {
         </div>
         <div className="relative flex justify-center text-xs">
           <span className="bg-[hsl(var(--background))] px-3 text-[hsl(var(--muted-foreground))]">
-            New to Job Intelligent?
+            New to RADIAN?
           </span>
         </div>
       </div>

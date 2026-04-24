@@ -17,7 +17,7 @@ from api.core.exceptions import AppError
 from api.middleware.error_handler import app_error_handler
 from api.middleware.rate_limit import RateLimitMiddleware
 from api.middleware.request_id import RequestIdMiddleware
-from api.routers import auth, candidates, health, jobs, recommendations, search
+from api.routers import admin, auth, candidates, health, jobs, recommendations, search
 from api.services.redis_service import close_pool
 
 logging.basicConfig(
@@ -79,6 +79,7 @@ app.include_router(jobs.router)
 app.include_router(candidates.router)
 app.include_router(recommendations.router)
 app.include_router(search.router)
+app.include_router(admin.router)
 
 
 # ── Global fallback exception handler ────────────────────────────────────────

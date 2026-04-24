@@ -25,7 +25,7 @@ export function JobCard({ job, onSave, onUnsave, isSaved = false, matchedSkills,
     <motion.div
       whileHover={{ y: -2 }}
       transition={{ duration: 0.2 }}
-      className="group relative rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5 transition-all duration-300 hover:border-brand-500/30 hover:shadow-card-hover"
+      className="group relative rounded-2xl bg-white dark:bg-[hsl(var(--surface-1))] border border-gray-100 dark:border-white/[0.06] shadow-sm p-5 transition-all duration-300 hover:shadow-md"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">

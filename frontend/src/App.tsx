@@ -11,6 +11,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AdminRoute } from "@/components/AdminRoute";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 
+import Landing from "@/pages/Landing";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Dashboard from "@/pages/Dashboard";
@@ -30,6 +31,9 @@ function AppRoutes() {
 
   return (
     <Routes>
+      {/* Landing page */}
+      <Route path={ROUTES.LANDING} element={<Landing />} />
+
       {/* Auth routes */}
       <Route element={<AuthLayout />}>
         <Route path={ROUTES.LOGIN} element={<Login />} />
@@ -52,8 +56,7 @@ function AppRoutes() {
         <Route path={ROUTES.ADMIN_USERS} element={<AdminRoute><UserManagement /></AdminRoute>} />
       </Route>
 
-      {/* Redirect root */}
-      <Route path="/" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
+      {/* Redirect unknown */}
       <Route path="*" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
     </Routes>
   );

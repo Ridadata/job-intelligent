@@ -39,11 +39,10 @@ function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="flex h-8 w-8 items-center justify-center rounded-lg"
-      style={{ border: "1px solid var(--border-dim)", background: "var(--btn-subtle-bg)" }}
+      className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.04] text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/[0.06] transition-colors"
       aria-label="Toggle theme"
     >
-      <Icon className="h-4 w-4" style={{ color: "var(--text-muted)" }} />
+      <Icon className="h-4 w-4" />
     </button>
   );
 }
@@ -56,42 +55,19 @@ export function AppLayout() {
   const allItems = user?.role === "admin" ? [...navItems, ...adminItems] : navItems;
 
   return (
-    <div className="flex min-h-screen flex-col" style={{ background: "var(--bg-void)" }}>
-      {/* Ambient glow */}
-      <div className="ambient-glow" />
-
+    <div className="flex min-h-screen flex-col bg-gray-50/50 dark:bg-[hsl(var(--bg-void))]">
       {/* Top Navbar */}
       <header
-        className="sticky top-0 z-50"
-        style={{
-          height: 60,
-          background: "var(--header-bg)",
-          backdropFilter: "blur(20px) saturate(180%)",
-          WebkitBackdropFilter: "blur(20px) saturate(180%)",
-          borderBottom: "1px solid var(--border-dim)",
-        }}
+        className="sticky top-0 z-50 h-[60px] bg-white/80 dark:bg-[hsl(var(--surface-0))]/80 backdrop-blur-xl border-b border-gray-200/60 dark:border-white/[0.06]"
       >
         <div className="mx-auto flex h-full max-w-container items-center px-4 lg:px-8">
           {/* Logo — LEFT */}
-          <Link to={ROUTES.DASHBOARD} className="flex shrink-0 items-center gap-2.5 group mr-8">
-            <div
-              className="flex h-8 w-8 items-center justify-center rounded-lg"
-              style={{ background: "linear-gradient(135deg, #06B6D4, #0EA5E9)" }}
-            >
-              <img
-                src="/images/web_site_logo.png"
-                alt="J"
-                className="h-4 w-4 object-contain brightness-0 invert"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = "none";
-                  (e.target as HTMLImageElement).parentElement!.innerHTML =
-                    '<span class="text-xs font-extrabold text-white">J</span>';
-                }}
-              />
-            </div>
-            <span className="hidden text-base font-display font-extrabold sm:block" style={{ color: "var(--text-primary)" }}>
-              Job Intelligent
-            </span>
+          <Link to={ROUTES.DASHBOARD} className="flex shrink-0 items-center mr-8">
+            <img
+              src="/images/logo.png"
+              alt="radian"
+              className="h-10 object-contain dark:brightness-0 dark:invert"
+            />
           </Link>
 
           {/* Desktop Nav Links — CENTER */}
@@ -102,23 +78,11 @@ export function AppLayout() {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className="flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-sm font-medium transition-all duration-200"
-                  style={{
-                    color: active ? "var(--text-primary)" : "var(--text-muted)",
-                    background: active ? "transparent" : "transparent",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!active) {
-                      e.currentTarget.style.color = "var(--text-primary)";
-                      e.currentTarget.style.background = "var(--hover-bg)";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!active) {
-                      e.currentTarget.style.color = "var(--text-muted)";
-                      e.currentTarget.style.background = "transparent";
-                    }
-                  }}
+                  className={`flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-sm font-medium transition-all duration-200 ${
+                    active
+                      ? "bg-gray-100 dark:bg-white/[0.06] text-gray-900 dark:text-white"
+                      : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.06]"
+                  }`}
                 >
                   <item.icon className="h-4 w-4" />
                   <span>{item.label}</span>
@@ -143,8 +107,7 @@ export function AppLayout() {
             {/* Logout */}
             <button
               onClick={logout}
-              className="hidden h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-red-500/10 sm:flex"
-              style={{ border: "1px solid var(--border-dim)", background: "var(--btn-subtle-bg)", color: "var(--text-muted)" }}
+              className="hidden h-8 w-8 items-center justify-center rounded-lg border border-gray-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.04] text-gray-500 dark:text-gray-400 transition-colors hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-500 sm:flex"
               aria-label="Logout"
             >
               <LogOut className="h-4 w-4" />
@@ -152,8 +115,7 @@ export function AppLayout() {
 
             {/* Mobile menu toggle */}
             <button
-              className="flex h-8 w-8 items-center justify-center rounded-lg md:hidden"
-              style={{ border: "1px solid var(--border-dim)", background: "var(--btn-subtle-bg)", color: "var(--text-muted)" }}
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.04] text-gray-500 dark:text-gray-400 md:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -169,8 +131,7 @@ export function AppLayout() {
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="overflow-hidden md:hidden"
-              style={{ borderTop: "1px solid var(--border-dim)", background: "var(--mobile-menu-bg)" }}
+              className="overflow-hidden md:hidden border-t border-gray-200 dark:border-white/[0.06] bg-white dark:bg-[hsl(var(--surface-0))]"
             >
               <nav className="flex flex-col gap-1 px-4 py-3">
                 {allItems.map((item) => {
@@ -180,11 +141,11 @@ export function AppLayout() {
                       key={item.path}
                       to={item.path}
                       onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all"
-                      style={{
-                        color: active ? "var(--text-primary)" : "var(--text-muted)",
-                        background: active ? "var(--hover-bg)" : "transparent",
-                      }}
+                      className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${
+                        active
+                          ? "bg-gray-100 dark:bg-white/[0.06] text-gray-900 dark:text-white"
+                          : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/[0.06]"
+                      }`}
                     >
                       <item.icon className="h-4 w-4" />
                       {item.label}
