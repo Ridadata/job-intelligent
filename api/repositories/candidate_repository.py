@@ -27,7 +27,11 @@ class CandidateRepository:
         """
         result = (
             self._client.table(self._table)
-            .select("*")
+            .select(
+                "id, user_id, name, title, skills, experience_years, education_level,"
+                " location, salary_expectation, preferred_contract_types,"
+                " profile_completeness, created_at, updated_at"
+            )
             .eq("user_id", user_id)
             .limit(1)
             .execute()
@@ -45,7 +49,11 @@ class CandidateRepository:
         """
         result = (
             self._client.table(self._table)
-            .select("*")
+            .select(
+                "id, user_id, name, title, skills, experience_years, education_level,"
+                " location, salary_expectation, preferred_contract_types,"
+                " profile_completeness, created_at, updated_at"
+            )
             .eq("id", candidate_id)
             .limit(1)
             .execute()

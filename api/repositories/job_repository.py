@@ -26,7 +26,10 @@ class JobRepository:
         """
         result = (
             self._client.table("job_offers")
-            .select("*")
+            .select(
+                "id, title, company, location, description, contract_type,"
+                " required_skills, published_at, salary_min, salary_max, url, source_id"
+            )
             .eq("id", job_id)
             .limit(1)
             .execute()
@@ -59,7 +62,11 @@ class JobRepository:
         Returns:
             Tuple of (items list, total count).
         """
-        query = self._client.table("job_offers").select("*", count="exact")
+        query = self._client.table("job_offers").select(
+            "id, title, company, location, description, contract_type,"
+            " required_skills, published_at, salary_min, salary_max, url, source_id",
+            count="exact",
+        )
 
         if q:
             query = query.or_(f"title.ilike.%{q}%,company.ilike.%{q}%")

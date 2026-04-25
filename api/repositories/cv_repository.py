@@ -81,7 +81,11 @@ class CVDocumentRepository:
         """
         result = (
             self._client.table(self._table)
-            .select("*")
+            .select(
+                "id, candidate_id, file_path, file_type, parsing_status,"
+                " parsed_skills, parsed_experience, parsed_education,"
+                " created_at, parsed_at"
+            )
             .eq("candidate_id", candidate_id)
             .order("created_at", desc=True)
             .execute()
