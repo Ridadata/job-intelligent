@@ -237,7 +237,12 @@ class CandidateService:
         except Exception:
             logger.error("CV parsing failed for doc %s", doc_id, exc_info=True)
             try:
-                self._cv_repo.update_parsing_result(doc_id=doc_id, status="failed")
+                import traceback
+                self._cv_repo.update_parsing_result(
+                    doc_id=doc_id,
+                    status="failed",
+                    error=traceback.format_exc(),
+                )
             except Exception:
                 pass
 
