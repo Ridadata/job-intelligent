@@ -2,7 +2,7 @@
 
 import logging
 
-from fastapi import APIRouter, Depends, File, Query, UploadFile, status
+from fastapi import APIRouter, BackgroundTasks, Depends, File, Query, UploadFile, status
 
 from api.dependencies import get_candidate_service, get_current_user, get_job_service
 from api.schemas.candidate import (
@@ -103,6 +103,7 @@ def update_profile(
     summary="Upload CV document",
 )
 async def upload_cv(
+    background_tasks: BackgroundTasks,
     file: UploadFile = File(...),
     current_user: dict = Depends(get_current_user),
     candidate_service: CandidateService = Depends(get_candidate_service),
@@ -110,6 +111,7 @@ async def upload_cv(
     """Upload a CV file (PDF or DOCX) for parsing.
 
     Args:
+        background_tasks: FastAPI background task runner.
         file: Uploaded CV file.
         current_user: Authenticated user from JWT.
         candidate_service: Injected candidate service.
@@ -123,6 +125,12 @@ async def upload_cv(
         filename=file.filename or "cv.pdf",
         content=content,
         content_type=file.content_type or "",
+    )
+    background_tasks.add_task(
+        candidate_service.parse_cv_background,
+        doc_id=doc["id"],
+        file_path=doc["file_path"],
+        candidate_id=doc["candidate_id"],
     )
     return CVUploadResponse(
         id=doc["id"],
