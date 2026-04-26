@@ -66,7 +66,7 @@ class SavedJobsRepository:
             .select(
                 "id, candidate_id, job_offer_id, saved_at,"
                 " job_offers(id, title, company, location, contract_type,"
-                " required_skills, salary_min, salary_max, published_at, url)",
+                " required_skills, salary_min, salary_max, published_at)",
                 count="exact",
             )
             .eq("candidate_id", candidate_id)
