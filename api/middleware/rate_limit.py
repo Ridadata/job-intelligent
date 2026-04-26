@@ -58,8 +58,8 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         Returns:
             Response or 429 if rate limited.
         """
-        # Skip rate limiting for health checks
-        if request.url.path in ("/health", "/readiness"):
+        # Skip rate limiting for health checks and CORS preflight requests
+        if request.url.path in ("/health", "/readiness") or request.method == "OPTIONS":
             return await call_next(request)
 
         client_ip = request.client.host if request.client else "unknown"
