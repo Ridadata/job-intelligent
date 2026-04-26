@@ -63,7 +63,12 @@ class SavedJobsRepository:
         offset = (page - 1) * per_page
         result = (
             self._client.table(self._table)
-            .select("*, job_offers(*)", count="exact")
+            .select(
+                "id, candidate_id, job_offer_id, saved_at,"
+                " job_offers(id, title, company, location, contract_type,"
+                " required_skills, salary_min, salary_max, published_at)",
+                count="exact",
+            )
             .eq("candidate_id", candidate_id)
             .order("saved_at", desc=True)
             .range(offset, offset + per_page - 1)

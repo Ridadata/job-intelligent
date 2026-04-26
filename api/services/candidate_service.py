@@ -166,11 +166,85 @@ class CandidateService:
         with open(file_path, "wb") as f:
             f.write(content)
 
-        return self._cv_repo.create(
-            candidate_id=profile["id"],
-            file_path=file_path,
-            file_type=ext,
-        )
+        doc = self._cv_repo.create({
+            "candidate_id": profile["id"],
+            "file_path": file_path,
+            "file_type": ext,
+            "parsing_status": "pending",
+        })
+        return doc
+
+    def parse_cv_background(self, doc_id: str, file_path: str, candidate_id: str) -> None:
+        """Parse a CV file in the background and enrich the candidate profile.
+
+        Extracts text, runs NLP pipeline, updates cv_documents, and merges
+        parsed data into candidate_profiles. Never raises — logs errors instead.
+
+        Args:
+            doc_id: CV document UUID.
+            file_path: Path to the saved CV file.
+            candidate_id: Candidate profile UUID to enrich.
+        """
+        try:
+            from ai_services.cv_parser.extractor import extract_text
+            from ai_services.cv_parser.enrichment import parse_cv
+
+            raw_text = extract_text(file_path)
+            parsed = parse_cv(raw_text)
+
+            self._cv_repo.update_parsing_result(
+                doc_id=doc_id,
+                status="success",
+                parsed_skills=parsed.get("skills") or [],
+                parsed_experience=parsed.get("experience"),
+                parsed_education=parsed.get("education"),
+                raw_text=raw_text,
+            )
+
+            # Enrich candidate profile — union skills, keep max experience
+            profile = self._candidate_repo.find_by_id(candidate_id)
+            if profile:
+                new_skills = parsed.get("skills") or []
+                existing_skills = profile.get("skills") or []
+                merged_skills = sorted(set(existing_skills) | set(new_skills))
+
+                update_data: dict[str, Any] = {}
+                if merged_skills:
+                    update_data["skills"] = merged_skills
+
+                exp_text = parsed.get("experience")
+                if exp_text:
+                    import re
+                    m = re.search(r"(\d+)", exp_text)
+                    if m:
+                        parsed_years = int(m.group(1))
+                        current_years = profile.get("experience_years") or 0
+                        if parsed_years > current_years:
+                            update_data["experience_years"] = parsed_years
+
+                if parsed.get("education") and not profile.get("education_level"):
+                    update_data["education_level"] = parsed["education"]
+
+                if update_data:
+                    merged = {**profile, **update_data}
+                    update_data["profile_completeness"] = _compute_completeness(merged)
+                    updated = self._candidate_repo.update(
+                        candidate_id=candidate_id, data=update_data
+                    )
+                    self._update_embedding(updated)
+                    logger.info("Enriched candidate %s from CV parsing", candidate_id)
+
+        except Exception:
+            logger.error("CV parsing failed for doc %s", doc_id, exc_info=True)
+            try:
+                import traceback
+                self._cv_repo.update_parsing_result(
+                    doc_id=doc_id,
+                    status="failed",
+                    error=traceback.format_exc(),
+                )
+            except Exception:
+                pass
 
 
 def _compute_completeness(data: dict[str, Any]) -> int:
