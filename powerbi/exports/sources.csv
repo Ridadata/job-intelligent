@@ -1,0 +1,10 @@
+id,name,base_url,last_scraped_at
+45964652-5b77-43f4-a7ba-34348721968b,indeed,https://fr.indeed.com,
+6a96f6ae-cf5e-4df1-ba39-6d37adecab2c,linkedin,https://www.linkedin.com/jobs,
+6a40b90e-9d99-469e-9e16-eba272ca15a6,france_travail,https://francetravail.io/data/api,
+3cc08030-18e7-45fe-820f-d7e7865d138d,welcometothejungle,https://www.welcometothejungle.com,
+9a939e7c-db25-4d13-a099-74614e606ac0,seed,https://seed,2026-04-06T07:38:22.9377+00:00
+8e6644c6-680a-4f26-8483-b12687a5651a,jsearch,https://jsearch.p.rapidapi.com,
+ef4dd56c-f00a-4fbf-afee-4b8703dbc3e0,adzuna,https://api.adzuna.com,2026-04-12T16:44:06.220923+00:00
+7e5d2af3-6e0e-4af3-aacf-8204ace28cc2,rekrute,https://rekrute,2026-04-12T18:11:42.275061+00:00
+c4aa5fda-9045-4df3-aba2-d6b1c8bf730c,emploi_ma,https://emploi_ma,2026-04-12T18:11:43.046098+00:00

@@ -1,0 +1,1042 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RADIAN — Project Progress Report · April 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --teal:#0D9488;--teal-light:#CCFBF1;--teal-dark:#0A7668;
+      --indigo:#4F46E5;--indigo-lt:#EEF2FF;
+      --amber:#B45309;--amber-lt:#FEF3C7;
+      --slate-900:#0F172A;--slate-800:#1E293B;--slate-700:#334155;
+      --slate-600:#475569;--slate-500:#64748B;--slate-400:#94A3B8;
+      --slate-300:#CBD5E1;--slate-200:#E2E8F0;--slate-100:#F1F5F9;
+      --slate-50:#F8FAFC;--white:#FFFFFF;
+      --green:#16A34A;--green-lt:#DCFCE7;
+      --radius:10px;--shadow:0 4px 16px rgba(15,23,42,.08);
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--slate-50);color:var(--slate-700);line-height:1.65;font-size:14.5px;-webkit-font-smoothing:antialiased}
+    h1{font-size:2.6rem;font-weight:800;line-height:1.15;letter-spacing:-.02em}
+    h2{font-size:1.45rem;font-weight:700;color:var(--slate-900);letter-spacing:-.01em}
+    h3{font-size:1rem;font-weight:700;color:var(--slate-800)}
+    h4{font-size:.875rem;font-weight:600;color:var(--slate-700)}
+    p{color:var(--slate-600);line-height:1.7}
+    code{font-family:'JetBrains Mono',monospace;font-size:.8em;background:var(--slate-100);border:1px solid var(--slate-200);border-radius:4px;padding:1px 6px;color:var(--slate-800)}
+    .container{max-width:1140px;margin:0 auto;padding:0 32px}
+    section{padding:72px 0}
+    section.alt{background:var(--white)}
+
+    /* NAV */
+    .nav{background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--slate-200);position:sticky;top:0;z-index:200}
+    .nav-inner{max-width:1140px;margin:0 auto;padding:0 32px;display:flex;align-items:center}
+    .nav-logo{height:32px;object-fit:contain;margin-right:24px;flex-shrink:0}
+    .nav-divider{width:1px;height:22px;background:var(--slate-200);margin-right:20px;flex-shrink:0}
+    .nav-links{display:flex;align-items:center;overflow-x:auto;scrollbar-width:none}
+    .nav-links::-webkit-scrollbar{display:none}
+    .nav-link{flex-shrink:0;padding:14px 13px;font-size:.78rem;font-weight:600;color:var(--slate-500);text-decoration:none;border-bottom:2px solid transparent;transition:color .15s,border-color .15s;white-space:nowrap;letter-spacing:.01em}
+    .nav-link:hover{color:var(--teal);border-bottom-color:var(--teal)}
+
+    /* HERO */
+    .hero{background:var(--slate-900);padding:80px 0 72px;position:relative;overflow:hidden}
+    .hero::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+    .hero::before{content:'';position:absolute;top:-120px;right:-80px;width:520px;height:520px;background:radial-gradient(circle,rgba(13,148,136,.18) 0%,transparent 70%);pointer-events:none}
+    .hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;align-items:start;gap:64px}
+    .hero-logo-wrap{background:var(--white);border-radius:12px;padding:14px 24px;display:inline-flex;align-items:center;margin-bottom:32px}
+    .hero-logo-wrap img{height:40px;object-fit:contain;display:block}
+    .hero-label{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:16px}
+    .hero-label-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:blink 2s infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+    .hero h1{color:var(--white);margin-bottom:16px}
+    .hero h1 em{font-style:normal;color:#5EEAD4}
+    .hero-desc{color:rgba(255,255,255,.55);font-size:.95rem;max-width:520px;line-height:1.75;margin-bottom:36px}
+    .hero-chips{display:flex;flex-wrap:wrap;gap:10px}
+    .hero-chip{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:6px 14px;font-size:.78rem;font-weight:500;color:rgba(255,255,255,.65)}
+    .hero-chip svg{width:13px;height:13px;flex-shrink:0;opacity:.7}
+    .hero-stats{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:28px;min-width:240px}
+    .hero-stats-title{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:20px}
+    .hero-stat{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+    .hero-stat:last-child{border-bottom:none;padding-bottom:0}
+    .hero-stat-num{font-size:1.6rem;font-weight:800;color:var(--white);line-height:1;margin-bottom:2px}
+    .hero-stat-num span{font-size:1rem;color:rgba(255,255,255,.4);font-weight:500}
+    .hero-stat-label{font-size:.75rem;color:rgba(255,255,255,.45)}
+    .version-pill{position:absolute;top:32px;right:32px;background:rgba(13,148,136,.2);border:1px solid rgba(13,148,136,.35);border-radius:99px;padding:4px 14px;font-size:.72rem;font-weight:700;color:#5EEAD4;letter-spacing:.08em;z-index:2}
+
+    /* SECTION HEADER */
+    .sh{margin-bottom:44px}
+    .sh-tag{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
+    .sh h2{margin-bottom:8px}
+    .sh p{color:var(--slate-500);max-width:560px;font-size:.9rem}
+
+    /* KPI */
+    .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--slate-200);border:1px solid var(--slate-200);border-radius:var(--radius);overflow:hidden}
+    .kpi-cell{background:var(--white);padding:28px 24px}
+    .kpi-tag{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--slate-400);margin-bottom:12px}
+    .kpi-val{font-size:2.6rem;font-weight:900;color:var(--slate-900);line-height:1;letter-spacing:-.03em;margin-bottom:6px}
+    .kpi-val sup{font-size:1.1rem;font-weight:600;vertical-align:super;color:var(--slate-400)}
+    .kpi-desc{font-size:.82rem;color:var(--slate-500);line-height:1.5}
+    .kpi-bar{height:3px;background:var(--slate-100);border-radius:99px;margin-top:16px;overflow:hidden}
+    .kpi-bar-fill{height:100%;border-radius:99px}
+    .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:20px}
+    .stat-cell{background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:18px 20px;display:flex;align-items:center;gap:16px}
+    .stat-icon{width:40px;height:40px;border-radius:8px;background:var(--slate-100);border:1px solid var(--slate-200);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .stat-icon svg{width:18px;height:18px;color:var(--slate-600)}
+    .stat-cell-val{font-size:1.4rem;font-weight:800;color:var(--slate-900);line-height:1}
+    .stat-cell-label{font-size:.75rem;color:var(--slate-500);margin-top:2px}
+
+    /* PROGRESS */
+    .progress-list{display:flex;flex-direction:column;border:1px solid var(--slate-200);border-radius:var(--radius);overflow:hidden;background:var(--white)}
+    .progress-row{display:grid;grid-template-columns:220px 1fr 80px;align-items:center;gap:24px;padding:20px 24px;border-bottom:1px solid var(--slate-100)}
+    .progress-row:last-child{border-bottom:none}
+    .prog-label{font-size:.875rem;font-weight:600;color:var(--slate-800)}
+    .prog-sub{font-size:.75rem;color:var(--slate-400);margin-top:2px;font-weight:400}
+    .prog-track{height:6px;background:var(--slate-100);border-radius:99px;overflow:hidden}
+    .prog-fill{height:100%;border-radius:99px;width:0;transition:width 1.4s cubic-bezier(.4,0,.2,1)}
+    .prog-pct{font-size:.875rem;font-weight:700;text-align:right}
+
+    /* STACK */
+    .stack-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .stack-card{background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);overflow:hidden}
+    .stack-card-head{padding:14px 20px;border-bottom:1px solid var(--slate-100);display:flex;align-items:center;gap:10px}
+    .stack-card-head-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .stack-card-head-title{font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--slate-600)}
+    .stack-card-body{padding:16px 20px}
+    .tech-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+    .tech-item{display:flex;align-items:flex-start;gap:10px;font-size:.83rem;color:var(--slate-700)}
+    .tech-item::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--slate-300);flex-shrink:0;margin-top:7px}
+    .tech-item strong{font-weight:600;color:var(--slate-800)}
+
+    /* ARCHITECTURE */
+    .arch-img-wrap{border:1px solid var(--slate-200);border-radius:var(--radius);overflow:hidden;margin-bottom:32px;box-shadow:var(--shadow)}
+    .arch-img-wrap img{width:100%;display:block}
+    .arch-layers{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--slate-200);border:1px solid var(--slate-200);border-radius:var(--radius);overflow:hidden}
+    .arch-layer{background:var(--white);padding:22px 20px}
+    .arch-layer-num{font-size:.65rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--slate-300);margin-bottom:14px}
+    .arch-layer-line{width:28px;height:3px;border-radius:99px;margin-bottom:12px}
+    .arch-layer h4{margin-bottom:8px;font-size:.875rem}
+    .arch-layer p{font-size:.78rem;color:var(--slate-500);line-height:1.6}
+
+    /* MODULES */
+    .modules-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .mod-card{background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);overflow:hidden}
+    .mod-card-head{padding:20px 24px;border-bottom:1px solid var(--slate-100);display:flex;align-items:center;gap:14px}
+    .mod-card-accent{width:4px;height:40px;border-radius:99px;flex-shrink:0}
+    .mod-card-title{font-size:.95rem;font-weight:700;color:var(--slate-900)}
+    .mod-card-sub{font-size:.75rem;color:var(--slate-400);margin-top:2px}
+    .mod-pct{margin-left:auto;font-size:.8rem;font-weight:700;padding:3px 10px;border-radius:4px}
+    .mod-card-body{padding:20px 24px}
+    .mod-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+    .mod-stat{border:1px solid var(--slate-200);border-radius:8px;padding:12px 14px;text-align:center}
+    .mod-stat-val{font-size:1.4rem;font-weight:800;color:var(--slate-900);line-height:1}
+    .mod-stat-label{font-size:.7rem;color:var(--slate-400);margin-top:3px;font-weight:500}
+    .mod-features{list-style:none}
+    .mod-features li{display:flex;align-items:flex-start;gap:10px;font-size:.82rem;color:var(--slate-600);padding:7px 0;border-bottom:1px solid var(--slate-100);line-height:1.55}
+    .mod-features li:last-child{border-bottom:none}
+    .mod-features li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:6px}
+
+    /* AI */
+    .ai-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:20px}
+    .ai-dark{background:var(--slate-900);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:28px;color:var(--white)}
+    .ai-dark h3{color:var(--white);margin-bottom:6px}
+    .ai-dark p{color:rgba(255,255,255,.45);font-size:.82rem;margin-bottom:24px}
+    .formula-block{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:18px 20px;font-family:'JetBrains Mono',monospace;font-size:.82rem;color:rgba(255,255,255,.7);line-height:2;margin-bottom:24px}
+    .ht{color:#5EEAD4;font-weight:600}.hi{color:#A5B4FC;font-weight:600}.hg{color:#FCD34D;font-weight:600}.hr{color:#FCA5A5;font-weight:600}
+    .weight-rows{display:flex;flex-direction:column;gap:10px}
+    .weight-row-item{display:flex;align-items:center;gap:12px;font-size:.78rem}
+    .wr-name{width:150px;color:rgba(255,255,255,.55);flex-shrink:0}
+    .wr-track{flex:1;height:5px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden}
+    .wr-fill{height:100%;border-radius:99px}
+    .wr-pct{width:34px;text-align:right;font-weight:700;color:rgba(255,255,255,.8)}
+    .ai-signals{display:flex;flex-direction:column;gap:12px}
+    .signal{background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:18px 20px}
+    .signal-top{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+    .signal-accent{width:3px;height:24px;border-radius:99px;flex-shrink:0}
+    .signal-title{font-size:.875rem;font-weight:700;color:var(--slate-800)}
+    .signal-tag{margin-left:auto;font-size:.68rem;font-weight:700;padding:2px 9px;border-radius:4px;letter-spacing:.04em}
+    .signal p{font-size:.78rem;color:var(--slate-500);line-height:1.6}
+    .cv-pipeline{background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:28px;margin-top:20px}
+    .cv-pipeline h3{margin-bottom:8px}
+    .cv-pipeline>p{font-size:.82rem;color:var(--slate-500);margin-bottom:24px}
+    .pipeline-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:0;align-items:start}
+    .pipe-step{text-align:center;position:relative}
+    .pipe-step:not(:last-child)::after{content:'';position:absolute;top:20px;right:-50%;width:100%;height:1px;background:var(--slate-200)}
+    .pipe-icon{width:40px;height:40px;border:1px solid var(--slate-200);border-radius:50%;background:var(--slate-50);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;position:relative;z-index:1}
+    .pipe-icon svg{width:16px;height:16px}
+    .pipe-label{font-size:.75rem;font-weight:700;color:var(--slate-700);margin-bottom:3px}
+    .pipe-sub{font-size:.7rem;color:var(--slate-400);line-height:1.4}
+
+    /* DATABASE */
+    .db-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .db-card{border:1px solid var(--slate-200);border-radius:var(--radius);overflow:hidden}
+    .db-card-head{padding:14px 18px;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+    .db-head-dot{width:8px;height:8px;border-radius:50%}
+    .db-card-body{background:var(--white);padding:16px 18px}
+    .db-table-block{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--slate-100)}
+    .db-table-block:last-child{margin:0;padding:0;border:none}
+    .db-table-name{font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:600;color:var(--slate-800);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+    .db-badge{font-size:.62rem;font-weight:700;padding:1px 7px;border-radius:3px;text-transform:uppercase;letter-spacing:.06em}
+    .db-cols{display:flex;flex-wrap:wrap;gap:5px}
+    .db-col{font-family:'JetBrains Mono',monospace;font-size:.68rem;padding:2px 8px;border-radius:4px;border:1px solid var(--slate-200);color:var(--slate-600);background:var(--slate-50)}
+    .db-col.pk{background:#FEF3C7;border-color:#FDE68A;color:#92400E}
+    .db-col.vec{background:var(--indigo-lt);border-color:#C7D2FE;color:var(--indigo)}
+    .db-col.idx{background:var(--teal-light);border-color:#99F6E4;color:var(--teal-dark)}
+    .db-note{font-size:.72rem;color:var(--slate-400);margin-top:10px;line-height:1.5}
+
+    /* SECURITY */
+    .sec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .sec-card{background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:24px;display:flex;flex-direction:column}
+    .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+    .sec-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+    .sec-title{font-size:.875rem;font-weight:700;color:var(--slate-900)}
+    .sec-body{font-size:.8rem;color:var(--slate-500);line-height:1.65;flex:1}
+    .sec-tag{margin-top:14px;display:inline-block;font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase;align-self:flex-start}
+
+    /* TESTS */
+    .test-table{width:100%;border-collapse:collapse;border:1px solid var(--slate-200);border-radius:var(--radius);overflow:hidden;background:var(--white)}
+    .test-table thead{background:var(--slate-800)}
+    .test-table thead th{padding:13px 18px;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.6)}
+    .test-table tbody tr{border-bottom:1px solid var(--slate-100);transition:background .12s}
+    .test-table tbody tr:last-child{border-bottom:none}
+    .test-table tbody tr:hover{background:var(--slate-50)}
+    .test-table td{padding:12px 18px;font-size:.82rem;color:var(--slate-600);vertical-align:middle}
+    .test-table td:first-child{font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:600;color:var(--slate-800)}
+    .status-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:4px;font-size:.7rem;font-weight:700;letter-spacing:.04em}
+
+    /* ROADMAP */
+    .roadmap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}
+    .roadmap-col-head{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:10px 0;margin-bottom:14px;border-bottom:2px solid}
+    .rm-item{background:var(--white);border:1px solid var(--slate-200);border-radius:8px;padding:14px 16px;margin-bottom:10px}
+    .rm-item-title{font-size:.83rem;font-weight:600;color:var(--slate-800);margin-bottom:4px}
+    .rm-item-desc{font-size:.75rem;color:var(--slate-500);line-height:1.55}
+    .rm-tag{display:inline-block;margin-top:9px;font-size:.65rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:2px 8px;border-radius:3px}
+
+    /* API */
+    .api-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .api-group{background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);overflow:hidden}
+    .api-group-head{background:var(--slate-800);padding:12px 18px;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+    .api-row{display:flex;align-items:center;gap:12px;padding:10px 18px;border-bottom:1px solid var(--slate-100);font-size:.82rem}
+    .api-row:last-child{border-bottom:none}
+    .method{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:3px;width:40px;text-align:center;flex-shrink:0;letter-spacing:.04em}
+    .method.get{background:#DBEAFE;color:#1D4ED8}.method.post{background:#DCFCE7;color:#15803D}
+    .method.put{background:#FEF3C7;color:#92400E}.method.del{background:#FEE2E2;color:#B91C1C}
+    .api-path{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--slate-700)}
+    .api-desc{font-size:.75rem;color:var(--slate-400);margin-left:auto;white-space:nowrap}
+
+    /* FOOTER */
+    .footer{background:var(--slate-900);padding:48px 0}
+    .footer-inner{display:flex;align-items:center;justify-content:space-between;gap:32px}
+    .footer-brand img{height:36px;object-fit:contain;background:var(--white);border-radius:6px;padding:6px 12px}
+    .footer-brand-name{font-size:.9rem;font-weight:700;color:var(--white);margin-top:10px}
+    .footer-brand-sub{font-size:.75rem;color:rgba(255,255,255,.35);margin-top:2px}
+    .footer-meta{text-align:right}
+    .footer-meta p{font-size:.78rem;color:rgba(255,255,255,.35);line-height:1.8}
+
+    /* DOWNLOAD */
+    .dl-btn{position:fixed;bottom:28px;right:28px;z-index:999;display:inline-flex;align-items:center;gap:8px;background:var(--slate-900);color:var(--white);font-family:'Inter',sans-serif;font-size:.8rem;font-weight:700;padding:11px 20px;border:1px solid rgba(255,255,255,.1);border-radius:8px;cursor:pointer;box-shadow:0 4px 20px rgba(15,23,42,.3);transition:background .15s,transform .12s;letter-spacing:.01em}
+    .dl-btn:hover{background:var(--teal);border-color:var(--teal);transform:translateY(-1px)}
+    .dl-btn svg{width:14px;height:14px;flex-shrink:0}
+
+    /* RESPONSIVE */
+    @media(max-width:880px){
+      .kpi-grid,.arch-layers,.pipeline-steps{grid-template-columns:1fr 1fr}
+      .stack-grid,.db-grid,.sec-grid,.roadmap-grid,.api-grid{grid-template-columns:1fr}
+      .modules-grid,.ai-grid{grid-template-columns:1fr}
+      .stat-row{grid-template-columns:1fr 1fr}
+      .progress-row{grid-template-columns:160px 1fr 56px;gap:14px}
+      .hero-inner{grid-template-columns:1fr;gap:40px}
+      .footer-inner{flex-direction:column;align-items:flex-start}
+      .footer-meta{text-align:left}
+      h1{font-size:2rem}
+    }
+    @media print{
+      .nav,.dl-btn{display:none!important}
+      body{background:#fff;font-size:13px}
+      section{padding:44px 0}
+      .hero{background:var(--slate-900)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+      .kpi-grid,.stat-row,.stack-grid,.modules-grid,.ai-grid,.db-grid,.sec-grid,.roadmap-grid,.api-grid{grid-template-columns:1fr 1fr!important}
+      .arch-layers,.pipeline-steps{grid-template-columns:1fr 1fr!important}
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <img class="nav-logo" src="../images/image-Photoroom (1).png" alt="RADIAN" />
+    <div class="nav-divider"></div>
+    <div class="nav-links">
+      <a class="nav-link" href="#overview">Overview</a>
+      <a class="nav-link" href="#progress">Progress</a>
+      <a class="nav-link" href="#stack">Stack</a>
+      <a class="nav-link" href="#architecture">Architecture</a>
+      <a class="nav-link" href="#modules">Modules</a>
+      <a class="nav-link" href="#ai">AI Engine</a>
+      <a class="nav-link" href="#database">Database</a>
+      <a class="nav-link" href="#security">Security</a>
+      <a class="nav-link" href="#tests">Tests</a>
+      <a class="nav-link" href="#roadmap">Roadmap</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="version-pill">v1.0 &ndash; April 2026</div>
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-logo-wrap">
+          <img src="../images/image-Photoroom (1).png" alt="RADIAN" />
+        </div>
+        <div class="hero-label">
+          <span class="hero-label-dot"></span>
+          Project Progress Report &mdash; Active Development
+        </div>
+        <h1>AI-Powered<br /><em>Job Intelligence Platform</em></h1>
+        <p class="hero-desc">RADIAN centralizes data-domain job opportunities and delivers intelligent job-to-candidate matching through NLP, sentence embeddings, and pgvector similarity search &mdash; built as a production-grade SaaS monolith.</p>
+        <div class="hero-chips">
+          <div class="hero-chip">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5v3.75l2.25 2.25"/></svg>
+            April 27, 2026
+          </div>
+          <div class="hero-chip">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3.5A1.5 1.5 0 013.5 2h9A1.5 1.5 0 0114 3.5v9a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 012 12.5v-9z"/></svg>
+            Ridadata / job-intelligent
+          </div>
+          <div class="hero-chip">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12M2 8h8M2 12h5"/></svg>
+            feature/amine-dev
+          </div>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stats-title">At a Glance</div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">88<span>%</span></div>
+          <div class="hero-stat-label">Overall platform completion</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">6</div>
+          <div class="hero-stat-label">Core modules implemented</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">3</div>
+          <div class="hero-stat-label">Live job data source APIs</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">384</div>
+          <div class="hero-stat-label">Embedding dimensions (MiniLM-L6-v2)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="overview">
+  <div class="container">
+    <div class="sh">
+      <div class="sh-tag">Executive Summary</div>
+      <h2>Platform Overview</h2>
+      <p>Key delivery metrics across the RADIAN platform as of April 27, 2026.</p>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-cell">
+        <div class="kpi-tag">Overall Completion</div>
+        <div class="kpi-val">88<sup>%</sup></div>
+        <div class="kpi-desc">Production-ready core. All primary features operational.</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width:88%;background:var(--teal)"></div></div>
+      </div>
+      <div class="kpi-cell">
+        <div class="kpi-tag">Data Sources</div>
+        <div class="kpi-val">5</div>
+        <div class="kpi-desc">3 REST APIs and 2 Scrapy spiders ingesting real job listings.</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width:100%;background:var(--indigo)"></div></div>
+      </div>
+      <div class="kpi-cell">
+        <div class="kpi-tag">AI Match Signals</div>
+        <div class="kpi-val">4</div>
+        <div class="kpi-desc">Skill overlap, embedding similarity, seniority, and location alignment.</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width:100%;background:#8B5CF6"></div></div>
+      </div>
+      <div class="kpi-cell">
+        <div class="kpi-tag">Test Modules</div>
+        <div class="kpi-val">8</div>
+        <div class="kpi-desc">Unit, integration, ETL coherence, and end-to-end pipeline tests.</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width:70%;background:var(--green)"></div></div>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-cell">
+        <div class="stat-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="5" height="5" rx="1"/><rect x="12" y="3" width="5" height="5" rx="1"/><rect x="3" y="12" width="5" height="5" rx="1"/><rect x="12" y="12" width="5" height="5" rx="1"/></svg></div>
+        <div><div class="stat-cell-val">14+</div><div class="stat-cell-label">Database tables across 3 pipeline layers</div></div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="7"/><path d="M10 6v4l3 3"/></svg></div>
+        <div><div class="stat-cell-val">7</div><div class="stat-cell-label">FastAPI routers, 6 services, 5 repositories</div></div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M3 8h14"/><path d="M8 3v14"/></svg></div>
+        <div><div class="stat-cell-val">8+</div><div class="stat-cell-label">Frontend pages with full state management</div></div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 2l2.09 6.26H18l-5 3.64 1.91 5.84L10 14.27l-4.91 3.47L7 11.9 2 8.26h5.91z"/></svg></div>
+        <div><div class="stat-cell-val">Top 20</div><div class="stat-cell-label">Recommendations returned per request</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="progress" class="alt">
+  <div class="container">
+    <div class="sh">
+      <div class="sh-tag">Completion Status</div>
+      <h2>Module Progress</h2>
+      <p>Completion percentage per engineering module, assessed against full production requirements.</p>
+    </div>
+    <div class="progress-list">
+      <div class="progress-row">
+        <div><div class="prog-label">Backend API</div><div class="prog-sub">FastAPI &middot; 7 routers &middot; 6 services &middot; 5 repositories</div></div>
+        <div class="prog-track"><div class="prog-fill" data-w="95" style="background:var(--indigo)"></div></div>
+        <div class="prog-pct" style="color:var(--indigo)" data-target="95">0%</div>
+      </div>
+      <div class="progress-row">
+        <div><div class="prog-label">Frontend SPA</div><div class="prog-sub">React 18 &middot; TypeScript &middot; TanStack Query &middot; Shadcn UI</div></div>
+        <div class="prog-track"><div class="prog-fill" data-w="80" style="background:var(--teal)"></div></div>
+        <div class="prog-pct" style="color:var(--teal)" data-target="80">0%</div>
+      </div>
+      <div class="progress-row">
+        <div><div class="prog-label">ETL Data Pipeline</div><div class="prog-sub">Airflow DAG &middot; Bronze / Silver / Gold layers</div></div>
+        <div class="prog-track"><div class="prog-fill" data-w="85" style="background:var(--amber)"></div></div>
+        <div class="prog-pct" style="color:var(--amber)" data-target="85">0%</div>
+      </div>
+      <div class="progress-row">
+        <div><div class="prog-label">AI Services</div><div class="prog-sub">Embeddings &middot; Matching engine &middot; CV parser &middot; Skill gap</div></div>
+        <div class="prog-track"><div class="prog-fill" data-w="100" style="background:#8B5CF6"></div></div>
+        <div class="prog-pct" style="color:#8B5CF6" data-target="100">0%</div>
+      </div>
+      <div class="progress-row">
+        <div><div class="prog-label">Test Coverage</div><div class="prog-sub">Unit &middot; Integration &middot; ETL coherence &middot; E2E pipeline</div></div>
+        <div class="prog-track"><div class="prog-fill" data-w="70" style="background:var(--green)"></div></div>
+        <div class="prog-pct" style="color:var(--green)" data-target="70">0%</div>
+      </div>
+      <div class="progress-row">
+        <div><div class="prog-label">Infrastructure</div><div class="prog-sub">Docker Compose &middot; Redis &middot; Supabase &middot; Airflow &middot; Nginx</div></div>
+        <div class="prog-track"><div class="prog-fill" data-w="100" style="background:var(--slate-700)"></div></div>
+        <div class="prog-pct" style="color:var(--slate-700)" data-target="100">0%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stack">
+  <div class="container">
+    <div class="sh">
+      <div class="sh-tag">Technology Stack</div>
+      <h2>Tools &amp; Frameworks</h2>
+      <p>Production-grade open-source stack selected for performance, developer experience, and operational cost.</p>
+    </div>
+    <div class="stack-grid">
+      <div class="stack-card">
+        <div class="stack-card-head"><div class="stack-card-head-dot" style="background:var(--indigo)"></div><div class="stack-card-head-title">Backend</div></div>
+        <div class="stack-card-body">
+          <ul class="tech-list">
+            <li class="tech-item"><strong>FastAPI 0.111</strong> &mdash; async REST framework</li>
+            <li class="tech-item"><strong>Python 3.11</strong> &mdash; runtime</li>
+            <li class="tech-item"><strong>Pydantic v2</strong> &mdash; request/response validation</li>
+            <li class="tech-item"><strong>python-jose</strong> &mdash; JWT HS256 authentication</li>
+            <li class="tech-item"><strong>passlib + bcrypt</strong> &mdash; password hashing (12 rounds)</li>
+            <li class="tech-item"><strong>Redis 7</strong> &mdash; recommendation cache (TTL 1h)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-card-head"><div class="stack-card-head-dot" style="background:var(--teal)"></div><div class="stack-card-head-title">Frontend</div></div>
+        <div class="stack-card-body">
+          <ul class="tech-list">
+            <li class="tech-item"><strong>React 18</strong> &mdash; UI library</li>
+            <li class="tech-item"><strong>TypeScript 5</strong> &mdash; strict mode, no <code>any</code></li>
+            <li class="tech-item"><strong>Vite</strong> &mdash; build tool and dev server</li>
+            <li class="tech-item"><strong>TanStack Query</strong> &mdash; server state management</li>
+            <li class="tech-item"><strong>Zustand</strong> &mdash; client state (auth, theme, filters)</li>
+            <li class="tech-item"><strong>Shadcn UI</strong> &mdash; accessible component primitives</li>
+          </ul>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-card-head"><div class="stack-card-head-dot" style="background:#8B5CF6"></div><div class="stack-card-head-title">AI / Machine Learning</div></div>
+        <div class="stack-card-body">
+          <ul class="tech-list">
+            <li class="tech-item"><strong>Sentence-BERT</strong> &mdash; semantic embedding model</li>
+            <li class="tech-item"><strong>all-MiniLM-L6-v2</strong> &mdash; 384-dim, fast inference</li>
+            <li class="tech-item"><strong>spaCy fr_core_news_md</strong> &mdash; French NER + patterns</li>
+            <li class="tech-item"><strong>pgvector HNSW</strong> &mdash; vector similarity index</li>
+            <li class="tech-item"><strong>PyPDF2</strong> &mdash; PDF text extraction</li>
+            <li class="tech-item"><strong>python-docx</strong> &mdash; DOCX text extraction</li>
+          </ul>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-card-head"><div class="stack-card-head-dot" style="background:var(--amber)"></div><div class="stack-card-head-title">Data Platform</div></div>
+        <div class="stack-card-body">
+          <ul class="tech-list">
+            <li class="tech-item"><strong>Supabase</strong> &mdash; managed PostgreSQL 15 + RLS</li>
+            <li class="tech-item"><strong>Apache Airflow</strong> &mdash; pipeline orchestration (6h schedule)</li>
+            <li class="tech-item"><strong>Scrapy</strong> &mdash; web scraping framework</li>
+            <li class="tech-item"><strong>Adzuna API</strong> &mdash; international job listings</li>
+            <li class="tech-item"><strong>JSearch (RapidAPI)</strong> &mdash; aggregated global listings</li>
+            <li class="tech-item"><strong>France Travail API</strong> &mdash; official French employment data</li>
+          </ul>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-card-head"><div class="stack-card-head-dot" style="background:var(--slate-600)"></div><div class="stack-card-head-title">Infrastructure</div></div>
+        <div class="stack-card-body">
+          <ul class="tech-list">
+            <li class="tech-item"><strong>Docker Compose</strong> &mdash; all-in-one local and production</li>
+            <li class="tech-item"><strong>Nginx</strong> &mdash; reverse proxy</li>
+            <li class="tech-item"><strong>Ruff</strong> &mdash; Python linting and formatting</li>
+            <li class="tech-item"><strong>Pytest</strong> &mdash; test framework</li>
+            <li class="tech-item"><strong>pydantic-settings</strong> &mdash; environment configuration</li>
+          </ul>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-card-head"><div class="stack-card-head-dot" style="background:var(--green)"></div><div class="stack-card-head-title">Analytics &amp; Monitoring</div></div>
+        <div class="stack-card-body">
+          <ul class="tech-list">
+            <li class="tech-item"><strong>PowerBI</strong> &mdash; executive dashboards</li>
+            <li class="tech-item"><strong>pipeline_runs</strong> &mdash; stage-level ETL observability</li>
+            <li class="tech-item"><strong>recommendation_history</strong> &mdash; feedback loop logging</li>
+            <li class="tech-item"><strong>Materialized views</strong> &mdash; pre-aggregated analytics</li>
+            <li class="tech-item"><strong>Request ID middleware</strong> &mdash; distributed request tracing</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="architecture" class="alt">
+  <div class="container">
+    <div class="sh">
+      <div class="sh-tag">System Design</div>
+      <h2>Platform Architecture</h2>
+      <p>A clean monolithic architecture following the Medallion data pattern with strict 4-layer separation of concerns.</p>
+    </div>
+    <div class="arch-img-wrap">
+      <img src="../images/jobs_project_archetecture.png" alt="RADIAN System Architecture Diagram" />
+    </div>
+    <div class="arch-layers">
+      <div class="arch-layer">
+        <div class="arch-layer-num">Layer 01</div>
+        <div class="arch-layer-line" style="background:var(--amber)"></div>
+        <h4>Data Ingestion</h4>
+        <p>3 REST API clients (Adzuna, JSearch, France Travail) and 2 Scrapy spiders (Rekrute, Emploi.ma). All sources normalize output to a shared <code>JobItem</code> schema before Bronze ingestion.</p>
+      </div>
+      <div class="arch-layer">
+        <div class="arch-layer-num">Layer 02</div>
+        <div class="arch-layer-line" style="background:var(--indigo)"></div>
+        <h4>ETL Processing</h4>
+        <p>Airflow DAG runs every 6 hours. Bronze (immutable raw JSON) to Silver (Pydantic-validated) to Gold (enriched with MiniLM embeddings). Incremental via <code>processed</code> flag on Bronze rows.</p>
+      </div>
+      <div class="arch-layer">
+        <div class="arch-layer-num">Layer 03</div>
+        <div class="arch-layer-line" style="background:var(--teal)"></div>
+        <h4>Storage Layer</h4>
+        <p>PostgreSQL 15 with pgvector extension (Supabase). HNSW index on <code>vector(384)</code> columns. Redis for hot recommendation cache (1h TTL). Row-level security on all tables.</p>
+      </div>
+      <div class="arch-layer">
+        <div class="arch-layer-num">Layer 04</div>
+        <div class="arch-layer-line" style="background:#8B5CF6"></div>
+        <h4>Exposition Layer</h4>
+        <p>FastAPI REST API with strict router to service to repository separation. React SPA consumes the API via a centralized <code>api-client.ts</code>. JWT authentication, TanStack Query client-side caching.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="modules">
+  <div class="container">
+    <div class="sh">
+      <div class="sh-tag">Engineering Modules</div>
+      <h2>Implemented Components</h2>
+      <p>Detailed breakdown of every implemented module, its sub-components, and current delivery status.</p>
+    </div>
+    <div class="modules-grid">
+      <div class="mod-card">
+        <div class="mod-card-head">
+          <div class="mod-card-accent" style="background:var(--indigo)"></div>
+          <div><div class="mod-card-title">Backend API</div><div class="mod-card-sub">FastAPI &middot; Pydantic v2 &middot; JWT &middot; RBAC</div></div>
+          <span class="mod-pct" style="background:var(--indigo-lt);color:var(--indigo)">95%</span>
+        </div>
+        <div class="mod-card-body">
+          <div class="mod-stats">
+            <div class="mod-stat"><div class="mod-stat-val" style="color:var(--indigo)">7</div><div class="mod-stat-label">Routers</div></div>
+            <div class="mod-stat"><div class="mod-stat-val" style="color:var(--indigo)">6</div><div class="mod-stat-label">Services</div></div>
+            <div class="mod-stat"><div class="mod-stat-val" style="color:var(--indigo)">5</div><div class="mod-stat-label">Repositories</div></div>
+          </div>
+          <ul class="mod-features">
+            <li>Authentication: register, login, JWT decode, role-based access control (candidate / admin)</li>
+            <li>Jobs: paginated listing, detail, save and unsave bookmarks</li>
+            <li>Candidates: profile CRUD, CV upload with async background parsing</li>
+            <li>Recommendations: cache-first pipeline with multi-signal scoring and explainer</li>
+            <li>Search: semantic job search via pgvector embeddings and SQL function</li>
+            <li>Skill Gap: missing skills aggregated from top job matches, ranked by market frequency</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mod-card">
+        <div class="mod-card-head">
+          <div class="mod-card-accent" style="background:var(--teal)"></div>
+          <div><div class="mod-card-title">Frontend SPA</div><div class="mod-card-sub">React 18 &middot; TypeScript &middot; Tailwind &middot; Shadcn</div></div>
+          <span class="mod-pct" style="background:var(--teal-light);color:var(--teal-dark)">80%</span>
+        </div>
+        <div class="mod-card-body">
+          <div class="mod-stats">
+            <div class="mod-stat"><div class="mod-stat-val" style="color:var(--teal)">8+</div><div class="mod-stat-label">Pages</div></div>
+            <div class="mod-stat"><div class="mod-stat-val" style="color:var(--teal)">6</div><div class="mod-stat-label">Custom Hooks</div></div>
+            <div class="mod-stat"><div class="mod-stat-val" style="color:var(--teal)">3</div><div class="mod-stat-label">Zustand Stores</div></div>
+          </div>
+          <ul class="mod-features">
+            <li>Pages: Dashboard, Job Search with filters, Job Detail, Recommendations, Skill Gap, Profile, Saved Jobs, Auth</li>
+            <li>TanStack Query for all server state with automatic cache invalidation on mutations</li>
+            <li>Zustand stores: authentication, theme (dark/light), and active job filters</li>
+            <li>Centralized API client with token injection, refresh handling, and error normalization</li>
+            <li>Responsive layout via Tailwind CSS, mobile-first with dark mode support</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mod-card">
+        <div class="mod-card-head">
+          <div class="mod-card-accent" style="background:#8B5CF6"></div>
+          <div><div class="mod-card-title">AI Services</div><div class="mod-card-sub">Sentence-BERT &middot; spaCy &middot; pgvector</div></div>
+          <span class="mod-pct" style="background:#F3E8FF;color:#7C3AED">100%</span>
+        </div>
+        <div class="mod-card-body">
+          <div class="mod-stats">
+            <div class="mod-stat"><div class="mod-stat-val" style="color:#8B5CF6">384</div><div class="mod-stat-label">Embedding dims</div></div>
+            <div class="mod-stat"><div class="mod-stat-val" style="color:#8B5CF6">4</div><div class="mod-stat-label">Match signals</div></div>
+            <div class="mod-stat"><div class="mod-stat-val" style="color:#8B5CF6">Top 20</div><div class="mod-stat-label">Per request</div></div>
+          </div>
+          <ul class="mod-features">
+            <li>Batch embedding generator for job offers and candidate profiles (MiniLM-L6-v2)</li>
+            <li>CV parser: PDF via PyPDF2, DOCX via python-docx, plain text extraction</li>
+            <li>NLP enrichment: spaCy NER and pattern matching for skill extraction and normalization</li>
+            <li>Scorer: weighted composite match score across 4 independent signals</li>
+            <li>Explainer: per-result breakdown of matched skills, missing skills, and score components</li>
+            <li>Smart merge: union of skills, max of experience years, never overwrites manual profile data</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mod-card">
+        <div class="mod-card-head">
+          <div class="mod-card-accent" style="background:var(--amber)"></div>
+          <div><div class="mod-card-title">ETL Data Pipeline</div><div class="mod-card-sub">Airflow &middot; Scrapy &middot; 3-API ingestion</div></div>
+          <span class="mod-pct" style="background:var(--amber-lt);color:var(--amber)">85%</span>
+        </div>
+        <div class="mod-card-body">
+          <div class="mod-stats">
+            <div class="mod-stat"><div class="mod-stat-val" style="color:var(--amber)">3</div><div class="mod-stat-label">API clients</div></div>
+            <div class="mod-stat"><div class="mod-stat-val" style="color:var(--amber)">2</div><div class="mod-stat-label">Scrapy spiders</div></div>
+            <div class="mod-stat"><div class="mod-stat-val" style="color:var(--amber)">3</div><div class="mod-stat-label">Data layers</div></div>
+          </div>
+          <ul class="mod-features">
+            <li>Airflow DAG: full pipeline every 6 hours, <code>max_active_runs=1</code>, <code>catchup=False</code></li>
+            <li>Bronze layer: immutable raw JSON, per-source deduplication via <code>external_id</code></li>
+            <li>Silver layer: Pydantic schema validation, contract type normalization, GIN skill index</li>
+            <li>Gold layer: MiniLM-L6-v2 embeddings, NLP tech stack extraction, seniority level scoring</li>
+            <li>Pipeline monitoring: every stage logged to <code>pipeline_runs</code> with row count, duration, and errors</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ai" class="alt">
+  <div class="container">
+    <div class="sh">
+      <div class="sh-tag">AI Engine</div>
+      <h2>Matching &amp; Recommendation System</h2>
+      <p>A multi-signal composite scoring algorithm combining semantic similarity with structured business logic for transparent, explainable recommendations.</p>
+    </div>
+    <div class="ai-grid">
+      <div class="ai-dark">
+        <h3>Composite Match Score</h3>
+        <p>Weighted combination of four independent signals. Every result includes a full score breakdown for transparency.</p>
+        <div class="formula-block">
+score =<br>
+&nbsp;&nbsp;<span class="ht">0.50</span> &times; skill_overlap<br>
+&nbsp;&nbsp;<span class="hi">0.30</span> &times; embedding_cosine_similarity<br>
+&nbsp;&nbsp;<span class="hg">0.10</span> &times; seniority_alignment<br>
+&nbsp;&nbsp;<span class="hr">0.10</span> &times; location_match
+        </div>
+        <div class="weight-rows">
+          <div class="weight-row-item"><div class="wr-name">Skill Overlap</div><div class="wr-track"><div class="wr-fill" style="width:50%;background:#5EEAD4"></div></div><div class="wr-pct">50%</div></div>
+          <div class="weight-row-item"><div class="wr-name">Embedding Similarity</div><div class="wr-track"><div class="wr-fill" style="width:30%;background:#A5B4FC"></div></div><div class="wr-pct">30%</div></div>
+          <div class="weight-row-item"><div class="wr-name">Seniority Alignment</div><div class="wr-track"><div class="wr-fill" style="width:10%;background:#FCD34D"></div></div><div class="wr-pct">10%</div></div>
+          <div class="weight-row-item"><div class="wr-name">Location Match</div><div class="wr-track"><div class="wr-fill" style="width:10%;background:#FCA5A5"></div></div><div class="wr-pct">10%</div></div>
+        </div>
+        <div style="margin-top:20px;padding:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:8px;font-size:.78rem;color:rgba(255,255,255,.4);line-height:1.65">
+          Each recommendation response includes <code style="color:#5EEAD4;background:rgba(94,234,212,.1)">matched_skills</code>, <code style="color:#A5B4FC;background:rgba(165,180,252,.1)">missing_skills</code>, and a per-signal <code style="color:#FCD34D;background:rgba(252,211,77,.1)">score_breakdown</code> for full explainability.
+        </div>
+      </div>
+      <div class="ai-signals">
+        <div class="signal">
+          <div class="signal-top"><div class="signal-accent" style="background:var(--teal)"></div><div class="signal-title">Skill Overlap &times;0.5</div><span class="signal-tag" style="background:var(--teal-light);color:var(--teal-dark)">Highest Weight</span></div>
+          <p>Fuzzy matching between candidate skills and job requirements. Handles substring normalization and version-agnostic matching (e.g., &ldquo;Python 3&rdquo; matches &ldquo;Python&rdquo;).</p>
+        </div>
+        <div class="signal">
+          <div class="signal-top"><div class="signal-accent" style="background:var(--indigo)"></div><div class="signal-title">Semantic Similarity &times;0.3</div><span class="signal-tag" style="background:var(--indigo-lt);color:var(--indigo)">pgvector cosine</span></div>
+          <p>Cosine distance via pgvector <code>&lt;=&gt;</code> operator on 384-dim Sentence-BERT embeddings. Captures semantic role alignment beyond keyword matching.</p>
+        </div>
+        <div class="signal">
+          <div class="signal-top"><div class="signal-accent" style="background:var(--amber)"></div><div class="signal-title">Seniority Alignment &times;0.1</div><span class="signal-tag" style="background:var(--amber-lt);color:var(--amber)">Experience fit</span></div>
+          <p>Compares candidate <code>experience_years</code> against job <code>seniority_level</code> (Junior / Mid / Senior). Penalises large mismatch in both directions.</p>
+        </div>
+        <div class="signal">
+          <div class="signal-top"><div class="signal-accent" style="background:#EF4444"></div><div class="signal-title">Location Match &times;0.1</div><span class="signal-tag" style="background:#FEE2E2;color:#B91C1C">Geographic</span></div>
+          <p>Substring matching between candidate preferred location and job location. Supports partial matches (e.g., &ldquo;Paris&rdquo; matches &ldquo;Paris, &Icirc;le-de-France&rdquo;).</p>
+        </div>
+      </div>
+    </div>
+    <div class="cv-pipeline">
+      <h3>CV Parsing Pipeline</h3>
+      <p>Asynchronous document processing from upload to profile enrichment. Upload returns <code>202 Accepted</code> immediately. Manual profile fields are never overwritten.</p>
+      <div class="pipeline-steps">
+        <div class="pipe-step">
+          <div class="pipe-icon" style="border-color:var(--amber);background:#FFFBEB"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--amber)"><path d="M4 1h8l3 3v11H1V1z"/><path d="M11 1v4h4"/></svg></div>
+          <div class="pipe-label">Upload</div><div class="pipe-sub">PDF or DOCX<br>Max 5 MB</div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon" style="border-color:var(--indigo);background:var(--indigo-lt)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--indigo)"><rect x="2" y="2" width="12" height="12" rx="1"/><path d="M5 6h6M5 9h4"/></svg></div>
+          <div class="pipe-label">Extraction</div><div class="pipe-sub">PyPDF2<br>python-docx</div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon" style="border-color:#8B5CF6;background:#F3E8FF"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="color:#8B5CF6"><circle cx="8" cy="8" r="6.5"/><path d="M5.5 8.5l2 2 3-4"/></svg></div>
+          <div class="pipe-label">NLP Pipeline</div><div class="pipe-sub">spaCy NER<br>Pattern matching</div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon" style="border-color:var(--teal);background:var(--teal-light)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--teal)"><path d="M8 2v8M4 7l4 4 4-4"/><path d="M2 13h12"/></svg></div>
+          <div class="pipe-label">Smart Merge</div><div class="pipe-sub">Union skills<br>Max experience</div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon" style="border-color:var(--green);background:var(--green-lt)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--green)"><circle cx="8" cy="8" r="6.5"/><path d="M5 8.5l2 2 4-4"/></svg></div>
+          <div class="pipe-label">Profile Updated</div><div class="pipe-sub">Embedding<br>regenerated</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="database">
+  <div class="container">
+    <div class="sh">
+      <div class="sh-tag">Data Model</div>
+      <h2>Database Schema</h2>
+      <p>PostgreSQL 15 with pgvector. Three-layer Medallion architecture with RLS enabled on all user-facing tables.</p>
+    </div>
+    <div class="db-grid">
+      <div class="db-card">
+        <div class="db-card-head" style="background:var(--amber-lt)"><div class="db-head-dot" style="background:var(--amber)"></div>Bronze &mdash; Raw Storage</div>
+        <div class="db-card-body">
+          <div class="db-table-block">
+            <div class="db-table-name">raw_job_offers <span class="db-badge" style="background:var(--amber-lt);color:var(--amber)">Immutable</span></div>
+            <div class="db-cols">
+              <span class="db-col pk">id</span><span class="db-col">external_id</span><span class="db-col">source_id</span>
+              <span class="db-col">raw_data (JSONB)</span><span class="db-col idx">processed</span><span class="db-col">ingested_at</span>
+            </div>
+          </div>
+          <div class="db-table-block">
+            <div class="db-table-name">sources</div>
+            <div class="db-cols"><span class="db-col pk">id</span><span class="db-col">name</span><span class="db-col">base_url</span><span class="db-col">active</span></div>
+          </div>
+          <div class="db-note">Key index: <code>idx_raw_offers_unprocessed</code> on <code>processed = false</code> for incremental ETL picking.</div>
+        </div>
+      </div>
+      <div class="db-card">
+        <div class="db-card-head" style="background:var(--slate-100)"><div class="db-head-dot" style="background:var(--slate-500)"></div>Silver &mdash; Normalized</div>
+        <div class="db-card-body">
+          <div class="db-table-block">
+            <div class="db-table-name">job_offers <span class="db-badge" style="background:var(--slate-100);color:var(--slate-600)">Validated</span></div>
+            <div class="db-cols">
+              <span class="db-col pk">id</span><span class="db-col">title</span><span class="db-col">company</span>
+              <span class="db-col idx">location (FTS)</span><span class="db-col idx">required_skills (GIN)</span>
+              <span class="db-col">contract_type</span><span class="db-col">salary_min / max</span>
+              <span class="db-col">description</span><span class="db-col">published_at</span>
+            </div>
+          </div>
+          <div class="db-note">GIN index on <code>required_skills</code>, full-text index on <code>location</code>, B-Tree on <code>contract_type</code> and <code>published_at</code>.</div>
+        </div>
+      </div>
+      <div class="db-card">
+        <div class="db-card-head" style="background:#FEF9C3"><div class="db-head-dot" style="background:#CA8A04"></div>Gold &mdash; Enriched + AI</div>
+        <div class="db-card-body">
+          <div class="db-table-block">
+            <div class="db-table-name">dw_job_offers <span class="db-badge" style="background:#FEF9C3;color:#92400E">Embeddings</span></div>
+            <div class="db-cols">
+              <span class="db-col pk">id</span><span class="db-col">normalized_title</span><span class="db-col">seniority_level</span>
+              <span class="db-col">tech_stack[]</span><span class="db-col">demand_score</span><span class="db-col vec">embedding vector(384)</span>
+            </div>
+          </div>
+          <div class="db-note">HNSW index (<code>m=16, ef_construction=64</code>) on embedding column for sub-millisecond cosine search.</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+      <div class="db-card">
+        <div class="db-card-head" style="background:var(--indigo-lt)"><div class="db-head-dot" style="background:var(--indigo)"></div>Candidate Data</div>
+        <div class="db-card-body">
+          <div class="db-table-block">
+            <div class="db-table-name">candidate_profiles</div>
+            <div class="db-cols">
+              <span class="db-col pk">id</span><span class="db-col">name &middot; email &middot; title</span>
+              <span class="db-col idx">skills[]</span><span class="db-col">experience_years</span>
+              <span class="db-col">education_level</span><span class="db-col">preferred_contract_types</span>
+              <span class="db-col">profile_completeness</span><span class="db-col vec">embedding vector(384)</span>
+            </div>
+          </div>
+          <div class="db-table-block">
+            <div class="db-table-name">cv_documents</div>
+            <div class="db-cols">
+              <span class="db-col pk">id</span><span class="db-col">candidate_id</span><span class="db-col">file_path</span>
+              <span class="db-col">raw_text</span><span class="db-col idx">parsing_status</span>
+              <span class="db-col">parsed_skills[]</span><span class="db-col">parsed_at</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="db-card">
+        <div class="db-card-head" style="background:var(--teal-light)"><div class="db-head-dot" style="background:var(--teal)"></div>Operational Tables</div>
+        <div class="db-card-body">
+          <div class="db-table-block">
+            <div class="db-table-name">saved_jobs &middot; applications</div>
+            <div class="db-cols"><span class="db-col pk">id</span><span class="db-col">candidate_id</span><span class="db-col">job_id</span><span class="db-col">created_at</span></div>
+          </div>
+          <div class="db-table-block">
+            <div class="db-table-name">recommendation_history</div>
+            <div class="db-cols">
+              <span class="db-col pk">id</span><span class="db-col">candidate_id</span><span class="db-col">job_id</span>
+              <span class="db-col">score</span><span class="db-col">score_breakdown</span><span class="db-col">generated_at</span>
+            </div>
+          </div>
+          <div class="db-table-block">
+            <div class="db-table-name">pipeline_runs</div>
+            <div class="db-cols">
+              <span class="db-col pk">id</span><span class="db-col">stage</span><span class="db-col">row_count</span>
+              <span class="db-col">duration_ms</span><span class="db-col">status</span><span class="db-col">errors</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="security" class="alt">
+  <div class="container">
+    <div class="sh">
+      <div class="sh-tag">Security</div>
+      <h2>Security Implementation</h2>
+      <p>Production-grade controls across all platform layers, aligned with OWASP Top 10 mitigations.</p>
+    </div>
+    <div class="sec-grid">
+      <div class="sec-card">
+        <div class="sec-head"><div class="sec-dot" style="background:var(--indigo)"></div><div class="sec-title">JWT Authentication</div></div>
+        <div class="sec-body">HS256 signed tokens with 60-minute expiry. Issued on login, validated on every protected route via <code>Depends(get_current_user)</code>. Token refresh mechanism planned for production.</div>
+        <span class="sec-tag" style="background:var(--indigo-lt);color:var(--indigo)">python-jose</span>
+      </div>
+      <div class="sec-card">
+        <div class="sec-head"><div class="sec-dot" style="background:var(--slate-700)"></div><div class="sec-title">Password Hashing</div></div>
+        <div class="sec-body">bcrypt with 12 work-factor rounds via <code>passlib</code>. Passwords are never stored or logged in plain text. Timing-safe comparison used on verification to prevent timing attacks.</div>
+        <span class="sec-tag" style="background:var(--slate-100);color:var(--slate-700)">passlib &middot; bcrypt</span>
+      </div>
+      <div class="sec-card">
+        <div class="sec-head"><div class="sec-dot" style="background:var(--amber)"></div><div class="sec-title">Row-Level Security</div></div>
+        <div class="sec-body">Supabase RLS enabled on all user-facing tables. Candidates can only read and write their own profiles, CVs, and saved jobs. Admins bypass via service-role key only.</div>
+        <span class="sec-tag" style="background:var(--amber-lt);color:var(--amber)">Supabase RLS</span>
+      </div>
+      <div class="sec-card">
+        <div class="sec-head"><div class="sec-dot" style="background:#EF4444"></div><div class="sec-title">Rate Limiting</div></div>
+        <div class="sec-body">Per-IP rate limiting applied globally via middleware. Thresholds configurable through environment variables. Returns <code>429 Too Many Requests</code> with a <code>Retry-After</code> header.</div>
+        <span class="sec-tag" style="background:#FEE2E2;color:#B91C1C">SlowAPI Middleware</span>
+      </div>
+      <div class="sec-card">
+        <div class="sec-head"><div class="sec-dot" style="background:var(--teal)"></div><div class="sec-title">CORS Policy</div></div>
+        <div class="sec-body">Allowed origins restricted to an explicit allowlist configured via <code>ALLOWED_ORIGINS</code> environment variable. No wildcard <code>*</code> origin permitted in production environments.</div>
+        <span class="sec-tag" style="background:var(--teal-light);color:var(--teal-dark)">FastAPI CORSMiddleware</span>
+      </div>
+      <div class="sec-card">
+        <div class="sec-head"><div class="sec-dot" style="background:var(--green)"></div><div class="sec-title">Secrets Management</div></div>
+        <div class="sec-body">All configuration and secrets via environment variables. Pydantic <code>BaseSettings</code> reads from <code>.env</code> with validation at startup. No credentials in source code or version control.</div>
+        <span class="sec-tag" style="background:var(--green-lt);color:var(--green)">pydantic-settings</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tests">
+  <div class="container">
+    <div class="sh">
+      <div class="sh-tag">Quality Assurance</div>
+      <h2>Test Coverage</h2>
+      <p>Eight test modules covering unit, integration, and end-to-end scenarios. All tests are deterministic &mdash; no live API calls or time-dependent assertions.</p>
+    </div>
+    <table class="test-table">
+      <thead>
+        <tr><th>Module</th><th>Type</th><th>Scenarios Covered</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>test_api_clients.py</td><td>Unit</td><td>Adzuna, JSearch, France Travail &mdash; fetch, normalize, error handling, rate limit response</td><td><span class="status-pill" style="background:var(--green-lt);color:var(--green)">Passing</span></td></tr>
+        <tr><td>test_embeddings.py</td><td>Unit</td><td>384-dim output shape validation, batch embedding, cosine similarity range verification</td><td><span class="status-pill" style="background:var(--green-lt);color:var(--green)">Passing</span></td></tr>
+        <tr><td>test_nlp.py</td><td>Unit</td><td>spaCy skill extraction, canonical normalization, deduplication, sorted output</td><td><span class="status-pill" style="background:var(--green-lt);color:var(--green)">Passing</span></td></tr>
+        <tr><td>test_recommendations.py</td><td>Integration</td><td>Composite score computation, explainer output structure, skill gap ranking order</td><td><span class="status-pill" style="background:var(--green-lt);color:var(--green)">Passing</span></td></tr>
+        <tr><td>test_etl.py</td><td>Integration</td><td>Bronze ingest, Silver transform and Pydantic validation, Gold embedding enrichment</td><td><span class="status-pill" style="background:var(--green-lt);color:var(--green)">Passing</span></td></tr>
+        <tr><td>test_data_coherence.py</td><td>Integration</td><td>Bronze&rarr;Silver&rarr;Gold consistency, deduplication correctness, processed flag propagation</td><td><span class="status-pill" style="background:var(--green-lt);color:var(--green)">Passing</span></td></tr>
+        <tr><td>test_pipeline_integration.py</td><td>E2E</td><td>Full pipeline: ingest &rarr; transform &rarr; enrich &rarr; pgvector similarity query</td><td><span class="status-pill" style="background:var(--amber-lt);color:var(--amber)">In Progress</span></td></tr>
+        <tr><td>test_phase3.py</td><td>E2E</td><td>CV upload flow, candidate embedding generation, recommendations API response shape</td><td><span class="status-pill" style="background:var(--amber-lt);color:var(--amber)">In Progress</span></td></tr>
+      </tbody>
+    </table>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px">
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:20px 24px">
+        <div style="font-size:1.8rem;font-weight:900;color:var(--green);letter-spacing:-.03em">70%</div>
+        <div style="font-size:.82rem;color:var(--slate-500);margin-top:4px">Overall test coverage across all modules</div>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:20px 24px">
+        <div style="font-size:1.8rem;font-weight:900;color:var(--indigo);letter-spacing:-.03em">Pytest</div>
+        <div style="font-size:.82rem;color:var(--slate-500);margin-top:4px">Framework with shared fixtures in <code>conftest.py</code></div>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:20px 24px">
+        <div style="font-size:1.8rem;font-weight:900;color:var(--teal);letter-spacing:-.03em">Mocked</div>
+        <div style="font-size:.82rem;color:var(--slate-500);margin-top:4px">All external APIs mocked &mdash; fully deterministic runs</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="roadmap" class="alt">
+  <div class="container">
+    <div class="sh">
+      <div class="sh-tag">Roadmap</div>
+      <h2>Delivery Status &amp; Next Steps</h2>
+      <p>The platform core is production-ready. The following items represent ongoing work, polish, and future enhancements.</p>
+    </div>
+    <div class="roadmap-grid">
+      <div>
+        <div class="roadmap-col-head" style="color:var(--green);border-color:var(--green)">Completed</div>
+        <div class="rm-item"><div class="rm-item-title">3-Layer ETL Pipeline</div><div class="rm-item-desc">Bronze / Silver / Gold with Airflow orchestration and incremental processing via processed flag.</div><span class="rm-tag" style="background:var(--green-lt);color:var(--green)">Done</span></div>
+        <div class="rm-item"><div class="rm-item-title">Multi-Signal Matching Engine</div><div class="rm-item-desc">Composite score with explainer output, skill gap analysis, and recommendation history logging.</div><span class="rm-tag" style="background:var(--green-lt);color:var(--green)">Done</span></div>
+        <div class="rm-item"><div class="rm-item-title">CV Parsing Pipeline</div><div class="rm-item-desc">PDF/DOCX extraction, spaCy NLP enrichment, smart merge strategy with no overwrite on manual data.</div><span class="rm-tag" style="background:var(--green-lt);color:var(--green)">Done</span></div>
+        <div class="rm-item"><div class="rm-item-title">Full Authentication &amp; RBAC</div><div class="rm-item-desc">JWT, bcrypt, row-level security, rate limiting, and CORS &mdash; all layers secured end to end.</div><span class="rm-tag" style="background:var(--green-lt);color:var(--green)">Done</span></div>
+        <div class="rm-item"><div class="rm-item-title">React SPA &mdash; Core Pages</div><div class="rm-item-desc">Dashboard, Job Search, Recommendations, Skill Gap, Profile, Saved Jobs, and Auth pages.</div><span class="rm-tag" style="background:var(--green-lt);color:var(--green)">Done</span></div>
+      </div>
+      <div>
+        <div class="roadmap-col-head" style="color:var(--amber);border-color:var(--amber)">In Progress</div>
+        <div class="rm-item"><div class="rm-item-title">Admin Dashboard Pages</div><div class="rm-item-desc">Frontend admin views for managing data sources, monitoring pipeline runs, and user administration.</div><span class="rm-tag" style="background:var(--amber-lt);color:var(--amber)">Active</span></div>
+        <div class="rm-item"><div class="rm-item-title">E2E Test Completion</div><div class="rm-item-desc">Finalising test_pipeline_integration and test_phase3 &mdash; completing mocks and assertion coverage.</div><span class="rm-tag" style="background:var(--amber-lt);color:var(--amber)">Active</span></div>
+        <div class="rm-item"><div class="rm-item-title">WelcomeToTheJungle Spider</div><div class="rm-item-desc">Additional Scrapy spider for French and European job listings as a supplementary ingestion source.</div><span class="rm-tag" style="background:var(--amber-lt);color:var(--amber)">Active</span></div>
+      </div>
+      <div>
+        <div class="roadmap-col-head" style="color:var(--indigo);border-color:var(--indigo)">Planned</div>
+        <div class="rm-item"><div class="rm-item-title">Production Deployment Guide</div><div class="rm-item-desc">Documentation for VPS/cloud deployment with Nginx, SSL termination, and secrets management.</div><span class="rm-tag" style="background:var(--indigo-lt);color:var(--indigo)">Planned</span></div>
+        <div class="rm-item"><div class="rm-item-title">Performance Optimisation</div><div class="rm-item-desc">Query profiling, embedding cache tuning, Redis TTL strategy, and HNSW parameter benchmarking.</div><span class="rm-tag" style="background:var(--indigo-lt);color:var(--indigo)">Planned</span></div>
+        <div class="rm-item"><div class="rm-item-title">Email Notification System</div><div class="rm-item-desc">Alert candidates when high-score matching jobs are ingested that align with their profile.</div><span class="rm-tag" style="background:var(--indigo-lt);color:var(--indigo)">Planned</span></div>
+        <div class="rm-item"><div class="rm-item-title">Candidate Feedback Loop</div><div class="rm-item-desc">Use recommendation history interactions to fine-tune per-user signal weights over time.</div><span class="rm-tag" style="background:var(--indigo-lt);color:var(--indigo)">Planned</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top:56px">
+      <div class="sh">
+        <div class="sh-tag">API Reference</div>
+        <h2>Key Endpoints</h2>
+        <p>REST API at <code>/api/v1</code>. Paginated lists return <code>items</code>, <code>total</code>, <code>page</code>, <code>per_page</code>, <code>pages</code>.</p>
+      </div>
+      <div class="api-grid">
+        <div class="api-group">
+          <div class="api-group-head">Authentication</div>
+          <div class="api-row"><span class="method post">POST</span><span class="api-path">/api/v1/auth/register</span><span class="api-desc">Create account</span></div>
+          <div class="api-row"><span class="method post">POST</span><span class="api-path">/api/v1/auth/login</span><span class="api-desc">Get JWT token</span></div>
+          <div class="api-row"><span class="method get">GET</span><span class="api-path">/api/v1/auth/me</span><span class="api-desc">Current user</span></div>
+        </div>
+        <div class="api-group">
+          <div class="api-group-head">Jobs</div>
+          <div class="api-row"><span class="method get">GET</span><span class="api-path">/api/v1/jobs</span><span class="api-desc">List / search (paginated)</span></div>
+          <div class="api-row"><span class="method get">GET</span><span class="api-path">/api/v1/jobs/{id}</span><span class="api-desc">Job detail</span></div>
+          <div class="api-row"><span class="method post">POST</span><span class="api-path">/api/v1/jobs/{id}/save</span><span class="api-desc">Bookmark job</span></div>
+          <div class="api-row"><span class="method del">DEL</span><span class="api-path">/api/v1/jobs/{id}/save</span><span class="api-desc">Remove bookmark</span></div>
+        </div>
+        <div class="api-group">
+          <div class="api-group-head">Candidates</div>
+          <div class="api-row"><span class="method get">GET</span><span class="api-path">/api/v1/candidates/profile</span><span class="api-desc">Get own profile</span></div>
+          <div class="api-row"><span class="method put">PUT</span><span class="api-path">/api/v1/candidates/profile</span><span class="api-desc">Update profile</span></div>
+          <div class="api-row"><span class="method post">POST</span><span class="api-path">/api/v1/candidates/cv</span><span class="api-desc">Upload CV (multipart)</span></div>
+        </div>
+        <div class="api-group">
+          <div class="api-group-head">AI Endpoints</div>
+          <div class="api-row"><span class="method get">GET</span><span class="api-path">/api/v1/candidates/{id}/recommendations</span><span class="api-desc">Top 20 matches</span></div>
+          <div class="api-row"><span class="method get">GET</span><span class="api-path">/api/v1/candidates/{id}/skill-gap</span><span class="api-desc">Missing skills</span></div>
+          <div class="api-row"><span class="method get">GET</span><span class="api-path">/api/v1/search?q=...</span><span class="api-desc">Semantic search</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="../images/image-Photoroom (1).png" alt="RADIAN" />
+        <div class="footer-brand-name">RADIAN</div>
+        <div class="footer-brand-sub">AI-Powered Job Intelligence Platform</div>
+      </div>
+      <div class="footer-meta">
+        <p>Project Progress Report</p>
+        <p>April 27, 2026</p>
+        <p>Ridadata / job-intelligent</p>
+        <p>Branch: feature/amine-dev</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button class="dl-btn" onclick="window.print()">
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1v9M4.5 6.5L8 10l3.5-3.5"/><path d="M1 12.5h14"/></svg>
+  Download PDF
+</button>
+
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var fills=document.querySelectorAll('.prog-fill[data-w]');
+  var labels=document.querySelectorAll('.prog-pct[data-target]');
+  setTimeout(function(){
+    fills.forEach(function(el){el.style.width=el.getAttribute('data-w')+'%'});
+    labels.forEach(function(el){
+      var target=parseInt(el.getAttribute('data-target'),10),current=0,step=target/60;
+      var iv=setInterval(function(){
+        current=Math.min(current+step,target);
+        el.textContent=Math.round(current)+'%';
+        if(current>=target)clearInterval(iv);
+      },16);
+    });
+  },200);
+  var sections=document.querySelectorAll('section[id],header[id]');
+  var links=document.querySelectorAll('.nav-link');
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        links.forEach(function(l){l.style.color='';l.style.borderBottomColor='transparent'});
+        var a=document.querySelector('.nav-link[href="#'+e.target.id+'"]');
+        if(a){a.style.color='var(--teal)';a.style.borderBottomColor='var(--teal)'}
+      }
+    });
+  },{threshold:0.35});
+  sections.forEach(function(s){obs.observe(s)});
+});
+</script>
+</body>
+</html>
