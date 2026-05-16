@@ -32,6 +32,8 @@ class Settings(BaseSettings):
 
     supabase_url: str
     supabase_key: str
+    database_mode: str = "supabase"
+    local_database_url: str = "postgresql://postgres:postgres@localhost:5432/job_intelligent"
     redis_url: str = "redis://localhost:6379/0"
     sbert_model: str = "all-MiniLM-L6-v2"
     spacy_model: str = "fr_core_news_md"
@@ -53,6 +55,15 @@ class Settings(BaseSettings):
             logging.getLogger(__name__).warning(
                 "JWT_SECRET_KEY is using the insecure default — set it via environment variable"
             )
+        return v
+
+    @field_validator("database_mode")
+    @classmethod
+    def _validate_database_mode(cls, v: str) -> str:
+        """Validate configured database mode."""
+        allowed = {"supabase", "local"}
+        if v not in allowed:
+            raise ValueError(f"DATABASE_MODE must be one of: {', '.join(sorted(allowed))}")
         return v
 
     class Config:
