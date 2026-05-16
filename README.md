@@ -200,6 +200,12 @@ LOCAL_DB_NAME=job_intelligent
 powershell -ExecutionPolicy Bypass -File scripts/open_db_ui.ps1
 ```
 
+Local Supabase-like UI:
+- `http://localhost:54323` (Supabase Studio)
+
+Fallback DB UI:
+- `http://localhost:8081` (Adminer)
+
 3. Run migration (PowerShell):
 
 ```powershell

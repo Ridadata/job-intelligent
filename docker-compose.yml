@@ -60,6 +60,46 @@ services:
       app-db:
         condition: service_healthy
 
+  # ── Supabase-like local UI (Studio + Postgres Meta) ──────────────────────
+  supabase-meta:
+    image: supabase/postgres-meta:v0.96.3
+    environment:
+      PG_META_PORT: 8080
+      PG_META_DB_HOST: app-db
+      PG_META_DB_PORT: 5432
+      PG_META_DB_NAME: ${LOCAL_DB_NAME:-job_intelligent}
+      PG_META_DB_USER: ${LOCAL_DB_USER:-postgres}
+      PG_META_DB_PASSWORD: ${LOCAL_DB_PASSWORD:-postgres}
+      PG_META_DB_SSL_MODE: disable
+      CRYPTO_KEY: ${PG_META_CRYPTO_KEY:-local-dev-meta-crypto-key-32chars}
+    depends_on:
+      app-db:
+        condition: service_healthy
+
+  supabase-studio:
+    image: supabase/studio:2026.04.27-sha-5f60601
+    ports:
+      - "54323:3000"
+    environment:
+      HOSTNAME: "0.0.0.0"
+      STUDIO_PG_META_URL: http://supabase-meta:8080
+      POSTGRES_HOST: app-db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${LOCAL_DB_NAME:-job_intelligent}
+      POSTGRES_USER: ${LOCAL_DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${LOCAL_DB_PASSWORD:-postgres}
+      DEFAULT_ORGANIZATION_NAME: Job Intelligent
+      DEFAULT_PROJECT_NAME: local
+      SUPABASE_URL: http://localhost
+      SUPABASE_PUBLIC_URL: http://localhost
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzE2MjQwMDAwLCJleHAiOjIwMzE3NzYwMDB9.e30.j9x2xh3V6M7xYBf8v16G8N2qJQ1yxzvH2pGh5Q7qUqc}
+      SUPABASE_SERVICE_KEY: ${SUPABASE_SERVICE_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIiwiaXNzIjoic3VwYWJhc2UiLCJpYXQiOjE3MTYyNDAwMDAsImV4cCI6MjAzMTc3NjAwMH0.e30.8Jgq3v9wqgR7Wcq1vS6w2t5zQ9a4WzT8u9yM7wK6J4I}
+      AUTH_JWT_SECRET: ${SUPABASE_JWT_SECRET:-super-secret-jwt-token-with-at-least-32-chars}
+      NEXT_PUBLIC_ENABLE_LOGS: "false"
+    depends_on:
+      supabase-meta:
+        condition: service_started
+
   # ── Airflow metadata database ─────────────────────────────────────────────
   airflow-db:
     image: postgres:15-alpine

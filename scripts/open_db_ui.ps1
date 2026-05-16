@@ -14,14 +14,17 @@ if (-not (Test-Path $helperPath)) {
 Import-ProjectDotEnv -ProjectRoot $projectRoot -EnvFile $EnvFile
 
 Set-Location $projectRoot
-docker compose up -d --wait app-db db-ui | Out-Null
+docker compose up -d --wait app-db supabase-meta supabase-studio db-ui | Out-Null
 
 $localDbName = if ($env:LOCAL_DB_NAME) { $env:LOCAL_DB_NAME } else { "job_intelligent" }
 $localUser = if ($env:LOCAL_DB_USER) { $env:LOCAL_DB_USER } else { "postgres" }
 
+$studioUrl = "http://localhost:54323"
+Write-Host "Opening local Supabase Studio UI: $studioUrl" -ForegroundColor Green
+Start-Process $studioUrl
+
 $adminerUrl = "http://localhost:8081/?pgsql=app-db&username=$localUser&db=$localDbName"
-Write-Host "Opening local DB UI (Adminer): $adminerUrl" -ForegroundColor Green
-Start-Process $adminerUrl
+Write-Host "Fallback local DB UI (Adminer): $adminerUrl" -ForegroundColor Yellow
 
 if (-not [string]::IsNullOrWhiteSpace($env:SUPABASE_URL)) {
     if ($env:SUPABASE_URL -match '^https://([^.]+)\.supabase\.co/?$') {
