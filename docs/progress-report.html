@@ -271,14 +271,20 @@
     <div class="nav-divider"></div>
     <div class="nav-links">
       <a class="nav-link" href="#overview">Overview</a>
+      <a class="nav-link" href="#mission">Mission</a>
+      <a class="nav-link" href="#personas">Users</a>
       <a class="nav-link" href="#progress">Progress</a>
       <a class="nav-link" href="#stack">Stack</a>
       <a class="nav-link" href="#architecture">Architecture</a>
       <a class="nav-link" href="#modules">Modules</a>
+      <a class="nav-link" href="#features">Features</a>
       <a class="nav-link" href="#ai">AI Engine</a>
+      <a class="nav-link" href="#sources">Data Sources</a>
       <a class="nav-link" href="#database">Database</a>
+      <a class="nav-link" href="#workflow">Workflows</a>
       <a class="nav-link" href="#security">Security</a>
       <a class="nav-link" href="#tests">Tests</a>
+      <a class="nav-link" href="#analytics">Analytics</a>
       <a class="nav-link" href="#roadmap">Roadmap</a>
     </div>
   </div>
@@ -341,7 +347,7 @@
     <div class="sh">
       <div class="sh-tag">Executive Summary</div>
       <h2>Platform Overview</h2>
-      <p>Key delivery metrics across the RADIAN platform as of April 27, 2026.</p>
+      <p>RADIAN is a production-grade SaaS platform that aggregates data-domain job listings from five sources, normalises them into a single schema, enriches them with NLP-extracted skills and 384-dimensional semantic embeddings, and matches them to candidate profiles through an explainable multi-signal scoring algorithm. The numbers below summarise our delivery position as of April 27, 2026 &mdash; eight weeks after kick-off.</p>
     </div>
     <div class="kpi-grid">
       <div class="kpi-cell">
@@ -390,12 +396,120 @@
   </div>
 </section>
 
+<section id="mission" class="alt">
+  <div class="container">
+    <div class="sh">
+      <div class="sh-tag">Mission &amp; Vision</div>
+      <h2>What We Are Building</h2>
+      <p>RADIAN solves a specific, recurring pain in the data-job market: opportunities are scattered across dozens of disconnected job boards, and matching them to a candidate&rsquo;s real skill profile requires hours of manual review.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start">
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:32px">
+        <h3 style="margin-bottom:14px">The Problem</h3>
+        <p style="font-size:.88rem;margin-bottom:16px">Data professionals (engineers, scientists, analysts, ML engineers) face fragmented job discovery. France Travail shows public-sector listings, Adzuna covers international markets, Rekrute and Emploi.ma dominate Morocco, and platforms like LinkedIn or Indeed surface a noisy, broadly-targeted feed. There is no single curated source for the data domain.</p>
+        <p style="font-size:.88rem;margin-bottom:16px">Worse, even when listings are found, candidates have no objective way to know <em>how well</em> a job actually matches their profile, what skills they are missing for senior roles, or which technologies are growing in demand. CV-to-job alignment is left to keyword search and intuition.</p>
+        <h3 style="margin:24px 0 14px">Our Solution</h3>
+        <p style="font-size:.88rem;margin-bottom:14px">RADIAN ingests jobs from multiple structured APIs and scraping sources, filters them down to the data domain through a canonical taxonomy, and enriches every offer with NLP-extracted skills and a 384-dimensional semantic embedding. Candidates upload a CV or fill a profile, the system parses and embeds it, and a multi-signal scorer produces explainable, ranked recommendations &mdash; with a clear breakdown of <code>matched_skills</code>, <code>missing_skills</code>, and a per-signal <code>score_breakdown</code>.</p>
+        <p style="font-size:.88rem">Crucially, the platform is <strong>transparent by design</strong>. Every recommendation answers the question &ldquo;why was this job suggested to me?&rdquo; with concrete, auditable numbers &mdash; not a black-box neural ranking.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:22px 24px">
+          <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:8px">Goal 01</div>
+          <h4 style="margin-bottom:6px">Centralise the Data Job Market</h4>
+          <p style="font-size:.82rem">A single curated feed of data-domain opportunities &mdash; Engineer, Scientist, Analyst, ML, Cloud &mdash; from 5+ sources updated every 6 hours.</p>
+        </div>
+        <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:22px 24px">
+          <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--indigo);margin-bottom:8px">Goal 02</div>
+          <h4 style="margin-bottom:6px">Explainable AI Matching</h4>
+          <p style="font-size:.82rem">Every recommendation comes with the score, the matched/missing skills, and the per-signal breakdown &mdash; no black-box ranking.</p>
+        </div>
+        <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:22px 24px">
+          <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8B5CF6;margin-bottom:8px">Goal 03</div>
+          <h4 style="margin-bottom:6px">Career Growth Insight</h4>
+          <p style="font-size:.82rem">A skill-gap analyser tells candidates exactly which technologies the market wants but they don&rsquo;t yet have, ranked by frequency.</p>
+        </div>
+        <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:22px 24px">
+          <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:8px">Goal 04</div>
+          <h4 style="margin-bottom:6px">Market Intelligence</h4>
+          <p style="font-size:.82rem">A 4-page PowerBI dashboard exposes salary distribution, skill demand, seniority mix, and pipeline health for analysts and decision-makers.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="personas">
+  <div class="container">
+    <div class="sh">
+      <div class="sh-tag">Target Users</div>
+      <h2>Who Uses RADIAN</h2>
+      <p>The platform serves three distinct personas, each with their own page set, permissions, and workflow.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);overflow:hidden">
+        <div style="background:var(--indigo-lt);padding:18px 22px;border-bottom:1px solid var(--slate-200)">
+          <div style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--indigo);margin-bottom:6px">Persona 01 &middot; Primary</div>
+          <h3 style="color:var(--slate-900);font-size:1.05rem">Data Professional Candidate</h3>
+          <p style="color:var(--slate-600);font-size:.78rem;margin-top:4px">Engineers, scientists, analysts, ML practitioners</p>
+        </div>
+        <div style="padding:20px 22px">
+          <p style="font-size:.82rem;margin-bottom:14px">Logs in to discover relevant data-domain roles, uploads a CV to auto-populate their profile, and consumes ranked recommendations with full score transparency.</p>
+          <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--slate-500);margin-bottom:8px">Pages they use</div>
+          <ul class="mod-features">
+            <li>Dashboard &mdash; KPIs and top match overview</li>
+            <li>Job Search &mdash; filtered listings</li>
+            <li>Recommendations &mdash; AI-ranked matches</li>
+            <li>Skill Gap &mdash; missing skills analysis</li>
+            <li>Profile &mdash; CRUD + CV upload</li>
+            <li>Saved Jobs &mdash; bookmarked listings</li>
+          </ul>
+        </div>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);overflow:hidden">
+        <div style="background:#FEF3C7;padding:18px 22px;border-bottom:1px solid var(--slate-200)">
+          <div style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:6px">Persona 02</div>
+          <h3 style="color:var(--slate-900);font-size:1.05rem">Platform Administrator</h3>
+          <p style="color:var(--slate-600);font-size:.78rem;margin-top:4px">Operations and data-platform owners</p>
+        </div>
+        <div style="padding:20px 22px">
+          <p style="font-size:.82rem;margin-bottom:14px">Monitors data ingestion health, manages user accounts, reviews pipeline runs, and oversees data quality across the medallion layers. Has elevated permissions through the <code>admin</code> role.</p>
+          <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--slate-500);margin-bottom:8px">Pages they use</div>
+          <ul class="mod-features">
+            <li>Admin Dashboard &mdash; navigation hub</li>
+            <li>Pipeline Status &mdash; ETL run history</li>
+            <li>User Management &mdash; account &amp; role admin</li>
+            <li>Data Overview &mdash; source statistics</li>
+            <li>All candidate pages (read-only support)</li>
+          </ul>
+        </div>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);overflow:hidden">
+        <div style="background:var(--teal-light);padding:18px 22px;border-bottom:1px solid var(--slate-200)">
+          <div style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-dark);margin-bottom:6px">Persona 03</div>
+          <h3 style="color:var(--slate-900);font-size:1.05rem">Market Analyst &middot; Decision Maker</h3>
+          <p style="color:var(--slate-600);font-size:.78rem;margin-top:4px">HR, talent acquisition, recruiters</p>
+        </div>
+        <div style="padding:20px 22px">
+          <p style="font-size:.82rem;margin-bottom:14px">Consumes the PowerBI dashboards (4 pages) to make data-driven decisions on hiring strategy, salary benchmarking, in-demand skills, and the geographic distribution of opportunities. Read-only consumer of the analytics layer.</p>
+          <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--slate-500);margin-bottom:8px">Pages they use</div>
+          <ul class="mod-features">
+            <li>PowerBI &mdash; Market Overview</li>
+            <li>PowerBI &mdash; Skills &amp; Seniority</li>
+            <li>PowerBI &mdash; Salary Analysis</li>
+            <li>PowerBI &mdash; Pipeline &amp; Quality</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="progress" class="alt">
   <div class="container">
     <div class="sh">
       <div class="sh-tag">Completion Status</div>
       <h2>Module Progress</h2>
-      <p>Completion percentage per engineering module, assessed against full production requirements.</p>
+      <p>Completion percentage per engineering module, assessed against full production requirements. Percentages reflect the ratio of implemented features to the planned production scope, not raw code volume. AI Services and Infrastructure are at 100% &mdash; Backend API at 95% pending the token refresh endpoint, Frontend at 80% pending admin live wiring, ETL at 85% pending the WelcomeToTheJungle spider.</p>
     </div>
     <div class="progress-list">
       <div class="progress-row">
@@ -437,7 +551,7 @@
     <div class="sh">
       <div class="sh-tag">Technology Stack</div>
       <h2>Tools &amp; Frameworks</h2>
-      <p>Production-grade open-source stack selected for performance, developer experience, and operational cost.</p>
+      <p>The stack is intentionally pragmatic: every layer uses mainstream, open-source, well-documented tools chosen for performance, developer experience, and zero licensing cost. No vendor lock-in &mdash; the entire platform can be migrated off Supabase to self-hosted PostgreSQL with a single DSN change.</p>
     </div>
     <div class="stack-grid">
       <div class="stack-card">
@@ -525,7 +639,7 @@
     <div class="sh">
       <div class="sh-tag">System Design</div>
       <h2>Platform Architecture</h2>
-      <p>A clean monolithic architecture following the Medallion data pattern with strict 4-layer separation of concerns.</p>
+      <p>RADIAN is built as a <strong>modular monolith</strong> &mdash; not a microservices mesh. We deliberately kept the system simple, deployable on a single host with Docker Compose, while still enforcing strict architectural boundaries. Data flows through four well-defined layers: ingestion brings in raw offers from APIs and scrapers, ETL transforms them through Bronze / Silver / Gold, storage holds the canonical state in PostgreSQL with pgvector, and the exposition layer serves the React SPA via a 7-router FastAPI backend. No layer ever skips its neighbour.</p>
     </div>
     <div class="arch-img-wrap">
       <img src="../images/jobs_project_archetecture.png" alt="RADIAN System Architecture Diagram" />
@@ -564,7 +678,7 @@
     <div class="sh">
       <div class="sh-tag">Engineering Modules</div>
       <h2>Implemented Components</h2>
-      <p>Detailed breakdown of every implemented module, its sub-components, and current delivery status.</p>
+      <p>RADIAN is split into six engineering modules &mdash; Backend API, Frontend SPA, ETL Pipeline, AI Services, Test Suite, and Infrastructure. Every module owns a clear responsibility, exposes a stable interface, and is independently testable. Below is a breakdown of every implemented sub-component and its current delivery status.</p>
     </div>
     <div class="modules-grid">
       <div class="mod-card">
@@ -657,12 +771,79 @@
   </div>
 </section>
 
+<section id="features">
+  <div class="container">
+    <div class="sh">
+      <div class="sh-tag">Product Surface</div>
+      <h2>Frontend Pages &amp; Features</h2>
+      <p>The React SPA exposes 11 pages across three role-scoped surfaces: candidate (8 pages), admin (3 pages), and public (Landing + Auth). Every page handles loading skeletons, error boundaries, and empty states &mdash; no broken intermediate UI.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:22px 26px">
+        <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:6px">Page 01</div>
+        <h4 style="margin-bottom:6px">Landing</h4>
+        <p style="font-size:.82rem">Public marketing page presenting the platform, key statistics, and conversion paths to register or log in. First impression for every visitor.</p>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:22px 26px">
+        <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:6px">Page 02</div>
+        <h4 style="margin-bottom:6px">Login &amp; Register</h4>
+        <p style="font-size:.82rem">Auth pages with form validation, error feedback, and JWT-token storage in Zustand. Redirects on success based on role (candidate vs admin).</p>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:22px 26px">
+        <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--indigo);margin-bottom:6px">Page 03</div>
+        <h4 style="margin-bottom:6px">Dashboard</h4>
+        <p style="font-size:.82rem">Personalised KPI tiles (matched jobs count, profile completeness, top match score, saved jobs), top 5 recommendations preview, and quick links to deeper pages.</p>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:22px 26px">
+        <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--indigo);margin-bottom:6px">Page 04</div>
+        <h4 style="margin-bottom:6px">Job Search</h4>
+        <p style="font-size:.82rem">Filterable, paginated job list. Filters: title query, location, contract type, seniority, skills (multi-select), date range. Server-side pagination with TanStack Query caching.</p>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:22px 26px">
+        <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--indigo);margin-bottom:6px">Page 05</div>
+        <h4 style="margin-bottom:6px">Job Detail</h4>
+        <p style="font-size:.82rem">Full description, required skills with chip rendering, salary range, contract terms, source link, and Save / Apply actions. Tracks views for analytics.</p>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:22px 26px">
+        <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8B5CF6;margin-bottom:6px">Page 06</div>
+        <h4 style="margin-bottom:6px">Recommendations</h4>
+        <p style="font-size:.82rem">AI-ranked top 20 jobs for the logged-in candidate. Each card shows the composite score, matched skills (green chips), missing skills (amber chips), and an expandable score breakdown.</p>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:22px 26px">
+        <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8B5CF6;margin-bottom:6px">Page 07</div>
+        <h4 style="margin-bottom:6px">Skill Gap Analysis</h4>
+        <p style="font-size:.82rem">Ranked list of skills the candidate is missing, weighted by demand frequency in the matched job pool. Each missing skill shows job count, sample employers, and suggested learning resources.</p>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:22px 26px">
+        <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:6px">Page 08</div>
+        <h4 style="margin-bottom:6px">Profile</h4>
+        <p style="font-size:.82rem">CRUD on candidate profile (skills, title, experience, education, salary expectation, contract preferences, location). Drag-and-drop CV upload (PDF / DOCX, 5 MB cap) triggers async parsing and profile auto-enrichment.</p>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:22px 26px">
+        <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:6px">Page 09</div>
+        <h4 style="margin-bottom:6px">Saved Jobs</h4>
+        <p style="font-size:.82rem">Bookmarked listings with quick filters and remove action. Persists across sessions through the <code>saved_jobs</code> table.</p>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:22px 26px">
+        <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:6px">Admin 01</div>
+        <h4 style="margin-bottom:6px">Admin Dashboard &amp; Pipeline Status</h4>
+        <p style="font-size:.82rem">Operational overview of the data platform: row counts per layer (Bronze / Silver / Gold), last successful pipeline run, errors over the last 24 hours, and per-source ingestion volume.</p>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:22px 26px">
+        <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:6px">Admin 02</div>
+        <h4 style="margin-bottom:6px">User Management</h4>
+        <p style="font-size:.82rem">Account list with role assignment, account activation / deactivation, and search. Restricted by <code>require_role("admin")</code> dependency on the API side.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="ai" class="alt">
   <div class="container">
     <div class="sh">
       <div class="sh-tag">AI Engine</div>
       <h2>Matching &amp; Recommendation System</h2>
-      <p>A multi-signal composite scoring algorithm combining semantic similarity with structured business logic for transparent, explainable recommendations.</p>
+      <p>The AI engine is the heart of RADIAN. It answers two symmetric questions: &ldquo;which jobs best fit this candidate?&rdquo; and &ldquo;which candidates best fit this job?&rdquo;. The answer is a single composite score combining four independent signals &mdash; skill overlap, semantic embedding similarity, seniority alignment, and location preference &mdash; each with a defensible weight chosen for explainability rather than raw accuracy. Every recommendation comes with a full breakdown so users always know <em>why</em> a job was suggested.</p>
     </div>
     <div class="ai-grid">
       <div class="ai-dark">
@@ -733,12 +914,58 @@ score =<br>
   </div>
 </section>
 
+<section id="sources">
+  <div class="container">
+    <div class="sh">
+      <div class="sh-tag">Data Ingestion</div>
+      <h2>Job Data Sources</h2>
+      <p>RADIAN follows a <strong>hybrid ingestion strategy</strong>: structured public APIs are primary because they are reliable, schema-stable, and rate-limited transparently. Web scraping fills coverage gaps for boards that lack APIs &mdash; especially in the Maghreb. Every source, API or scraper, normalises its output to a single canonical <code>JobItem</code> schema before Bronze ingestion, so the downstream pipeline is fully source-agnostic.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:18px">
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:24px 28px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span class="status-pill" style="background:var(--teal-light);color:var(--teal-dark)">Primary &middot; API</span><h4 style="margin:0">Adzuna</h4></div>
+        <p style="font-size:.85rem;margin-bottom:10px">International coverage with a generous free tier. Provides title, company, salary, location, contract type, and source URL through a clean REST endpoint with stable pagination.</p>
+        <div style="font-size:.75rem;color:var(--slate-500)">Client: <code>ingestion/api_clients/adzuna_client.py</code></div>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:24px 28px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span class="status-pill" style="background:var(--teal-light);color:var(--teal-dark)">Primary &middot; API</span><h4 style="margin:0">JSearch (RapidAPI)</h4></div>
+        <p style="font-size:.85rem;margin-bottom:10px">Aggregator API surfacing listings across LinkedIn, Indeed, ZipRecruiter, and Glassdoor in a single normalised format. Broad coverage with built-in deduplication.</p>
+        <div style="font-size:.75rem;color:var(--slate-500)">Client: <code>ingestion/api_clients/jsearch_client.py</code></div>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:24px 28px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span class="status-pill" style="background:var(--teal-light);color:var(--teal-dark)">Primary &middot; API</span><h4 style="margin:0">France Travail</h4></div>
+        <p style="font-size:.85rem;margin-bottom:10px">Official French public-employment API (formerly P&ocirc;le Emploi). Authoritative source for French listings with rich metadata: ROME codes, contract details, and accessibility flags.</p>
+        <div style="font-size:.75rem;color:var(--slate-500)">Client: <code>ingestion/api_clients/france_travail_client.py</code></div>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:24px 28px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span class="status-pill" style="background:var(--amber-lt);color:var(--amber)">Fallback &middot; Scraper</span><h4 style="margin:0">Rekrute</h4></div>
+        <p style="font-size:.85rem;margin-bottom:10px">Largest job board in Morocco. Scrapy spider with custom rate limiting, robots.txt compliance, and resilient HTML selectors against minor layout changes.</p>
+        <div style="font-size:.75rem;color:var(--slate-500)">Spider: <code>scrapers/job_scrapers/spiders/rekrute_spider.py</code></div>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:24px 28px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span class="status-pill" style="background:var(--amber-lt);color:var(--amber)">Fallback &middot; Scraper</span><h4 style="margin:0">Emploi.ma</h4></div>
+        <p style="font-size:.85rem;margin-bottom:10px">Major Moroccan and African job portal. Complementary coverage to Rekrute with different employer mix &mdash; often surfaces SME and government opportunities.</p>
+        <div style="font-size:.75rem;color:var(--slate-500)">Spider: <code>scrapers/job_scrapers/spiders/emploi_ma_spider.py</code></div>
+      </div>
+      <div style="background:var(--white);border:1px dashed var(--slate-300);border-radius:var(--radius);padding:24px 28px;opacity:.85">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span class="status-pill" style="background:var(--slate-100);color:var(--slate-600)">Planned</span><h4 style="margin:0">WelcomeToTheJungle</h4></div>
+        <p style="font-size:.85rem;margin-bottom:10px">Premium European tech-job board. Spider scaffolded; final selectors and pagination strategy pending validation. Will extend French and EU coverage.</p>
+        <div style="font-size:.75rem;color:var(--slate-500)">Spider: <em>(in progress)</em></div>
+      </div>
+    </div>
+    <div style="margin-top:24px;background:var(--slate-100);border-left:3px solid var(--indigo);padding:18px 24px;border-radius:8px">
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--indigo);margin-bottom:6px">Normalisation Rule</div>
+      <p style="font-size:.85rem;margin:0">All sources &mdash; API and scraper &mdash; emit objects matching the shared <code>JobItem</code> dataclass: <code>external_id</code>, <code>title</code>, <code>company</code>, <code>location</code>, <code>description</code>, <code>contract_type</code>, <code>url</code>, <code>published_at</code>. The <code>external_id</code> is the deduplication key. The downstream Bronze&rarr;Silver&rarr;Gold pipeline never branches on source.</p>
+    </div>
+  </div>
+</section>
+
 <section id="database">
   <div class="container">
     <div class="sh">
       <div class="sh-tag">Data Model</div>
       <h2>Database Schema</h2>
-      <p>PostgreSQL 15 with pgvector. Three-layer Medallion architecture with RLS enabled on all user-facing tables.</p>
+      <p>PostgreSQL 15 with the pgvector extension is the single source of truth for the entire platform. The schema follows the Medallion pattern: Bronze captures raw immutable JSON from every ingestion source, Silver holds normalised and Pydantic-validated business records, and Gold stores enriched rows with NLP-extracted skills and 384-dimensional embeddings. Candidate, operational, and audit tables sit alongside the medallion layers, all protected by row-level security.</p>
     </div>
     <div class="db-grid">
       <div class="db-card">
@@ -837,12 +1064,53 @@ score =<br>
   </div>
 </section>
 
+<section id="workflow" class="alt">
+  <div class="container">
+    <div class="sh">
+      <div class="sh-tag">End-to-End Flows</div>
+      <h2>User Workflows</h2>
+      <p>Three core workflows describe how data and users move through RADIAN: the candidate journey from registration to recommendations, the data journey from source to Gold, and the operational journey for administrators.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr;gap:20px">
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:26px 30px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><div style="width:36px;height:36px;border-radius:8px;background:var(--indigo-lt);color:var(--indigo);display:flex;align-items:center;justify-content:center;font-weight:800">1</div><h3 style="margin:0">Candidate Journey</h3></div>
+        <ol style="font-size:.86rem;line-height:1.8;padding-left:22px;margin:0">
+          <li><strong>Register</strong> &mdash; <code>POST /api/v1/auth/register</code> creates an account, hashes password with bcrypt-12, returns a JWT.</li>
+          <li><strong>Complete profile</strong> &mdash; user fills the profile form (skills, title, experience, education, location, salary expectation). Profile-completeness percentage is auto-computed.</li>
+          <li><strong>Upload CV</strong> (optional) &mdash; <code>POST /api/v1/candidates/cv</code> accepts PDF / DOCX up to 5 MB. Background task extracts text, runs spaCy NER, merges parsed skills into the profile (union, never overwrite), regenerates the candidate embedding.</li>
+          <li><strong>Get recommendations</strong> &mdash; <code>GET /api/v1/candidates/{id}/recommendations</code> returns the top 20 ranked jobs with full score breakdown and matched/missing skills.</li>
+          <li><strong>Explore &amp; save</strong> &mdash; the candidate filters Job Search, opens Job Detail, saves to <code>saved_jobs</code>, and reviews the Skill Gap analysis to plan upskilling.</li>
+        </ol>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:26px 30px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><div style="width:36px;height:36px;border-radius:8px;background:var(--amber-lt);color:var(--amber);display:flex;align-items:center;justify-content:center;font-weight:800">2</div><h3 style="margin:0">Data Journey (every 6 hours)</h3></div>
+        <ol style="font-size:.86rem;line-height:1.8;padding-left:22px;margin:0">
+          <li><strong>Ingest</strong> &mdash; Airflow DAG triggers all 3 API clients in parallel and the 2 Scrapy spiders via subprocess. Each emits <code>JobItem</code> records.</li>
+          <li><strong>Bronze write</strong> &mdash; raw JSON inserted into <code>raw_job_offers</code> with <code>processed = false</code>. Upsert on <code>external_id</code> resets the flag for re-processing on update.</li>
+          <li><strong>Silver transform</strong> &mdash; unprocessed Bronze rows are pulled, validated against the Pydantic <code>JobOffer</code> schema, filtered through the data-domain taxonomy (keep only data-related titles), and written to <code>job_offers</code>.</li>
+          <li><strong>Gold enrichment</strong> &mdash; spaCy extracts and normalises skills against the canonical dictionary, MiniLM batches embeddings, the demand-score calculator runs, and rows land in <code>dw_job_offers</code> with the <code>vector(384)</code> column.</li>
+          <li><strong>Audit</strong> &mdash; <code>pipeline_runs</code> records stage, row count, duration, status, and any errors. Materialised analytics views are refreshed.</li>
+        </ol>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:26px 30px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><div style="width:36px;height:36px;border-radius:8px;background:var(--teal-light);color:var(--teal-dark);display:flex;align-items:center;justify-content:center;font-weight:800">3</div><h3 style="margin:0">Admin Operations</h3></div>
+        <ol style="font-size:.86rem;line-height:1.8;padding-left:22px;margin:0">
+          <li><strong>Monitor</strong> &mdash; Pipeline Status page reads <code>pipeline_runs</code> and surfaces last 24 h of run health, with error drill-down.</li>
+          <li><strong>Investigate</strong> &mdash; Admin Dashboard exposes Bronze / Silver / Gold row deltas; sudden drops trigger investigation into a specific source.</li>
+          <li><strong>Manage users</strong> &mdash; account activation / deactivation and role assignment via the User Management page.</li>
+          <li><strong>Trigger backfills</strong> &mdash; Airflow UI allows manual DAG runs with custom date ranges if a source recovers from outage.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="security" class="alt">
   <div class="container">
     <div class="sh">
       <div class="sh-tag">Security</div>
       <h2>Security Implementation</h2>
-      <p>Production-grade controls across all platform layers, aligned with OWASP Top 10 mitigations.</p>
+      <p>Security was treated as a first-class engineering concern, not an afterthought. Every threat in the OWASP Top 10 has at least one mitigating control: broken access control is addressed by JWT plus row-level security, cryptographic failures by bcrypt-12 and HS256, injection by parameterised Supabase queries, identification &amp; authentication failures by per-IP rate limiting, and security misconfiguration by Pydantic-validated settings loaded from environment variables only.</p>
     </div>
     <div class="sec-grid">
       <div class="sec-card">
@@ -884,7 +1152,7 @@ score =<br>
     <div class="sh">
       <div class="sh-tag">Quality Assurance</div>
       <h2>Test Coverage</h2>
-      <p>Eight test modules covering unit, integration, and end-to-end scenarios. All tests are deterministic &mdash; no live API calls or time-dependent assertions.</p>
+      <p>Our testing philosophy is simple: every test must be deterministic and runnable offline. No live HTTP calls, no <code>datetime.now()</code> assertions, no random seeds without fixtures. External services (Supabase, OpenAI-style APIs, Adzuna, JSearch, France Travail) are mocked at the boundary; embeddings are tested for shape and similarity invariants, not absolute float values. The result is a CI-friendly suite that completes in under two minutes.</p>
     </div>
     <table class="test-table">
       <thead>
@@ -918,12 +1186,52 @@ score =<br>
   </div>
 </section>
 
-<section id="roadmap" class="alt">
+<section id="analytics" class="alt">
+  <div class="container">
+    <div class="sh">
+      <div class="sh-tag">Business Intelligence</div>
+      <h2>PowerBI Analytics Layer</h2>
+      <p>Beyond the candidate-facing application, RADIAN exposes a 4-page PowerBI dashboard that turns the Gold layer into actionable market intelligence. CSV exports are produced from materialised views and refreshed on every successful pipeline run, giving analysts a near-real-time view of the data-job market.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px">
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:24px 28px">
+        <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--indigo);margin-bottom:6px">Page 01</div>
+        <h4 style="margin-bottom:8px">Market Overview</h4>
+        <p style="font-size:.84rem;margin-bottom:8px">Total active offers, distribution by source, daily ingestion volume, geographic heatmap, and contract-type mix.</p>
+        <div style="font-size:.72rem;color:var(--slate-500)">DAX measures: <code>Total Active Jobs</code>, <code>Jobs Per Source</code>, <code>Daily Volume Trend</code>.</div>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:24px 28px">
+        <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8B5CF6;margin-bottom:6px">Page 02</div>
+        <h4 style="margin-bottom:8px">Skills &amp; Seniority</h4>
+        <p style="font-size:.84rem;margin-bottom:8px">Top 30 in-demand skills, skill co-occurrence matrix, seniority-level distribution per technology, and monthly skill trend lines.</p>
+        <div style="font-size:.72rem;color:var(--slate-500)">DAX measures: <code>Top Skills Demand</code>, <code>Skill Growth Rate</code>, <code>Seniority Mix %</code>.</div>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:24px 28px">
+        <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:6px">Page 03</div>
+        <h4 style="margin-bottom:8px">Salary Analysis</h4>
+        <p style="font-size:.84rem;margin-bottom:8px">Salary distribution by role, country, and experience band. Box plots for senior vs junior. Premium-skill compensation deltas.</p>
+        <div style="font-size:.72rem;color:var(--slate-500)">DAX measures: <code>Median Salary by Role</code>, <code>Salary Premium per Skill</code>, <code>Country Comparison</code>.</div>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);padding:24px 28px">
+        <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:6px">Page 04</div>
+        <h4 style="margin-bottom:8px">Pipeline &amp; Quality</h4>
+        <p style="font-size:.84rem;margin-bottom:8px">Pipeline run history, error rate per source, Bronze&rarr;Silver yield ratio, Silver&rarr;Gold enrichment success, and data-quality score over time.</p>
+        <div style="font-size:.72rem;color:var(--slate-500)">DAX measures: <code>Pipeline Success Rate</code>, <code>Source Error Rate</code>, <code>Quality Score</code>.</div>
+      </div>
+    </div>
+    <div style="margin-top:20px;background:var(--slate-100);border-left:3px solid var(--teal);padding:18px 24px;border-radius:8px">
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-dark);margin-bottom:6px">Refresh Strategy</div>
+      <p style="font-size:.85rem;margin:0">11 CSV files are produced by <code>powerbi/export_to_csv.py</code> from materialised views in PostgreSQL after each successful Airflow run. PowerBI Desktop refreshes from the <code>powerbi/exports/</code> folder; production deployment will move to scheduled cloud refresh against the database directly.</p>
+    </div>
+  </div>
+</section>
+
+<section id="roadmap">
   <div class="container">
     <div class="sh">
       <div class="sh-tag">Roadmap</div>
       <h2>Delivery Status &amp; Next Steps</h2>
-      <p>The platform core is production-ready. The following items represent ongoing work, polish, and future enhancements.</p>
+      <p>The platform core &mdash; ingestion, ETL, AI matching, authentication, and the candidate-facing SPA &mdash; is production-ready. The remaining work falls into three buckets: <strong>active polish</strong> (admin pages, E2E test completion, the WelcomeToTheJungle spider), <strong>planned hardening</strong> (deployment guide, performance tuning, email notifications), and <strong>future enhancements</strong> driven by usage data once the platform is in production.</p>
     </div>
     <div class="roadmap-grid">
       <div>
