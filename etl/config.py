@@ -12,6 +12,15 @@ load_dotenv()
 class Settings:
     """Application settings loaded from environment variables."""
 
+    database_mode: str = field(
+        default_factory=lambda: os.environ.get("DATABASE_MODE", "supabase")
+    )
+    local_database_url: str = field(
+        default_factory=lambda: os.environ.get(
+            "LOCAL_DATABASE_URL",
+            "postgresql://postgres:postgres@localhost:5432/job_intelligent",
+        )
+    )
     supabase_url: str = field(default_factory=lambda: os.environ["SUPABASE_URL"])
     supabase_key: str = field(default_factory=lambda: os.environ["SUPABASE_KEY"])
     supabase_db_url: str = field(

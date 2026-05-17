@@ -1,61 +1,96 @@
-# Power BI — Supabase PostgreSQL Connection Guide
+# Power BI - Supabase Live Connection Guide (Latest Schema)
 
-## Prerequisites
-- Power BI Desktop (latest version)
-- PostgreSQL ODBC driver or Npgsql provider
-- Supabase project with connection pooling enabled
+This guide fixes the common misalignment issue between exported CSV snapshots and
+the current Supabase schema. The recommended setup is to connect Power BI directly
+to Supabase so dashboards always read the latest data.
 
-## Connection Steps
+## 1) Prerequisites
 
-### 1. Get Connection Details
-From your Supabase dashboard → Settings → Database:
-- **Host**: `db.<project-ref>.supabase.co`
-- **Port**: `5432` (direct) or `6543` (transaction pooler)
-- **Database**: `postgres`
-- **User**: `postgres`
-- **Password**: Your database password
+- Power BI Desktop (latest)
+- Access to Supabase project database credentials
+- SQL Editor access in Supabase
 
-### 2. Connect in Power BI
-1. Open Power BI Desktop
-2. **Get Data** → **PostgreSQL database**
-3. Enter:
-   - Server: `db.<project-ref>.supabase.co:5432`
-   - Database: `postgres`
-4. Select **DirectQuery** (recommended for live dashboards)
-5. Enter credentials:
-   - User: `postgres`
-   - Password: Your database password
+## 2) Prepare the analytical star schema (one-time)
 
-### 3. Select Tables/Views
-Import the materialized views:
-- `mv_offers_by_skill`
-- `mv_salary_by_role`
-- `mv_offers_by_location`
-- `mv_market_trends`
-- `mv_top_companies`
+1. Open Supabase SQL Editor.
+2. Run [powerbi/star_schema.sql](powerbi/star_schema.sql).
+3. Verify these views exist under schema `powerbi`:
+   - dim_date, dim_source, dim_contract, dim_company, dim_location, dim_role, dim_skill
+   - fact_job_offers, fact_skill_demand, fact_recommendation_events, fact_pipeline_runs
 
-### 4. SSL Configuration
-Supabase requires SSL. If connection fails:
-1. Download the Supabase CA certificate
-2. In Power BI connection settings, enable SSL
-3. Or append `?sslmode=require` to the connection string
+This ensures Power BI model tables stay aligned with the latest project schema.
 
-### 5. Scheduled Refresh
-1. Publish report to Power BI Service
-2. Go to dataset settings → Scheduled refresh
-3. Set refresh schedule to every 6 hours (aligned with ETL)
-4. Configure gateway if using on-premises gateway
+## 3) Connection details from Supabase
 
-## Performance Tips
-- Use materialized views (pre-aggregated) instead of base tables
-- Prefer Import mode for small datasets, DirectQuery for live updates
-- Add appropriate indexes (already included in schema)
-- Use connection pooler (port 6543) for multiple concurrent connections
+From Supabase Dashboard -> Settings -> Database:
+- Host: db.<project-ref>.supabase.co
+- Port: 5432 (direct) or 6543 (pooler)
+- Database: postgres
+- User: postgres
+- Password: <your-db-password>
 
-## Troubleshooting
-| Issue | Solution |
-|-------|----------|
-| Connection timeout | Check Supabase project is active; use port 6543 |
-| SSL error | Enable SSL in connection; download CA cert |
-| Permission denied | Use `postgres` user or grant SELECT on views |
-| Slow queries | Ensure MVs are refreshed; check HNSW index |
+## 4) Connect Power BI (recommended: DirectQuery)
+
+1. Power BI Desktop -> Get Data -> PostgreSQL database.
+2. Server: db.<project-ref>.supabase.co:5432
+3. Database: postgres
+4. Data Connectivity mode: DirectQuery
+5. Advanced options (optional but recommended):
+   - SQL statement: `set statement_timeout = '120s';`
+6. Authentication:
+   - Username: postgres
+   - Password: <your-db-password>
+7. Ensure SSL is required by connector settings.
+
+If direct 5432 has networking issues, retry with 6543.
+
+## 5) Tables to select in Navigator
+
+Select the `powerbi` schema views:
+- powerbi.dim_date
+- powerbi.dim_source
+- powerbi.dim_contract
+- powerbi.dim_company
+- powerbi.dim_location
+- powerbi.dim_role
+- powerbi.dim_skill
+- powerbi.fact_job_offers
+- powerbi.fact_skill_demand
+- powerbi.fact_recommendation_events
+- powerbi.fact_pipeline_runs
+
+Then create relationships from [powerbi/star_schema.md](powerbi/star_schema.md).
+
+## 6) Keeping data always up-to-date
+
+## Preferred (live)
+- Use DirectQuery to Supabase.
+- Dashboard reflects latest ETL writes without CSV re-export.
+
+## Import mode (if required)
+- Use scheduled refresh in Power BI Service (every 6 hours).
+- Keep refresh aligned with Airflow `job_etl` schedule.
+
+## CSV fallback (offline only)
+- Use [powerbi/export_to_csv.py](powerbi/export_to_csv.py), now aligned with current schema.
+- Example:
+  - `python powerbi/export_to_csv.py --clean`
+  - `python powerbi/export_to_csv.py --since 2026-01-01T00:00:00Z`
+
+## 7) Troubleshooting
+
+| Issue | Resolution |
+|---|---|
+| Connection timeout | Validate Supabase project status; try port 6543 |
+| SSL error | Force SSL mode in connector |
+| Permission denied on `powerbi` views | Re-run [powerbi/star_schema.sql](powerbi/star_schema.sql) to grant SELECT |
+| Dashboard not updating | Confirm DirectQuery mode or refresh schedule |
+| Data mismatch with app | Use `powerbi` schema views, not legacy `candidates`/`recommendations` tables |
+
+## 8) Validation checklist
+
+After connecting:
+- `fact_job_offers` row count > 0
+- `fact_pipeline_runs` contains recent stages
+- `fact_recommendation_events` contains actions (`shown`, `saved`, etc.)
+- `dim_source` contains expected providers (adzuna, jsearch, rekrute, emploi_ma, etc.)

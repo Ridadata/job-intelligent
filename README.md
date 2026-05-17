@@ -179,6 +179,65 @@ Open Airflow UI → enable `job_etl` DAG → trigger manually.
 docker compose exec fastapi python -m pytest tests/ -v
 ```
 
+### 6 — Supabase To Local Snapshot Migration
+
+This project now includes a scripted path to copy your full Supabase PostgreSQL
+database into the local `app-db` container (schema + data), then apply local
+post-restore tasks.
+
+1. Fill `.env` with:
+
+```env
+SUPABASE_DB_URL=postgresql://postgres:<password>@db.<project>.supabase.co:5432/postgres
+LOCAL_DB_USER=postgres
+LOCAL_DB_PASSWORD=postgres
+LOCAL_DB_NAME=job_intelligent
+```
+
+2. Open DB UIs (local + Supabase editor):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/open_db_ui.ps1
+```
+
+Local Supabase-like UI:
+- `http://localhost:54323` (Supabase Studio)
+
+Fallback DB UI:
+- `http://localhost:8081` (Adminer)
+
+3. Run migration (PowerShell):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/migrate_supabase_to_local.ps1
+```
+
+4. Verify source/local row counts:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/verify_local_snapshot.ps1
+```
+
+5. Apply a SQL file directly to Supabase (example: Power BI star schema):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/apply_sql_to_supabase.ps1 -SqlFile powerbi/star_schema.sql
+```
+
+6. Local post-restore SQL lives in:
+
+```
+sql/009_local_dev_post_restore.sql
+```
+
+It ensures required extensions, disables RLS locally for development, refreshes
+analytics views when available, and runs ANALYZE.
+
+Notes:
+- The scripts auto-load values from `.env` if environment variables are not already set.
+- If your Supabase DB password contains special characters (like `@`), keep using `SUPABASE_DB_URL`; scripts handle robust parsing.
+- If migration fails with DNS/IPv4 errors on `db.<project-ref>.supabase.co`, switch `SUPABASE_DB_URL` to the Supabase pooler connection string (host `*.pooler.supabase.com`, typically port `6543`).
+
 ---
 
 ## API Overview
