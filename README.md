@@ -277,7 +277,130 @@ Notes:
 | GET | `/api/v1/candidates/{id}/skill-gap` | Skill gap analysis |
 | GET | `/api/v1/search?q=...` | Semantic job search |
 
-All endpoints return:
+### Response Format
+
+Single resource:
+
+```json
+{ "id": "uuid", "title": "Data Engineer", "company": "Acme" }
+```
+
+Paginated list:
+
+```json
+{ "items": [...], "total": 142, "page": 1, "per_page": 20, "pages": 8 }
+```
+
+Error:
+
+```json
+{ "detail": "Job not found", "code": "JOB_NOT_FOUND" }
+```
+
+Full interactive docs: **http://localhost:8000/docs** (Swagger UI). See also [docs/API.md](docs/API.md).
+
+---
+
+## Quick API Examples
+
+```bash
+# Register
+curl -X POST http://localhost:8000/api/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"email":"alice@example.com","password":"strongpass123"}'
+
+# Login (returns JWT)
+TOKEN=$(curl -s -X POST http://localhost:8000/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"alice@example.com","password":"strongpass123"}' | jq -r .access_token)
+
+# Search jobs semantically
+curl "http://localhost:8000/api/v1/search?q=python+data+engineer+remote" \
+  -H "Authorization: Bearer $TOKEN"
+
+# Get personalized recommendations
+curl -X POST http://localhost:8000/api/v1/recommendations \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+---
+
+## Project Structure
+
+```
+job-intelligent/
+├── api/                  # FastAPI backend (routers, services, repositories)
+├── frontend/             # React + TypeScript + Vite SPA
+├── ai_services/          # NLP, embeddings, matching, CV parser
+├── etl/                  # Bronze → Silver → Gold transforms
+├── ingestion/            # API clients (Adzuna, JSearch, France Travail)
+├── scrapers/             # Scrapy spiders (Rekrute, Emploi.ma, WTTJ)
+├── airflow/dags/         # job_etl DAG orchestration
+├── pipeline/cleaning/    # Shared cleaning utilities
+├── sql/                  # Numbered migrations (001 → 008)
+├── powerbi/              # Star schema, DAX, dashboard specs
+├── tests/                # pytest suites (unit, integration, ETL)
+├── scripts/              # Operational scripts (migration, snapshots)
+├── docs/                 # Architecture, API, getting started, subsystems
+├── images/               # Diagrams, screenshots
+├── infra/                # Nginx, Dockerfiles, deployment configs
+├── docker-compose.yml    # Full local stack
+└── pyproject.toml        # Python tooling config
+```
+
+Detailed module documentation: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+---
+
+## Documentation
+
+| Document | Purpose |
+|---|---|
+| [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md) | Step-by-step local setup |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System design and module boundaries |
+| [docs/API.md](docs/API.md) | REST API reference |
+| [docs/backend.md](docs/backend.md) | FastAPI internals |
+| [docs/frontend.md](docs/frontend.md) | React app structure |
+| [docs/data-platform.md](docs/data-platform.md) | ETL pipeline & ingestion |
+| [docs/ai-system.md](docs/ai-system.md) | NLP, embeddings, matching engine |
+| [powerbi/dashboard_specs.md](powerbi/dashboard_specs.md) | Power BI analytics layer |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Contribution guide |
+
+---
+
+## Roadmap
+
+- [ ] Public job board with anonymous search
+- [ ] Multi-language UI (FR/EN/AR)
+- [ ] Email job alerts (digest + real-time)
+- [ ] Recruiter portal (post + manage offers)
+- [ ] Resume builder powered by parsed CV data
+- [ ] LLM-based cover letter generation
+- [ ] Mobile app (React Native)
+
+---
+
+## License
+
+This project is licensed under the MIT License — see [LICENSE](LICENSE) for details.
+
+---
+
+## Contact
+
+Built by **Ridadata** as a portfolio capstone in AI-powered SaaS engineering.
+
+- GitHub: [@Ridadata](https://github.com/Ridadata)
+- Issues: [github.com/Ridadata/job-intelligent/issues](https://github.com/Ridadata/job-intelligent/issues)
+
+---
+
+<div align="center">
+
+If you find this project useful, please consider ⭐ starring it on GitHub.
+
+</div>
+
 
 ```json
 // Single resource
