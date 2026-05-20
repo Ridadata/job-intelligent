@@ -1,10 +1,12 @@
 ﻿<div align="center">
 
-<img src="img/logobrandproject.png" alt="Radian — Job Intelligent" width="320" />
+<img src="img/slogon.png" alt="Radian — Match Data Talent with Precision Intelligence" width="640" />
 
 # Job Intelligent — `radian`
 
-**AI-Powered Job Matching SaaS for Data Professionals**
+**Match Data Talent with Precision Intelligence**
+
+AI-powered job matching SaaS that aggregates data-domain offers from multiple APIs and scrapers, enriches them through a Bronze→Silver→Gold lakehouse, and serves explainable recommendations through a FastAPI backend and a React SPA.
 
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.111-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
@@ -14,8 +16,28 @@
 [![Airflow](https://img.shields.io/badge/Airflow-2.9-017CEE?logo=apacheairflow&logoColor=white)](https://airflow.apache.org)
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](https://docker.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Status](https://img.shields.io/badge/Status-MVP%20delivered-success)](#project-status)
 
 </div>
+
+---
+
+## Project Status
+
+> **MVP delivered, in active development.** All four layers are operational end-to-end on a local Docker Compose stack.
+
+| Layer | Status | What's running |
+|---|---|---|
+| **Data Ingestion** | ✅ Live | Adzuna · JSearch · France Travail APIs · Rekrute / Emploi.ma / WTTJ Scrapy spiders |
+| **ETL Pipeline** | ✅ Live | Airflow `job_etl` DAG · Bronze → Silver → Gold · 1,000+ offers ingested |
+| **AI Services** | ✅ Live | spaCy NER · Sentence-BERT (384d) · pgvector cosine match · multi-signal scorer · CV parser |
+| **Backend API** | ✅ Live | FastAPI · JWT auth · 25+ endpoints · Redis cache · rate limiting |
+| **Frontend SPA** | ✅ Live | React 18 + Vite · TanStack Query · dashboard · job search · recommendations · skill-gap |
+| **Power BI Layer** | ✅ Live | 10 curated views (6 dim + 4 fact) · star schema · 17 DAX measures · 2 dashboards |
+| **Auth & RBAC** | ✅ Live | JWT HS256 · bcrypt · candidate / admin roles |
+| **Observability** | ✅ Live | `pipeline_runs` audit · structured logging · health probes |
+
+**Next on the roadmap:** public job board · multi-language UI (FR/EN/AR) · email alerts · recruiter portal · LLM-powered cover letters. See [Roadmap](#roadmap).
 
 ---
 
@@ -82,6 +104,10 @@ The platform is organized into four stages:
 All job offers — from APIs and scrapers — normalize into a single `JobItem` schema before landing in **Bronze**, then flow through validation, NLP enrichment, and embedding generation:
 
 ![Medallion architecture — Bronze → Silver → Gold](img/architecturemedaillon.png)
+
+Detailed view including the Power BI analytics layer fed from the Gold star schema:
+
+![Medallion + Power BI analytics layer](img/architecturemedaillon1.png)
 
 ### Frontend Component Tree (`radian` UI)
 
