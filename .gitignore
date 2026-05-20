@@ -74,3 +74,13 @@ MANIFEST
 frontend/dist/
 frontend/.vite/
 frontend/node_modules/
+
+# Power BI desktop files (binary, not for git)
+*.pbix
+*.pbit
+
+# Internal / archived docs (kept locally, not for public release)
+docs/.internal/
+
+# Vendor (the Supabase upstream stack is referenced via the Supabase docs, not vendored here)
+infra/supabase-src/

@@ -41,7 +41,7 @@ Row counts (verified):
 | **Server** | `localhost:54322` |
 | **Database** | `postgres` |
 | **Username** | `powerbi_reader.aqualocal` |
-| **Password** | `powerbi-reader-local-dev` |
+| **Password** | _set via `POWERBI_READER_PASSWORD` in your `.env` (see step 2 below)_ |
 | **Encryption** | OFF (no TLS on local pooler) |
 | **Schema** | `powerbi` |
 
@@ -76,7 +76,7 @@ Install the latest **Power BI Desktop** from the Microsoft Store or [powerbi.mic
 3. Click **OK**.
 4. In the credentials prompt, switch to the **Database** tab (NOT Windows):
    - **User name**: `powerbi_reader.aqualocal`
-   - **Password**: `powerbi-reader-local-dev`
+   - **Password**: the value of `POWERBI_READER_PASSWORD` from your `.env`
    - **Apply settings to**: `localhost:54322`
    - Click **Connect**.
 5. If you see a TLS/SSL warning, click the link to **disable encryption for this server** (local stack has no TLS on the pooler).
@@ -234,7 +234,8 @@ If the role is missing or the password needs rotation:
 ```powershell
 docker compose exec db psql -U postgres -d postgres -c @"
 DROP ROLE IF EXISTS powerbi_reader;
-CREATE ROLE powerbi_reader LOGIN PASSWORD 'powerbi-reader-local-dev';
+CREATE ROLE powerbi_reader LOGIN PASSWORD :'powerbi_reader_password';
+-- Run with: psql -v powerbi_reader_password="$POWERBI_READER_PASSWORD" -f ...
 GRANT USAGE ON SCHEMA powerbi TO powerbi_reader;
 GRANT SELECT ON ALL TABLES IN SCHEMA powerbi TO powerbi_reader;
 ALTER DEFAULT PRIVILEGES IN SCHEMA powerbi GRANT SELECT ON TABLES TO powerbi_reader;
@@ -253,7 +254,7 @@ Get-Content powerbi/star_schema.sql -Raw | docker compose exec -T db psql -U pos
 
 ```powershell
 docker run --rm postgres:15-alpine psql `
-  "postgresql://powerbi_reader.aqualocal:powerbi-reader-local-dev@host.docker.internal:54322/postgres" `
+  "postgresql://powerbi_reader.aqualocal:$env:POWERBI_READER_PASSWORD@host.docker.internal:54322/postgres" `
   -c "SELECT count(*) FROM powerbi.fact_job_offers;"
 ```
 
