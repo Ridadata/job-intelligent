@@ -1,4 +1,4 @@
-"""Tests for Phase 3 — Data Platform Improvements.
+"""Tests for ETL phase 3 components.
 
 Covers schema validation, skill normalization, taxonomy classification,
 monitoring, quality checks, deduplication, and spider middlewares.

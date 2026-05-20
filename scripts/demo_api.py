@@ -2,7 +2,7 @@
 Quick demo: fetch real jobs from APIs and show them after cleaning.
 
 Usage:
-    python demo_api.py
+    python scripts/demo_api.py
 
 Reads credentials from .env automatically (via python-dotenv).
 No need to set env vars manually.

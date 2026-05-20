@@ -1,15 +1,19 @@
 ﻿<div align="center">
 
-# Job Intelligent
+<img src="img/logobrandproject.png" alt="Radian — Job Intelligent" width="320" />
 
-**AI-Powered Job Matching Platform for Data Professionals**
+# Job Intelligent — `radian`
+
+**AI-Powered Job Matching SaaS for Data Professionals**
 
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.111-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://typescriptlang.org)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+pgvector-4169E1?logo=postgresql&logoColor=white)](https://postgresql.org)
+[![Airflow](https://img.shields.io/badge/Airflow-2.9-017CEE?logo=apacheairflow&logoColor=white)](https://airflow.apache.org)
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](https://docker.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 </div>
 
@@ -29,7 +33,7 @@ Job Intelligent aggregates data-domain job offers from multiple sources, runs th
 
 ## Architecture
 
-![Architecture Diagram](images/jobs_project_archetecture.png)
+![Job Intelligent — Data Platform Architecture](img/architectureallproject.png)
 
 The platform is organized into four stages:
 
@@ -73,6 +77,16 @@ The platform is organized into four stages:
 └─────────────────────────────────────────────────────────┘
 ```
 
+### Medallion Lakehouse (Bronze → Silver → Gold)
+
+All job offers — from APIs and scrapers — normalize into a single `JobItem` schema before landing in **Bronze**, then flow through validation, NLP enrichment, and embedding generation:
+
+![Medallion architecture — Bronze → Silver → Gold](img/architecturemedaillon.png)
+
+### Frontend Component Tree (`radian` UI)
+
+![Radian frontend components](img/vucomposantsradian.png)
+
 ---
 
 ## Tech Stack
@@ -107,6 +121,52 @@ The platform is organized into four stages:
 | **Candidate Profile** | Skills, title, experience, location, salary expectation |
 | **Saved Jobs** | Bookmark and manage job offers |
 | **Dark / Light Mode** | System-aware theme, persisted via Zustand |
+
+---
+
+## Screenshots
+
+### Candidate Dashboard
+
+Overview of the authenticated candidate experience — profile completeness, latest matches, saved jobs, and market insights.
+
+![Candidate dashboard](img/dashbordfrontend.png)
+
+### Personalized Recommendations
+
+Multi-signal scored matches with `matched_skills`, `missing_skills`, and a transparent score breakdown (skill overlap + embedding similarity + seniority + location).
+
+![Recommendations list](img/recommendations.png)
+
+![Single job recommendation detail](img/onejobrecommandation.png)
+
+### Skill-Gap Analysis
+
+For each target role, the candidate sees the skills they already master vs. the in-demand skills they are missing — with suggested learning priorities.
+
+![Skill-gap analysis](img/skillgapanalysis.png)
+
+### CV Upload & NLP Parsing
+
+Candidates upload PDF / DOCX CVs. spaCy + pattern-matching pipelines extract skills, experience, and education, then merge them into the profile (union for skills, max for experience years — manual fields are never overwritten).
+
+![CV parsing pipeline](img/cvparsing.png)
+
+![CV parsing detail](img/cvparsing-detail.png)
+
+### FastAPI Swagger
+
+Fully documented OpenAPI surface at `http://localhost:8000/docs`.
+
+![FastAPI endpoints](img/fastapiendpoint.png)
+
+### Airflow ETL Orchestration
+
+The `job_etl` DAG runs every 6h: `ingest_apis → ingest_scrapers → transform_silver → enrich_gold → refresh_views → summary`.
+
+![Airflow DAG graph](img/airflowdag.png)
+
+![Airflow DAG run history](img/airflowdag1.png)
 
 ---
 
@@ -342,13 +402,37 @@ job-intelligent/
 ├── tests/                # pytest suites (unit, integration, ETL)
 ├── scripts/              # Operational scripts (migration, snapshots)
 ├── docs/                 # Architecture, API, getting started, subsystems
-├── images/               # Diagrams, screenshots
+├── img/                  # Diagrams, screenshots, brand assets
 ├── infra/                # Nginx, Dockerfiles, deployment configs
 ├── docker-compose.yml    # Full local stack
 └── pyproject.toml        # Python tooling config
 ```
 
 Detailed module documentation: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+---
+
+## Power BI Analytics
+
+A dedicated Power BI layer reads from a curated `powerbi.*` schema (10 views: 6 dimensions + 4 facts) following a star schema, with **17 DAX measures** powering executive dashboards.
+
+### Star Schema
+
+![Power BI star schema](img/startschemapowerbi.png)
+
+### Market Overview
+
+Aggregate KPIs across all ingested job offers — totals, top companies, top locations, contract-type breakdown, and skill demand trends.
+
+![Market overview dashboard](img/marketoverviewpowerbi.png)
+
+### Salary Analysis
+
+Compensation distribution by role, seniority, location, and required skills.
+
+![Salary analysis dashboard](img/salary-analysis-powerbi.png)
+
+Connection guide: [powerbi/local_connection_guide.md](powerbi/local_connection_guide.md) · DAX reference: [powerbi/dax_measures.md](powerbi/dax_measures.md).
 
 ---
 
