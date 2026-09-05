@@ -8,7 +8,7 @@ from typing import Any
 
 from fastapi import APIRouter, Depends, Query
 
-from api.dependencies import get_current_user, get_db, require_role
+from api.dependencies import get_db, require_role
 
 logger = logging.getLogger(__name__)
 

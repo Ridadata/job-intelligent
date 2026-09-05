@@ -496,11 +496,16 @@ This project is licensed under the MIT License — see [LICENSE](LICENSE) for de
 
 ---
 
+## Contributors
+
+Built by **Rida Aderkane** ([@Ridadata](https://github.com/Ridadata)) and
+**Mohamed Amine El Abidi** ([@mohamedamineelabidi](https://github.com/mohamedamineelabidi))
+as a portfolio capstone in AI-powered SaaS engineering.
+
+---
+
 ## Contact
 
-Built by **Ridadata** as a portfolio capstone in AI-powered SaaS engineering.
-
-- GitHub: [@Ridadata](https://github.com/Ridadata)
 - Issues: [github.com/Ridadata/job-intelligent/issues](https://github.com/Ridadata/job-intelligent/issues)
 
 ---
